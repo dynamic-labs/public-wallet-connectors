@@ -19,12 +19,13 @@ if (swcJestConfig.swcrc === undefined) {
 // swcJestConfig.module.noInterop = false;
 
 export default {
-  displayName: '@dynamic-connectors/safe-evm',
+  displayName: '@dynamic-labs-connectors/safe-evm',
   preset: '../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   testEnvironment: 'node',
-  coverageDirectory: '../../../coverage/packages/@dynamic-connectors/safe-evm',
+  coverageDirectory:
+    '../../../coverage/packages/@dynamic-labs-connectors/safe-evm',
 };

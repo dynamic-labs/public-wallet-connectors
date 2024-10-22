@@ -1,6 +1,9 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "defaultBase": "master",
+  "defaultBase": "main",
+  "cli": {
+    "packageManager": "pnpm"
+  },
   "plugins": [
     {
       "plugin": "@nx/js/typescript",
@@ -33,5 +36,9 @@
       "dependsOn": ["^build"],
       "inputs": ["default", "^default"]
     }
+  },
+  "namedInputs": {
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"],
+    "default": ["sharedGlobals"]
   }
 }

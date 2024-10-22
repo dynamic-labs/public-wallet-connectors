@@ -12,6 +12,6 @@ export * from './SafeEvmWalletConnector';
 
 export const SafeEvmWalletConnectors = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _props: any,
+  _props: any
 ): WalletConnectorConstructor[] =>
   isInIframe() ? [SafeEvmWalletConnector] : [];

@@ -1,0 +1,20 @@
+{
+  "name": "@dynamic-labs-connectors/safe-evm",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/@dynamic-labs-connectors/safe-evm/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/@dynamic-labs-connectors/safe-evm",
+        "main": "packages/@dynamic-labs-connectors/safe-evm/src/index.ts",
+        "tsConfig": "packages/@dynamic-labs-connectors/safe-evm/tsconfig.lib.json",
+        "assets": ["packages/@dynamic-labs-connectors/safe-evm/*.md"],
+        "generateExportsField": true
+      }
+    }
+  }
+}

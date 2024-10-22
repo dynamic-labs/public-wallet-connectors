@@ -72,7 +72,7 @@ export class SafeEvmWalletConnector extends EthereumInjectedConnector {
   private tryAutoConnect() {
     logger.debug(
       '[SafeEvmWalletConnector] trying to auto connect',
-      this.safe?.safeAddress,
+      this.safe?.safeAddress
     );
 
     if (!this.safe?.safeAddress) {
@@ -118,7 +118,7 @@ export class SafeEvmWalletConnector extends EthereumInjectedConnector {
   }
 
   override async signMessage(
-    messageToSign: string,
+    messageToSign: string
   ): Promise<string | undefined> {
     const client = this.getWalletClient();
 

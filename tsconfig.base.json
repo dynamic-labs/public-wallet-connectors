@@ -15,8 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@dynamic-connectors/safe-evm": [
-        "packages/@dynamic-connectors/safe-evm/src/index.ts"
+      "@dynamic-labs-connectors/safe-evm": [
+        "packages/@dynamic-labs-connectors/safe-evm/src/index.ts"
       ]
     }
   },

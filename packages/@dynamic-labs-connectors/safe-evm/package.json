@@ -1,5 +1,5 @@
 {
-  "name": "@dynamic-connectors/safe-evm",
+  "name": "@dynamic-labs-connectors/safe-evm",
   "version": "0.0.1",
   "type": "module",
   "main": "./src/index.js",
@@ -20,6 +20,7 @@
     "@safe-global/safe-apps-sdk": "9.1.0"
   },
   "peerDependencies": {
+    "@dynamic-labs/assert-package-version": "^4.0.0-alpha",
     "@dynamic-labs/ethereum-core": "^4.0.0-alpha",
     "@dynamic-labs/ethereum": "^4.0.0-alpha",
     "@dynamic-labs/utils": "^4.0.0-alpha",
