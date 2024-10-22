@@ -1,0 +1,65 @@
+name: bump-version
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Branch for which you wish to bump and publish
+        default: main
+      preId:
+        description: The prerelease name
+        default: alpha
+      bump:
+        description: Increment a version by the specified level
+        type: choice
+        default: prerelease
+        options:
+          - major
+          - minor
+          - patch
+          - premajor
+          - preminor
+          - prepatch
+          - prerelease
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_RUNNER_DEBUG: true
+    steps:
+      - name: Checkout ${{ github.event.inputs.branch }}
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch }}
+          fetch-depth: 0
+      - name: Set git identity
+        run: |-
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+      - name: Install deps
+        uses: dynamic-labs/dynamic-auth/.github/actions/install-deps@main
+        with:
+          cacheVersion: ${{ github.event.inputs.branch }}
+      - name: Bump Version
+        env:
+          ACTIONS_RUNNER_DEBUG: true
+        uses: dynamic-labs/dynamic-auth/.github/actions/bump-version@main
+        id: bumpversion
+        with:
+          bump: ${{ github.event.inputs.bump }}
+          preId: ${{ github.event.inputs.preId }}
+      - name: Update package-lock.json
+        run: npm i
+      - name: Clear nx cache
+        run: npx nx clear-cache
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          base: ${{ github.event.inputs.branch }}
+          commit-message: |
+            chore(bump-version): bumping version to ${{ steps.bumpversion.outputs.version }}
+          branch: github-bot/bump-version-${{ steps.bumpversion.outputs.version }}
+          delete-branch: true
+          title: |
+            chore(bump-version): bumping version to ${{ steps.bumpversion.outputs.version }}
+          body: ""
+

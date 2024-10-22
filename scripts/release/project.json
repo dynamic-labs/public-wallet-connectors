@@ -1,0 +1,17 @@
+{
+  "name": "release",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "scripts/release/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project release --web",
+  "targets": {
+    "bump-version": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "scripts/release",
+        "command": "tsx src/lib/bumpVersion.ts"
+      }
+    }
+  }
+}

@@ -18,16 +18,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      # Cache node_modules
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
+      - name: Setup Node
+        uses: dynamic-labs/sdk/.github/actions/setup-node@main
 
       - run: pnpm install --frozen-lockfile
-      - uses: nrwl/nx-set-shas@v4
       - run: pnpm exec nx affected -t lint test build

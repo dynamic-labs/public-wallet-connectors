@@ -1,0 +1,23 @@
+name: Bump Version
+description: Bumps the version of the project and opens a PR
+inputs:
+  version: # determines what node version to install
+    required: false
+    description: node js version
+    default: 20
+runs:
+  using: composite
+  steps:
+    - name: Setup Node
+      uses: dynamic-labs/sdk/.github/actions/setup-node@main
+      with:
+        version: ${{inputs.version}}
+    - name: Set git identity
+      run: |-
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    - name: Install Release Script Deps
+      run: |-
+        pnpm i --filter=release
+
+
