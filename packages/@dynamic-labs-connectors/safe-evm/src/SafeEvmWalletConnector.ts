@@ -2,126 +2,143 @@ import { SafeAppProvider } from '@safe-global/safe-apps-provider';
 import SafeAppsSDK, { type SafeInfo } from '@safe-global/safe-apps-sdk';
 import { type Hex } from 'viem';
 
-import {
-  logger,
-  walletConnectorEvents,
-} from '@dynamic-labs/wallet-connector-core';
+import { logger, type WalletMetadata } from '@dynamic-labs/wallet-connector-core';
 import { type EthWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
 import { EthereumInjectedConnector, type IEthereum } from '@dynamic-labs/ethereum';
 import { findWalletBookWallet } from '@dynamic-labs/wallet-book';
 
-export class SafeEvmWalletConnector extends EthereumInjectedConnector {
-  override name = 'Safe Wallet';
-  override overrideKey = 'safe';
+class SafeSingleton {
+  static onComplete: (() => void) | undefined;
 
   // this is what we use to fetch the safe wallet data and initialize the provider
-  private sdk: SafeAppsSDK;
+  static safeSdk: SafeAppsSDK;
 
   // this is injected by the safe app
   // it contains the safe wallet data
-  private safe?: SafeInfo | undefined;
+  static safeInfo: SafeInfo | undefined;
 
   // this is the eip-1193 provider
-  private provider?: SafeAppProvider;
+  static provider: SafeAppProvider;
 
-  private triedToConnect = false;
-  private isInitializing = false;
+  private constructor() {
+    // do nothing
+  }
+
+  static initSafe = async () => {
+    logger.debug('[SafeEvmWalletConnector] initSafe - initializing sdk');
+
+    SafeSingleton.safeSdk = new SafeAppsSDK();
+
+    logger.debug('[SafeEvmWalletConnector] initSafe - sdk initialized');
+
+    SafeSingleton.safeInfo = await Promise.race([
+      SafeSingleton.safeSdk.safe.getInfo(),
+      new Promise<undefined>((resolve) => setTimeout(resolve, 1000)),
+    ]);
+
+     // this happens when:
+    //  1. the user is actually in safe but we were unable to load the safe sdk or wallet for some reason
+    //  2. the user is in some other iframe that is not safe
+    if (!SafeSingleton.safeInfo) {
+      logger.debug(
+        '[SafeEvmWalletConnector] initSafe - unable to load safe data',
+      );
+      return;
+    }
+
+    logger.debug('[SafeEvmWalletConnector] initSafe - initializing provider');
+
+    SafeSingleton.provider = new SafeAppProvider(
+      SafeSingleton.safeInfo,
+      SafeSingleton.safeSdk,
+    );
+
+    logger.debug('[SafeEvmWalletConnector] initSafe - provider initialized');
+  };
+
+  static async init({ onComplete }: { onComplete: () => void }) {
+    logger.debug('[SafeEvmWalletConnector] init');
+
+    SafeSingleton.onComplete = onComplete;
+
+    if (!SafeSingleton.safeSdk) {
+      await SafeSingleton.initSafe();
+      SafeSingleton.onComplete();
+      logger.debug('[SafeEvmWalletConnector] init completed');
+    }
+  }
+}
+
+export class SafeEvmWalletConnector extends EthereumInjectedConnector {
+  static metadata: WalletMetadata = { id: 'safe' };
+
+  override name = 'Safe';
 
   constructor(props: EthWalletConnectorOpts) {
     super(props);
 
     this.wallet = findWalletBookWallet(this.walletBook, this.key);
-    this.sdk = new SafeAppsSDK();
 
-    this.initProvider();
+    SafeSingleton.init({ onComplete: this.onProviderReady });
   }
+  
+  private onProviderReady = () => {
+    logger.debug('[SafeEvmWalletConnector] onProviderReady');
 
-  private async initProvider() {
-    logger.debug('[SafeEvmWalletConnector] initProvider');
-
-    if (this.provider || this.isInitializing) {
-      return;
-    }
-
-    this.isInitializing = true;
-
-    if (!this.safe && !this.triedToConnect) {
-      this.safe = await this.initializeSafe();
-    }
-
-    // this happens when:
-    //  1. the user is actually in safe but we were unable to load the safe sdk or wallet for some reason
-    //  2. the user is in some other iframe that is not safe
-    if (!this.safe) {
-      logger.debug('[SafeEvmWalletConnector] unable to load safe');
-      return;
-    }
-
-    this.provider = new SafeAppProvider(this.safe, this.sdk);
-
-    this.isInitializing = false;
-
-    logger.debug('[SafeEvmWalletConnector] providerReady');
-    walletConnectorEvents.emit('providerReady', {
+    this.walletConnectorEventsEmitter.emit('providerReady', {
       connector: this,
     });
 
     this.tryAutoConnect();
-  }
+  };
 
-  private tryAutoConnect() {
+  private async tryAutoConnect() {
+    const safeAddress = await this.getAddress();
+
     logger.debug(
-      '[SafeEvmWalletConnector] trying to auto connect',
-      this.safe?.safeAddress
+      '[SafeEvmWalletConnector] tryAutoConnect - address:',
+      safeAddress,
     );
 
-    if (!this.safe?.safeAddress) {
+    if (!safeAddress) {
+      logger.debug(
+        '[SafeEvmWalletConnector] tryAutoConnect - no address to connect',
+        safeAddress,
+      );
       return;
     }
 
-    walletConnectorEvents.emit('autoConnect', {
+    this.walletConnectorEventsEmitter.emit('autoConnect', {
       connector: this,
     });
   }
 
-  private async initializeSafe(): Promise<SafeInfo | undefined> {
-    this.triedToConnect = true;
-
-    const safe = await Promise.race([
-      this.sdk.safe.getInfo(),
-      new Promise<undefined>((resolve) => setTimeout(resolve, 1000)),
-    ]);
-
-    console.log('safe', safe);
-
-    return safe;
-  }
-
-  // switching networks in a safe app does not work
   override supportsNetworkSwitching(): boolean {
     return false;
   }
 
   override findProvider(): IEthereum | undefined {
-    return this.provider as unknown as IEthereum;
+    return SafeSingleton.provider as unknown as IEthereum;
   }
 
   override async getAddress(): Promise<string | undefined> {
-    return this.safe?.safeAddress;
+    return SafeSingleton.safeInfo?.safeAddress;
   }
 
   override async getConnectedAccounts(): Promise<string[]> {
-    if (!this.safe?.safeAddress) {
+    const connectedAccount = await this.getAddress();
+
+    if (!connectedAccount) {
       return [];
     }
 
-    this.setActiveAccount(this.safe.safeAddress as Hex);
+    this.setActiveAccount(connectedAccount as Hex);
 
-    return [this.safe.safeAddress];
+    return [connectedAccount];
   }
 
   override async signMessage(
-    messageToSign: string
+    messageToSign: string,
   ): Promise<string | undefined> {
     const client = this.getWalletClient();
 
@@ -132,5 +149,15 @@ export class SafeEvmWalletConnector extends EthereumInjectedConnector {
     return client.signMessage({
       message: messageToSign,
     });
+  }
+
+  // this will ensure the connectors is not added to the available connectors list if the provider
+  // is not ready and it will only be added when the providerReady event is emitted
+  override filter(): boolean {
+    return Boolean(SafeSingleton.provider);
+  }
+
+  override get key(): string {
+    return SafeEvmWalletConnector.metadata.id;
   }
 }
