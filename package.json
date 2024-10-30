@@ -4,7 +4,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "postinstall": "lefthook install",
-    "release:version": "pnpm nx run release:bump-version"
+    "release:bump-version": "pnpm nx run release:bump-version"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",

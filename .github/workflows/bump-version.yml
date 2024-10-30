@@ -24,6 +24,14 @@ concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+  attestations: read
+  checks: read
+  deployments: read
+
 jobs:
   bump-version:
     runs-on: ubuntu-latest
@@ -47,7 +55,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ secrets.DYNAMIC_CI_PAT }}
           base: ${{ github.event.inputs.branch }}
           commit-message: |
             chore(bump-version): bump package versions [skip ci]

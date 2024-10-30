@@ -27,14 +27,13 @@ runs:
       with:
         version: ${{inputs.version}}
     - name: Set git identity
+      shell: bash
       run: |-
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-    - name: Install Release Script Deps
-      run: |-
-        pnpm i --filter=release
     - name: Bump Version
+      shell: bash
       run: |-
-        pnpm release:bump-version --version ${{ github.event.inputs.bump }} --preId ${{ github.event.inputs.preId }} --dryRun=false
+        pnpm release:bump-version -- --version ${{ github.event.inputs.bump }} --preId ${{ github.event.inputs.preId }} --dryRun=false
 
 
