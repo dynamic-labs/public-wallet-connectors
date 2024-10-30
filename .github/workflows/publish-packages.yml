@@ -1,0 +1,30 @@
+name: Publish Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch or commit to publish. The ref must be a chore(release) commit
+        default: main
+  push:
+    branches:
+      - main
+      - v*
+
+jobs:
+  publish:
+    if: "${{ github.event.head_commit.message == 'chore(release): publish packages [skip ci]' }}"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ${{ github.event.inputs.ref }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref }}
+          fetch-depth: 0
+      - name: Setup Node
+        uses: dynamic-labs/sdk/.github/actions/setup-node@main
+        with:
+          version: 20
+      - run: |
+          pnpm release:publish -- --dryRun=false --createRelease=true
+        name: Publish Packages

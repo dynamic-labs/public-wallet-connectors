@@ -1,7 +1,20 @@
-import { releaseVersion, releaseChangelog } from 'nx/release'
+import { releaseVersion } from 'nx/release'
 import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
+import * as core from '@actions/core';
+import semver from 'semver';
 import { writeDistTag } from '../lib/writeDistTag.js';
+import fs from 'fs';
+
+const writeRootVersion = async (version: string, dryRun = true) => {
+  if (dryRun) {
+    console.log(`[DRYRUN] Writing version ${version} to root package.json`);
+    return;
+  }
+  const rootPackage = await import(process.env.NX_WORKSPACE_ROOT + '/package.json');
+  rootPackage.version = version;
+  await fs.promises.writeFile(process.env.NX_WORKSPACE_ROOT + '/package.json', JSON.stringify(rootPackage, null, 2));
+}
 
 const bumpVersion = async () => {
   const options = await yargs(hideBin(process.argv))
@@ -44,18 +57,18 @@ const bumpVersion = async () => {
     verbose: options.verbose,
   });
 
-  console.log('Project version data:', projectsVersionData);
+  if (!workspaceVersion) {
+    throw new Error('When generating a new version, the workspace version must be defined');
+  }
   
-
-  // Updates the changelog according to conventional commits
-  await releaseChangelog({
-    versionData: projectsVersionData,
-    version: workspaceVersion,
-    dryRun: options.dryRun,
-    verbose: options.verbose,
-  });
+  core.setOutput('major', semver.major(workspaceVersion));
+  core.setOutput('minor', semver.minor(workspaceVersion));
+  core.setOutput('patch', semver.patch(workspaceVersion));
+  core.setOutput('prerelease', semver.prerelease(workspaceVersion)?.[0]);
+  core.setOutput('version', workspaceVersion);
 
   await writeDistTag(projectsVersionData, options.dryRun);
+  await writeRootVersion(workspaceVersion, options.dryRun);
 };
 
 export default bumpVersion;

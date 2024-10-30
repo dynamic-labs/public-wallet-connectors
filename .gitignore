@@ -12,9 +12,6 @@ tmp
 /.nx
 /.verdaccio/build/local-registry
 
-# We don't commit a CHANELGELOG.md file to the repo, we only create Github releases
-CHANGELOG.md
-
 # Local dev files
 .env.local
 .bashrc

@@ -1,8 +1,6 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../dist/out-tsc",
-    "module": "es2020",
     "types": ["jest", "node"]
   },
   "include": [

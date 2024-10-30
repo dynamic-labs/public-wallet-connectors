@@ -12,6 +12,13 @@
         "cwd": "scripts/release",
         "command": "tsx src/commands/bump-version.ts"
       }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "scripts/release",
+        "command": "tsx src/commands/publish-packages.ts"
+      }
     }
   }
 }

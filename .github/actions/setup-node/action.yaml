@@ -9,14 +9,18 @@ runs:
   using: composite
   steps:
     - uses: nrwl/nx-set-shas@v4
-    - uses: pnpm/action-setup@v4
-      with:
-        version: 9
     - uses: actions/setup-node@v4
       with:
         node-version: ${{inputs.version}}
         registry-url: 'https://registry.npmjs.org'
         cache: 'pnpm'
+    - uses: pnpm/action-setup@v4
+      with:
+        version: 9
+        run_install: |
+          - recursive: true
+            args: [--frozen-lockfile, --strict-peer-dependencies]
+    
     
 
 
