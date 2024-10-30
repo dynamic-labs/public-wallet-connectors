@@ -23,7 +23,7 @@ runs:
   using: composite
   steps:
     - name: Setup Node
-      uses: dynamic-labs/sdk/.github/actions/setup-node@main
+      uses: dynamic-labs/sdk/.github/actions/setup-node@jesse/add-ci
       with:
         version: ${{inputs.version}}
     - name: Set git identity
