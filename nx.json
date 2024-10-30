@@ -15,7 +15,8 @@
           "targetName": "build",
           "configName": "tsconfig.lib.json"
         }
-      }
+      },
+      "exclude": ["scripts/release/*"]
     },
     {
       "plugin": "@nx/eslint/plugin",
@@ -30,11 +31,49 @@
       }
     }
   ],
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*"]
+  },
   "targetDefaults": {
-    "@nx/js:swc": {
+    "build": {
       "cache": true,
       "dependsOn": ["^build"],
+      "options": {
+        "assets": [
+          "{workspaceRoot}/CHANGELOG.md",
+          "{workspaceRoot}/LICENSE",
+          "{workspaceRoot}/.npmignore",
+          "{projectRoot}/.npmrc",
+          "{projectRoot}/*.md"
+        ]
+      },
       "inputs": ["default", "^default"]
     }
+  },
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "currentVersionResolver": "disk",
+        "specifierSource": "prompt"
+      },
+      "git": {
+        "commit": false,
+        "tag": false,
+        "push": false
+      }
+    },
+    "changelog": {
+      "projectChangelogs": false,
+      "workspaceChangelog": {
+        "createRelease": false,
+        "file": "CHANGELOG.md"
+      },
+      "git": {
+        "commit": false,
+        "tag": false,
+        "push": false
+      }
+    }
+    
   }
 }

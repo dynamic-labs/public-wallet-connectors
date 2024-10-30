@@ -12,7 +12,6 @@
         "outputPath": "dist/packages/@dynamic-labs-connectors/safe-evm",
         "main": "packages/@dynamic-labs-connectors/safe-evm/src/index.ts",
         "tsConfig": "packages/@dynamic-labs-connectors/safe-evm/tsconfig.lib.json",
-        "assets": ["packages/@dynamic-labs-connectors/safe-evm/*.md"],
         "generateExportsField": true
       }
     }

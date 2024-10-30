@@ -15,8 +15,8 @@
     "noImplicitOverride": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
     "allowJs": false,
     "checkJs": false,
     "esModuleInterop": false,
@@ -31,7 +31,8 @@
     "paths": {
       "@dynamic-labs-connectors/safe-evm": [
         "packages/@dynamic-labs-connectors/safe-evm/src/index.ts"
-      ]
+      ],
+      "release": ["scripts/release/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

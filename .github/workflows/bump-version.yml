@@ -11,7 +11,7 @@ on:
       bump:
         description: Increment a version by the specified level
         type: choice
-        default: prerelease
+        default: prepatch
         options:
           - major
           - minor
@@ -39,7 +39,7 @@ jobs:
       - name: Bump Versions
         env:
           ACTIONS_RUNNER_DEBUG: true
-        uses: dynamic-labs/dynamic-auth/.github/actions/bump-version@main
+        uses: dynamic-labs/sdk/.github/actions/bump-version@main
         id: bumpversion
         with:
           bump: ${{ github.event.inputs.bump }}
