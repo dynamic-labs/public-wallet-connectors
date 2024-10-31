@@ -46,7 +46,7 @@ jobs:
       - name: Bump Versions
         env:
           ACTIONS_RUNNER_DEBUG: true
-        uses: dynamic-labs/sdk/.github/actions/bump-version@main
+        uses: dynamic-labs/sdk/.github/actions/bump-version@jesse/test
         id: bumpversion
         with:
           bump: ${{ github.event.inputs.bump }}

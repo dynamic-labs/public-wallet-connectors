@@ -10,6 +10,7 @@ on:
     branches:
       - main
       - v*
+      - jesse/*
 
 jobs:
   publish:
@@ -22,9 +23,10 @@ jobs:
           ref: ${{ github.event.inputs.ref }}
           fetch-depth: 0
       - name: Setup Node
-        uses: dynamic-labs/sdk/.github/actions/setup-node@main
+        uses: dynamic-labs/sdk/.github/actions/setup-node@jesse/test
         with:
           version: 20
       - run: |
-          pnpm release:publish -- --dryRun=false --createRelease=true
+          pnpm nx run-many --all --target=build --parallel
+          pnpm release:publish -- --dryRun=true --createRelease=true
         name: Publish Packages
