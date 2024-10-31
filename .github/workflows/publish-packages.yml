@@ -26,5 +26,5 @@ jobs:
         with:
           version: 20
       - run: |
-          pnpm release:publish -- --dryRun=true --createRelease=true
+          pnpm release:publish -- --dryRun=false --createRelease=true
         name: Publish Packages
