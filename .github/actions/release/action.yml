@@ -1,6 +1,13 @@
-name: Bump Version
+name: Release
 description: Bumps the version of the project and opens a PR
 inputs:
+  type:
+    description: The action to perform
+    type: choice
+    required: true
+    options:
+      - bump
+      - publish
   version: # determines what node version to install
     required: false
     description: node js version
@@ -33,16 +40,33 @@ runs:
     - name: Setup Node
       uses: dynamic-labs/sdk/.github/actions/setup-node@main
       with:
-        version: ${{inputs.version}}
+        version: ${{ inputs.version }}
     - name: Set git identity
       shell: bash
       run: |-
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    - name: Install Packages for Github Action
+      shell: bash
+      run: |-
+        pushd ${GITHUB_ACTION_PATH};
+          pnpm install --ignore-workspace
+        popd
+    - name: Publish Packages
+      if: "${{ inputs.type == 'publish' }}"
+      shell: bash
+      run: |-
+        ${GITHUB_ACTION_PATH}/node_modules/.bin/tsx \
+        ${GITHUB_ACTION_PATH}/src/commands/publish-packages.ts \
+          --dryRun=false \
+          --createRelease=true
     - name: Bump Version
+      if: "${{ inputs.type == 'bump' }}"
       shell: bash
       id: bumpversion
       run: |-
-        pnpm release:bump-version -- --version ${{ github.event.inputs.bump }} --preId ${{ github.event.inputs.preId }} --dryRun=false
+        ${GITHUB_ACTION_PATH}/node_modules/.bin/tsx \
+        ${GITHUB_ACTION_PATH}/src/commands/bump-version.ts \
+          --version ${{ inputs.bump }} --preId ${{ inputs.preId }} --dryRun=false
 
 

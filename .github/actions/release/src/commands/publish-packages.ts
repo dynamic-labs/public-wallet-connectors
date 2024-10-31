@@ -1,12 +1,13 @@
-import { releaseChangelog, releasePublish } from "nx/release";
 import yargs from "yargs";
 import * as core from '@actions/core';
 import { hideBin } from "yargs/helpers";
 import { execCapture } from '../lib/execCapture.js';
 import { detectTag } from "../lib/detectTag.js";
-
+import { releaseChangelog, releasePublish } from "nx/release/index.js";
 
 const commitMessage = 'chore(bump-version): bump package versions';
+const NX_ROOT = '/home/runner/work/sdk/sdk'
+
 
 const getVersionFromCommit = (commit: string) => {
   const command = `git show ${commit}:package.json`;
@@ -36,8 +37,13 @@ export const getReleaseCommits = () => {
   return [from, to, newVersion];
 }
 
-
 const publishPackages = async () => {
+
+  if (process.env.GITHUB_ACTION) {
+    core.info(`Changing directory to ${NX_ROOT}`);
+    process.chdir(NX_ROOT);
+  }
+
   const options = await yargs(hideBin(process.argv))
     .version(false) // don't use the default meaning of version in yargs
     .option('dryRun', {
@@ -70,6 +76,7 @@ const publishPackages = async () => {
     from: from.sha,
     dryRun: options.dryRun,
     gitCommit: false,
+    gitTag: false,
     stageChanges: false,
     createRelease: options.createRelease ? 'github' : undefined,
     verbose: options.verbose,
@@ -79,14 +86,20 @@ const publishPackages = async () => {
   // Using @dynamic-labs-connector/safe-evm as the package name for determining the latest version
   const distTag = await detectTag('@dynamic-labs-connectors/safe-evm', workspaceVersion);
 
-  await releasePublish({
+  const results = await releasePublish({
     dryRun: options.dryRun,
     tag: distTag,
   }); 
+
+  if (Object.entries(results).some(([_, value]) => value.code !== 0)) {
+    core.setFailed('Failed to publish packages');
+  } else {
+    core.summary.addDetails('Published', `Published packages with dist-tag: ${distTag}, version: ${workspaceVersion}`);
+    core.summary.addEOL();
+  }
 };
 
-if (require.main === module) {
-  publishPackages().then(() => {
-    process.exit(0);
-  });
-}
+publishPackages().then(() => {
+  process.exit(0);
+});
+

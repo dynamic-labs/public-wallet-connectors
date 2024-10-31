@@ -15,8 +15,7 @@
           "targetName": "build",
           "configName": "tsconfig.lib.json"
         }
-      },
-      "exclude": ["scripts/release/*"]
+      }
     },
     {
       "plugin": "@nx/eslint/plugin",

@@ -5,10 +5,11 @@ import * as core from '@actions/core';
 import semver from 'semver';
 import fs from 'fs';
 
-const writeRootVersion = async (version: string, dryRun = true) => {
-  const rootPackage = await import(process.env.NX_WORKSPACE_ROOT + '/package.json');
-  rootPackage.default.version = version;
+const NX_ROOT = '/home/runner/work/sdk/sdk'
 
+const writeRootVersion = async (version: string, dryRun = true) => {
+  const rootPackage = await import(NX_ROOT + '/package.json');
+  rootPackage.default.version = version;
 
   if (dryRun) {
     core.info(`[DRYRUN] Writing version ${version} to root package.json`);
@@ -16,10 +17,15 @@ const writeRootVersion = async (version: string, dryRun = true) => {
     return;
   }
   
-  await fs.promises.writeFile(process.env.NX_WORKSPACE_ROOT + '/package.json', JSON.stringify(rootPackage.default, null, 2));
+  await fs.promises.writeFile(NX_ROOT + '/package.json', JSON.stringify(rootPackage.default, null, 2));
 }
 
 const bumpVersion = async () => {
+  if (process.env.GITHUB_ACTION) {
+    core.info(`Changing directory to ${NX_ROOT}`);
+    process.chdir(NX_ROOT);
+  }
+
   const options = await yargs(hideBin(process.argv))
     .version(false) // don't use the default meaning of version in yargs
     .option('version', {
@@ -53,7 +59,7 @@ const bumpVersion = async () => {
    */
 
   // Bumps the version to disk
-  const { workspaceVersion, projectsVersionData } = await releaseVersion({
+  const { workspaceVersion } = await releaseVersion({
     specifier: options.version,
     preid: options.preId,
     dryRun: options.dryRun,
@@ -79,8 +85,7 @@ const bumpVersion = async () => {
 
 
 
-if (require.main === module) {
-  bumpVersion().then(() => {
-    process.exit(0);
-  });
-}
+bumpVersion().then(() => {
+  process.exit(0);
+});
+

@@ -99,6 +99,30 @@ importers:
         specifier: ^8.0.0
         version: 8.12.2(eslint@9.13.0(jiti@2.3.3))(typescript@5.5.4)
 
+  .github/actions/release:
+    devDependencies:
+      '@actions/core':
+        specifier: ^1.11.1
+        version: 1.11.1
+      '@types/semver':
+        specifier: ^7.5.8
+        version: 7.5.8
+      '@types/yargs':
+        specifier: ^17.0.33
+        version: 17.0.33
+      nx:
+        specifier: 20.0.2
+        version: 20.0.2(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.13))(@swc/types@0.1.12)(typescript@5.5.4))(@swc/core@1.5.29(@swc/helpers@0.5.13))
+      semver:
+        specifier: ^7.6.3
+        version: 7.6.3
+      tsx:
+        specifier: ^4.19.1
+        version: 4.19.2
+      yargs:
+        specifier: ^17.7.2
+        version: 17.7.2
+
   packages/@dynamic-labs-connectors/safe-evm:
     dependencies:
       '@dynamic-labs/ethereum':
@@ -129,30 +153,6 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
-
-  scripts/release:
-    devDependencies:
-      '@actions/core':
-        specifier: ^1.11.1
-        version: 1.11.1
-      '@types/semver':
-        specifier: ^7.5.8
-        version: 7.5.8
-      '@types/yargs':
-        specifier: ^17.0.33
-        version: 17.0.33
-      nx:
-        specifier: 20.0.2
-        version: 20.0.2(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.13))(@swc/types@0.1.12)(typescript@5.5.4))(@swc/core@1.5.29(@swc/helpers@0.5.13))
-      semver:
-        specifier: ^7.6.3
-        version: 7.6.3
-      tsx:
-        specifier: ^4.19.1
-        version: 4.19.2
-      yargs:
-        specifier: ^17.7.2
-        version: 17.7.2
 
 packages:
 

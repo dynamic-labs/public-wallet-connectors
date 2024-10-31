@@ -1,4 +1,5 @@
 import semver from 'semver';
+import * as core from '@actions/core';
 
 
 const semverSort = (a: string, b: string) => {
@@ -29,7 +30,6 @@ const fetchPublishedVersions = async (packageName: string): Promise<string[]> =>
   const result = filterPrereleases.length ? filterPrereleases.sort(semverSort) : versions.sort(semverSort);
 
   if (result.length === 0) {
-    console.log('versions', versions);
     throw new Error(`No remote versions found for ${packageName} at https://registry.npmjs.org/${packageName}`);
   }
 
@@ -62,7 +62,7 @@ const getLatestMinorVersion = async (packageName: string, version: string) => {
 export const detectTag = async (packageName: string, version: string) => {
   const prereleaseName = semver.prerelease(version)?.[0] ?? undefined
   const isPreRelease = prereleaseName !== undefined;
-  if (typeof prereleaseName !== 'string') {
+  if (prereleaseName && typeof prereleaseName !== 'string') {
     throw Error('prereleaseName is not a string got: ' + prereleaseName);
   }
 
@@ -77,16 +77,16 @@ export const detectTag = async (packageName: string, version: string) => {
   // Anything else gets v1-lts, v2-lts, etc.
   
   if (isPreRelease) {
-    return prereleaseName;
+    return prereleaseName as string;
   } else if (isLatestVersion) {
     return 'latest';
   } else if (isLatestMinorVersion) {
     return `v${semver.major(version)}-lts`;
   } else {
-    console.error(`You are trying to publish a version that is not the latest major or major.minor version`)
-    console.error('Target version you want to publish: ', version)
-    console.error('Latest version: ', latestVersion)
-    console.error('Latest minor version: ', latestMinorVersion)
+    core.error(`You are trying to publish a version that is not the latest major or major.minor version`)
+    core.error(`Target version you want to publish: ${version}`)
+    core.error(`Latest version: ${latestVersion}`)
+    core.error(`Latest minor version: ${latestMinorVersion}`)
     throw new Error('Error detecting tag');
   }
 };
