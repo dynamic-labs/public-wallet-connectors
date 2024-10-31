@@ -1,6 +1,6 @@
 {
   "name": "@dynamic-labs-connectors/safe-evm",
-  "version": "4.0.0-alpha.1",
+  "version": "3.0.0-alpha.1",
   "type": "module",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
@@ -20,15 +20,15 @@
     "@safe-global/safe-apps-sdk": "9.1.0"
   },
   "peerDependencies": {
-    "@dynamic-labs/ethereum-core": "^4.0.0-alpha",
-    "@dynamic-labs/ethereum": "^4.0.0-alpha",
-    "@dynamic-labs/utils": "^4.0.0-alpha",
-    "@dynamic-labs/wallet-book": "^4.0.0-alpha",
-    "@dynamic-labs/wallet-connector-core": "^4.0.0-alpha",
+    "@dynamic-labs/ethereum-core": "^3.4.5",
+    "@dynamic-labs/ethereum": "^3.4.5",
+    "@dynamic-labs/utils": "^3.4.5",
+    "@dynamic-labs/wallet-book": "^3.4.5",
+    "@dynamic-labs/wallet-connector-core": "^3.4.5",
     "viem": "^2.21.29"
   },
   "devDependencies": {
-    "@dynamic-labs/utils": "^4.0.0-alpha",
+    "@dynamic-labs/utils": "^3.4.5",
     "react-dom": "18.2.0"
   }
 }
