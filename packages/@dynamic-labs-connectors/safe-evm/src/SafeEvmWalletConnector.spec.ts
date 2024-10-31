@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { type EthWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
+import { type EthereumWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
 import { SafeEvmWalletConnector } from './SafeEvmWalletConnector.js';
 import { SafeSdkClient } from './SafeSdkClient.js';
 
@@ -11,10 +11,10 @@ jest.mock('@dynamic-labs/wallet-connector-core', () => ({
   },
 }));
 
-const walletConnectorProps: EthWalletConnectorOpts = {
+const walletConnectorProps: EthereumWalletConnectorOpts = {
   walletBook: {} as any,
   evmNetworks: [],
-} as any as EthWalletConnectorOpts;
+} as any as EthereumWalletConnectorOpts;
 
 describe('SafeEvmWalletConnector', () => {
   let connector: SafeEvmWalletConnector;

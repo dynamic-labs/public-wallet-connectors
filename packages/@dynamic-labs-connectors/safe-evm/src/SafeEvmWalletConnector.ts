@@ -1,7 +1,7 @@
 import { type Hex } from 'viem';
 
 import { logger } from '@dynamic-labs/wallet-connector-core';
-import { type EthWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
+import { type EthereumWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
 import { EthereumInjectedConnector, type IEthereum } from '@dynamic-labs/ethereum';
 import { findWalletBookWallet } from '@dynamic-labs/wallet-book';
 import { SafeSdkClient } from './SafeSdkClient.js';
@@ -17,8 +17,15 @@ export class SafeEvmWalletConnector extends EthereumInjectedConnector {
    * The constructor for the connector, with the relevant metadata
    * @param props The options for the connector
    */
-  constructor(props: EthWalletConnectorOpts) {
-    super({ ...props, metadata: { id: 'safe' } });
+  constructor(props: EthereumWalletConnectorOpts) {
+    super({
+      ...props,
+      metadata: {
+        id: 'safe',
+        name: 'Safe',
+        icon: 'https://iconic.dynamic-static-assets.com/icons/sprite.svg#safe',
+      },
+    });
 
     this.wallet = findWalletBookWallet(this.walletBook, this.key);
   }
