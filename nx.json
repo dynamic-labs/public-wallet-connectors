@@ -49,31 +49,5 @@
       },
       "inputs": ["default", "^default"]
     }
-  },
-  "release": {
-    "version": {
-      "generatorOptions": {
-        "currentVersionResolver": "disk",
-        "specifierSource": "prompt"
-      },
-      "git": {
-        "commit": false,
-        "tag": false,
-        "push": false
-      }
-    },
-    "changelog": {
-      "projectChangelogs": false,
-      "workspaceChangelog": {
-        "createRelease": "github",
-        "file": false
-      },
-      "git": {
-        "commit": false,
-        "tag": false,
-        "push": false
-      }
-    }
-    
   }
 }

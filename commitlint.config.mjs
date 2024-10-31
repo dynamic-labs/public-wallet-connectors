@@ -1,7 +1,8 @@
+// @ts-check
 async function getConfig() {
   const {
     default: {
-      utils: {getProjects},
+      utils: { getProjects },
     },
   } = await import('@commitlint/config-nx-scopes');
 
@@ -16,7 +17,7 @@ async function getConfig() {
           ...(await getProjects(
             ctx,
             ({name, projectType}) =>
-              !name.includes('e2e') && projectType == 'application'
+              !name.includes('e2e')
           )),
           'ci',
           'bump-version'

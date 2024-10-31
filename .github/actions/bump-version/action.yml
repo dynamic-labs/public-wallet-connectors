@@ -19,15 +19,19 @@ inputs:
       - premajor
       - preminor
       - prepatch
+      - prerelease
+
 outputs:
   version:
     value: ${{ steps.bumpversion.outputs.version}}
+  major:
+    value: ${{ steps.bumpversion.outputs.major}}
 
 runs:
   using: composite
   steps:
     - name: Setup Node
-      uses: dynamic-labs/sdk/.github/actions/setup-node@main
+      uses: dynamic-labs/sdk/.github/actions/setup-node@jesse/test
       with:
         version: ${{inputs.version}}
     - name: Set git identity

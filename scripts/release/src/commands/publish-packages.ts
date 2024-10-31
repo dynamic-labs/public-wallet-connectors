@@ -68,6 +68,8 @@ const publishPackages = async () => {
     to: to.sha,
     from: from.sha,
     dryRun: options.dryRun,
+    gitCommit: false,
+    stageChanges: false,
     createRelease: options.createRelease ? 'github' : undefined,
     verbose: options.verbose,
   });
@@ -82,5 +84,7 @@ if (require.main === module) {
   publishPackages().catch((error) => {
     console.error(error);
     process.exit(1);
+  }).then(() => {
+    process.exit(0);
   });
 }
