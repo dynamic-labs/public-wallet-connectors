@@ -35,7 +35,13 @@
     "default": ["{projectRoot}/**/*"]
   },
   "targetDefaults": {
-    "build": {
+    "nx-release-publish": {
+      "dependsOn": ["build", "^build"],
+      "options": {
+        "packageRoot": "dist/packages/{projectName}"
+      }
+    },
+    "@nx/js:swc": {
       "cache": true,
       "dependsOn": ["^build"],
       "options": {
@@ -43,37 +49,10 @@
           "{workspaceRoot}/CHANGELOG.md",
           "{workspaceRoot}/LICENSE",
           "{workspaceRoot}/.npmignore",
-          "{projectRoot}/.npmrc",
           "{projectRoot}/*.md"
         ]
       },
       "inputs": ["default", "^default"]
     }
-  },
-  "release": {
-    "version": {
-      "generatorOptions": {
-        "currentVersionResolver": "disk",
-        "specifierSource": "prompt"
-      },
-      "git": {
-        "commit": false,
-        "tag": false,
-        "push": false
-      }
-    },
-    "changelog": {
-      "projectChangelogs": false,
-      "workspaceChangelog": {
-        "createRelease": "github",
-        "file": false
-      },
-      "git": {
-        "commit": false,
-        "tag": false,
-        "push": false
-      }
-    }
-    
   }
 }

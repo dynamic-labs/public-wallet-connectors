@@ -19,9 +19,13 @@ inputs:
       - premajor
       - preminor
       - prepatch
+      - prerelease
+
 outputs:
   version:
     value: ${{ steps.bumpversion.outputs.version}}
+  major:
+    value: ${{ steps.bumpversion.outputs.major}}
 
 runs:
   using: composite

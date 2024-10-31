@@ -11,7 +11,7 @@ on:
       bump:
         description: Increment a version by the specified level
         type: choice
-        default: prepatch
+        default: prerelease
         options:
           - major
           - minor
@@ -19,6 +19,7 @@ on:
           - premajor
           - preminor
           - prepatch
+          - prerelease
 
 concurrency:
   group: ${{ github.workflow }}

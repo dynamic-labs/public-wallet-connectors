@@ -3,17 +3,20 @@ import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
 import * as core from '@actions/core';
 import semver from 'semver';
-import { writeDistTag } from '../lib/writeDistTag.js';
 import fs from 'fs';
 
 const writeRootVersion = async (version: string, dryRun = true) => {
+  const rootPackage = await import(process.env.NX_WORKSPACE_ROOT + '/package.json');
+  rootPackage.default.version = version;
+
+
   if (dryRun) {
-    console.log(`[DRYRUN] Writing version ${version} to root package.json`);
+    core.info(`[DRYRUN] Writing version ${version} to root package.json`);
+    core.info(JSON.stringify(rootPackage.default, null, 2));
     return;
   }
-  const rootPackage = await import(process.env.NX_WORKSPACE_ROOT + '/package.json');
-  rootPackage.version = version;
-  await fs.promises.writeFile(process.env.NX_WORKSPACE_ROOT + '/package.json', JSON.stringify(rootPackage, null, 2));
+  
+  await fs.promises.writeFile(process.env.NX_WORKSPACE_ROOT + '/package.json', JSON.stringify(rootPackage.default, null, 2));
 }
 
 const bumpVersion = async () => {
@@ -23,7 +26,7 @@ const bumpVersion = async () => {
       description:
         'Explicit version specifier to use',
       type: 'string',
-      choices: ['major', 'minor', 'patch', 'premajor', 'preminor', 'prepatch'],
+      choices: ['major', 'minor', 'patch', 'premajor', 'preminor', 'prepatch', 'prerelease'],
     })
     .option('preId', {
       description: 'The identifier for prerelease versions, defaults to "alpha"',
@@ -50,11 +53,14 @@ const bumpVersion = async () => {
    */
 
   // Bumps the version to disk
-  const { workspaceVersion, projectsVersionData} = await releaseVersion({
+  const { workspaceVersion, projectsVersionData } = await releaseVersion({
     specifier: options.version,
     preid: options.preId,
     dryRun: options.dryRun,
     verbose: options.verbose,
+    gitCommit: false,
+    gitTag: false,
+    stageChanges: false,
   });
 
   if (!workspaceVersion) {
@@ -67,15 +73,14 @@ const bumpVersion = async () => {
   core.setOutput('prerelease', semver.prerelease(workspaceVersion)?.[0]);
   core.setOutput('version', workspaceVersion);
 
-  await writeDistTag(projectsVersionData, options.dryRun);
   await writeRootVersion(workspaceVersion, options.dryRun);
+  return;
 };
 
-export default bumpVersion;
+
 
 if (require.main === module) {
-  bumpVersion().catch((error) => {
-    console.error(error);
-    process.exit(1);
+  bumpVersion().then(() => {
+    process.exit(0);
   });
 }

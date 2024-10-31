@@ -9,15 +9,13 @@
     "bump-version": {
       "executor": "nx:run-commands",
       "options": {
-        "cwd": "scripts/release",
-        "command": "tsx src/commands/bump-version.ts"
+        "command": "scripts/release/node_modules/.bin/tsx scripts/release/src/commands/bump-version.ts"
       }
     },
     "publish": {
       "executor": "nx:run-commands",
       "options": {
-        "cwd": "scripts/release",
-        "command": "tsx src/commands/publish-packages.ts"
+        "command": "scripts/release/node_modules/.bin/tsx scripts/release/src/commands/publish-packages.ts"
       }
     }
   }

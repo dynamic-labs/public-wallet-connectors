@@ -1,7 +1,3 @@
-import { existsSync, promises } from 'fs';
-import { VersionData } from 'nx/src/command-line/release/version';
-import { parse, stringify } from 'ini';
-import path from 'path';
 import semver from 'semver';
 
 
@@ -63,9 +59,12 @@ const getLatestMinorVersion = async (packageName: string, version: string) => {
   return [lastVersion, semver.gt(version, lastVersion)];
 }
 
-const detectTag = async (packageName: string, version: string) => {
-  const [prereleaseName,] = semver.prerelease(version) ?? [undefined]
+export const detectTag = async (packageName: string, version: string) => {
+  const prereleaseName = semver.prerelease(version)?.[0] ?? undefined
   const isPreRelease = prereleaseName !== undefined;
+  if (typeof prereleaseName !== 'string') {
+    throw Error('prereleaseName is not a string got: ' + prereleaseName);
+  }
 
   
   const [latestVersion, isLatestVersion] = await getLatestVersion(packageName, version);
@@ -88,45 +87,6 @@ const detectTag = async (packageName: string, version: string) => {
     console.error('Target version you want to publish: ', version)
     console.error('Latest version: ', latestVersion)
     console.error('Latest minor version: ', latestMinorVersion)
-    process.exit(1);
+    throw new Error('Error detecting tag');
   }
-};
-
-const writeFile = async (path: string, content: string, dryRun = true) => {
-  if (dryRun) {
-    console.log(`[DRY RUN] Writing file ${path}`);
-    console.log(content);
-    return;
-  }
-  return promises.writeFile(path, content);
-};
-
-export const writeDistTag = async (versionData: VersionData, dryRun = true) => {
-  Object.entries(versionData).forEach(async ([packageName, versionData]) => {
-    const PROJECT_DIR = path.join(process.env.NX_WORKSPACE_ROOT, 'packages', packageName);
-    const NPM_RC = path.join(PROJECT_DIR, '.npmrc');
-    if (!existsSync(PROJECT_DIR)) {
-      throw new Error(`Package ${packageName} does not exist in dist`);
-    }
-
-    if (!versionData.newVersion) {
-      throw new Error(`No new version specified for package ${packageName}`);
-    }
-
-    const tag = await detectTag(packageName, versionData.newVersion);
-
-    if (!existsSync(NPM_RC)) {
-      const ini = {
-        'dist-tag': tag,
-      }
-      await writeFile(NPM_RC, stringify(ini), dryRun);
-    } else {
-      const ini = await promises.readFile(NPM_RC, 'utf-8');
-      const parsed = parse(ini);
-      parsed['dist-tag'] = tag;
-      await writeFile(NPM_RC, stringify(parsed), dryRun);
-    }
-
-    console.log(`Tag for ${packageName} is ${tag}`);
-  });
 };

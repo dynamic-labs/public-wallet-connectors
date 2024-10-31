@@ -3,6 +3,7 @@ import yargs from "yargs";
 import * as core from '@actions/core';
 import { hideBin } from "yargs/helpers";
 import { execCapture } from '../lib/execCapture.js';
+import { detectTag } from "../lib/detectTag.js";
 
 
 const commitMessage = 'chore(bump-version): bump package versions';
@@ -14,7 +15,7 @@ const getVersionFromCommit = (commit: string) => {
 };
 
 export const getReleaseCommits = () => {
-  const command = `git log --grep '^${commitMessage}$' --pretty=format:'{ "sha": "%H", "message": "%s" }' --no-patch -2`
+  const command = `git log --grep '^${commitMessage}' --pretty=format:'{ "sha": "%H", "message": "%s" }' --no-patch -2`
   const result = execCapture(command)
     .toString()
     .split('\n')
@@ -63,24 +64,29 @@ const publishPackages = async () => {
 
   // Updates the changelog according to conventional commits
   // Also will create github release with changelog
-  const { workspaceChangelog } = await releaseChangelog({
+  await releaseChangelog({
     version: workspaceVersion,
     to: to.sha,
     from: from.sha,
     dryRun: options.dryRun,
+    gitCommit: false,
+    stageChanges: false,
     createRelease: options.createRelease ? 'github' : undefined,
     verbose: options.verbose,
   });
 
-  await releasePublish({});
+  // Detect tag to use for publishing
+  // Using @dynamic-labs-connector/safe-evm as the package name for determining the latest version
+  const distTag = await detectTag('@dynamic-labs-connectors/safe-evm', workspaceVersion);
 
-  console.log('Workspace changelog:', workspaceChangelog);
-  
+  await releasePublish({
+    dryRun: options.dryRun,
+    tag: distTag,
+  }); 
 };
 
 if (require.main === module) {
-  publishPackages().catch((error) => {
-    console.error(error);
-    process.exit(1);
+  publishPackages().then(() => {
+    process.exit(0);
   });
 }

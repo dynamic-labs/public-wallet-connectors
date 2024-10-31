@@ -4,10 +4,8 @@
   "private": true,
   "devDependencies": {
     "@actions/core": "^1.11.1",
-    "@types/ini": "^4.1.1",
     "@types/semver": "^7.5.8",
     "@types/yargs": "^17.0.33",
-    "ini": "^5.0.0",
     "nx": "20.0.2",
     "semver": "^7.6.3",
     "tsx": "^4.19.1",
