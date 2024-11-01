@@ -2,42 +2,9 @@ import yargs from "yargs";
 import * as core from '@actions/core';
 import { hideBin } from "yargs/helpers";
 import { Octokit } from "@octokit/action";
-import { execCapture } from '../lib/execCapture.js';
 import { detectTag } from "../lib/detectTag.js";
 import { releaseChangelog, releasePublish } from "nx/release/index.js";
 import { NxReleaseChangelogResult } from "nx/src/command-line/release/changelog.js";
-
-const commitMessage = 'chore(bump-version): bump package versions';
-const NX_ROOT = '/home/runner/work/sdk/sdk'
-
-
-const getVersionFromCommit = (commit: string) => {
-  const command = `git show ${commit}:package.json`;
-  const result = execCapture(command).toString();
-  return JSON.parse(result).version;
-};
-
-export const getReleaseCommits = () => {
-  const command = `git log --grep '^${commitMessage}' --pretty=format:'{ "sha": "%H", "message": "%s" }' --no-patch -2`
-  const result = execCapture(command)
-    .toString()
-    .split('\n')
-    .filter((line) => typeof line === 'string' && line.length > 0)
-  
-  if (result.length !== 2) {
-    throw new Error(`Could not find release commits, got: ${result}`);
-  }
-
-  const [to, from] = result.map(line => JSON.parse(line));
-  if (!from || !to) {
-    throw new Error(`Could not find release commits from:(${from}) to:(${to})`);
-  }
-
-  const newVersion = getVersionFromCommit(to.sha);
-
-  core.info(`Found commits from ${from.sha} to ${to.sha} with version ${newVersion}`);
-  return [from, to, newVersion];
-}
 
 const createRelease = async (
   target_commitish: string,
@@ -66,9 +33,10 @@ const createRelease = async (
   core.info(`Is prerelease: ${isPrerelease}`);
 
   if (!dryRun) {
+    const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
     await oktokit.rest.repos.createRelease({
-      owner: 'dynamic-labs',
-      repo: 'sdk',
+      owner,
+      repo,
       tag_name: gitTag,
       target_commitish,
       name: gitTag,
@@ -84,8 +52,8 @@ const createRelease = async (
 const publishPackages = async () => {
 
   if (process.env.GITHUB_ACTION) {
-    core.info(`Changing directory to ${NX_ROOT}`);
-    process.chdir(NX_ROOT);
+    core.info(`Changing directory to ${process.env.GITHUB_WORKSPACE}`);
+    process.chdir(process.env.GITHUB_WORKSPACE);
   }
 
   const options = await yargs(hideBin(process.argv))
@@ -103,6 +71,21 @@ const publishPackages = async () => {
       type: 'boolean',
       default: false,
     })
+    .options('fromSha', {
+      description: 'The commit sha to start from',
+      type: 'string',
+      required: true,
+    })
+    .options('toSha', {
+      description: 'The commit sha to end at',
+      type: 'string',
+      required: true,
+    })
+    .options('workspaceVersion', {
+      description: 'The version to release',
+      type: 'string',
+      required: true,
+    })
     .options('createRelease', {
       description: 'Whether or not to create a release on GitHub',
       type: 'boolean',
@@ -110,14 +93,27 @@ const publishPackages = async () => {
     })
     .parseAsync();
 
-  const [from, to, workspaceVersion] = getReleaseCommits();
+  const fromSha = options.fromSha;
+  const toSha = options.toSha;
+  const workspaceVersion = options.workspaceVersion;
 
   // Updates the changelog according to conventional commits
   // Also will create github release with changelog
+  core.info(`Calling changelog with: ${JSON.stringify({
+    version: workspaceVersion,
+    to: toSha,
+    from: fromSha,
+    dryRun: options.dryRun,
+    gitCommit: false,
+    gitTag: false,
+    stageChanges: false,
+    createRelease: false,
+    verbose: options.verbose,
+  }, null, 2)}`)
   const { workspaceChangelog } = await releaseChangelog({
     version: workspaceVersion,
-    to: to.sha,
-    from: from.sha,
+    to: toSha,
+    from: fromSha,
     dryRun: options.dryRun,
     gitCommit: false,
     gitTag: false,
@@ -134,12 +130,13 @@ const publishPackages = async () => {
     if (!workspaceChangelog) {
       throw new Error('Missing changelog');
     }
-    await createRelease(to.sha, workspaceChangelog, distTag === 'latest', options.dryRun);
+    await createRelease(toSha, workspaceChangelog, distTag === 'latest', options.dryRun);
   }
 
   const results = await releasePublish({
     dryRun: options.dryRun,
     tag: distTag,
+    verbose: options.verbose,
   }); 
 
   if (Object.entries(results).some(([_, value]) => value.code !== 0)) {

@@ -37,15 +37,10 @@ jobs:
     env:
       ACTIONS_RUNNER_DEBUG: true
     steps:
-      - name: Checkout ${{ github.event.inputs.branch }}
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.branch }}
-          fetch-depth: 0
       - name: Bump Versions
         env:
           ACTIONS_RUNNER_DEBUG: true
-        uses: dynamic-labs/sdk/.github/actions/release@main
+        uses: dynamic-labs/sdk/.github/actions/release@jesse/fix-publish
         id: bumpversion
         with:
           type: bump
