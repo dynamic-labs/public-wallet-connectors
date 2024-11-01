@@ -6,10 +6,6 @@ on:
       ref:
         description: Branch or commit to publish. The ref must be a chore(release) commit
         default: main
-  push:
-    branches:
-      - main
-      - v*
 
 permissions:
   contents: write
@@ -20,7 +16,6 @@ jobs:
   publish:
     environment: release
     runs-on: ubuntu-latest
-    if: "${{ contains(github.event.commits.message, 'chore(bump-version): bump package versions') }}"
     steps:
       - name: Checkout ${{ github.event.inputs.ref }}
         uses: actions/checkout@v4
