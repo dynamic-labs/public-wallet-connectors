@@ -1,9 +1,11 @@
 import yargs from "yargs";
 import * as core from '@actions/core';
 import { hideBin } from "yargs/helpers";
+import { Octokit } from "@octokit/action";
 import { execCapture } from '../lib/execCapture.js';
 import { detectTag } from "../lib/detectTag.js";
 import { releaseChangelog, releasePublish } from "nx/release/index.js";
+import { NxReleaseChangelogResult } from "nx/src/command-line/release/changelog.js";
 
 const commitMessage = 'chore(bump-version): bump package versions';
 const NX_ROOT = '/home/runner/work/sdk/sdk'
@@ -36,6 +38,48 @@ export const getReleaseCommits = () => {
   core.info(`Found commits from ${from.sha} to ${to.sha} with version ${newVersion}`);
   return [from, to, newVersion];
 }
+
+const createRelease = async (
+  target_commitish: string,
+  changlog: NxReleaseChangelogResult['workspaceChangelog'],
+  isLatest = false,
+  dryRun = true
+) => {
+  core.startGroup('Create Release');
+
+  const oktokit = new Octokit();
+  const gitTag = changlog?.releaseVersion.gitTag;
+  const changelogBody = changlog?.contents;
+  const isPrerelease = changlog?.releaseVersion.isPrerelease;
+
+  if (!gitTag) {
+    throw new Error('gitTag is required to create a release');
+  }
+
+  if (!target_commitish) {
+    throw new Error('target_commitish is required to create a release');
+  }
+
+  core.info(`Creating release for tag: ${gitTag}`);
+  core.info(`Target commitish: ${target_commitish}`);
+  core.info(`Is latest: ${isLatest}`);
+  core.info(`Is prerelease: ${isPrerelease}`);
+
+  if (!dryRun) {
+    await oktokit.rest.repos.createRelease({
+      owner: 'dynamic-labs',
+      repo: 'sdk',
+      tag_name: gitTag,
+      target_commitish,
+      name: gitTag,
+      prerelease: isPrerelease,
+      body: changelogBody,
+      make_latest: isLatest ? 'true' : 'false',
+    })
+  }
+
+  core.endGroup();
+};
 
 const publishPackages = async () => {
 
@@ -70,7 +114,7 @@ const publishPackages = async () => {
 
   // Updates the changelog according to conventional commits
   // Also will create github release with changelog
-  await releaseChangelog({
+  const { workspaceChangelog } = await releaseChangelog({
     version: workspaceVersion,
     to: to.sha,
     from: from.sha,
@@ -78,13 +122,20 @@ const publishPackages = async () => {
     gitCommit: false,
     gitTag: false,
     stageChanges: false,
-    createRelease: options.createRelease ? 'github' : undefined,
+    createRelease: false,
     verbose: options.verbose,
   });
 
   // Detect tag to use for publishing
   // Using @dynamic-labs-connector/safe-evm as the package name for determining the latest version
   const distTag = await detectTag('@dynamic-labs-connectors/safe-evm', workspaceVersion);
+
+  if (options.createRelease) {
+    if (!workspaceChangelog) {
+      throw new Error('Missing changelog');
+    }
+    await createRelease(to.sha, workspaceChangelog, distTag === 'latest', options.dryRun);
+  }
 
   const results = await releasePublish({
     dryRun: options.dryRun,
