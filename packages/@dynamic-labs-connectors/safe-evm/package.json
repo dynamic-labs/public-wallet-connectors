@@ -20,15 +20,15 @@
     "@safe-global/safe-apps-sdk": "9.1.0"
   },
   "peerDependencies": {
-    "@dynamic-labs/ethereum-core": "^3.4.5",
-    "@dynamic-labs/ethereum": "^3.4.5",
-    "@dynamic-labs/utils": "^3.4.5",
-    "@dynamic-labs/wallet-book": "^3.4.5",
-    "@dynamic-labs/wallet-connector-core": "^3.4.5",
+    "@dynamic-labs/ethereum-core": "^3.4.6",
+    "@dynamic-labs/ethereum": "^3.4.6",
+    "@dynamic-labs/utils": "^3.4.6",
+    "@dynamic-labs/wallet-book": "^3.4.6",
+    "@dynamic-labs/wallet-connector-core": "^3.4.6",
     "viem": "^2.21.29"
   },
   "devDependencies": {
-    "@dynamic-labs/utils": "^3.4.5",
+    "@dynamic-labs/utils": "^3.4.6",
     "react-dom": "18.2.0"
   }
 }
