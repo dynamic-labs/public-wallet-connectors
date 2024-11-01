@@ -54,7 +54,8 @@ const getLatestMinorVersion = async (packageName: string, version: string) => {
   const filtered = versions.filter(version => semver.major(version) === major)
   const lastVersion = filtered.sort(semverSort).at(-1);
   if (!lastVersion) {
-    throw new Error('No remote versions found [minor]');
+    core.warning('No remote versions found [minor]');
+    return [undefined, false];
   }
   return [lastVersion, semver.gt(version, lastVersion)];
 }
