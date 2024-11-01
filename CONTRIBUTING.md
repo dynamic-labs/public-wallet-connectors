@@ -2,6 +2,8 @@
 
 This guide will help you add a new wallet connector package to the Dynamic Labs connectors monorepo.
 
+
+
 ## Creating a new connector package
 
 1. Create a new directory under `packages/@dynamic-labs-connectors/` with your connector name, e.g: `packages/@dynamic-labs-connectors/mywallet-evm`
@@ -165,3 +167,4 @@ This will ensure the connector is not added to the available connectors list if 
         return Boolean(this.findProvider());
     }
 ```
+

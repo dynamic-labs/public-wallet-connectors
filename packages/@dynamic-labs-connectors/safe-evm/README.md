@@ -1,16 +1,14 @@
 # safe-evm
 
-This library was generated with [Nx](https://nx.dev).
-
-## Building
-
-Run `nx build safe-evm` to build the library.
-
-## Running unit tests
-
-Run `nx test safe-evm` to execute the unit tests via [Jest](https://jestjs.io).
-
 ## Integrating with the Dynamic SDK
+
+### Install the connector
+
+```
+npm install @dynamic-labs-connectors/safe-evm
+```
+
+### Use the connector
 
 To integrate with the Dynamic SDK, you just need to pass `SafeEvmConnectors` to the `walletConnectors` prop of the `DynamicContextProvider` component.
 
@@ -32,6 +30,13 @@ const App = () => {
 };
 ```
 
-## Contributing
 
-Please see the [Contributing Guide](../CONTRIBUTING.md) for information on how to develop and contribute to this connector.
+## Building
+
+Run `nx build safe-evm` to build the library.
+
+## Running unit tests
+
+Run `nx test safe-evm` to execute the unit tests via [Jest](https://jestjs.io).
+
+
