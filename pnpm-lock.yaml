@@ -126,16 +126,16 @@ importers:
   packages/@dynamic-labs-connectors/safe-evm:
     dependencies:
       '@dynamic-labs/ethereum':
-        specifier: ^4.0.0-alpha
+        specifier: ^4.0.0-alpha.24
         version: 4.0.0-alpha.24(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@dynamic-labs/logger@4.0.0-alpha.24(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.24(eventemitter3@5.0.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(viem@2.21.37(typescript@5.5.4)(zod@3.22.4))
       '@dynamic-labs/ethereum-core':
-        specifier: ^4.0.0-alpha
+        specifier: ^4.0.0-alpha.24
         version: 4.0.0-alpha.24(@dynamic-labs/assert-package-version@4.0.0-alpha.24(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.24(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.24(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.24(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.24)(@dynamic-labs/wallet-book@4.0.0-alpha.24(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@dynamic-labs/wallet-connector-core@4.0.0-alpha.24(@dynamic-labs/assert-package-version@4.0.0-alpha.24(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.24(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.24(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.24(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.24)(@dynamic-labs/wallet-book@4.0.0-alpha.24(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1))(viem@2.21.37(typescript@5.5.4)(zod@3.22.4))
       '@dynamic-labs/wallet-book':
-        specifier: ^4.0.0-alpha
+        specifier: ^4.0.0-alpha.24
         version: 4.0.0-alpha.24(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@dynamic-labs/wallet-connector-core':
-        specifier: ^4.0.0-alpha
+        specifier: ^4.0.0-alpha.24
         version: 4.0.0-alpha.24(@dynamic-labs/assert-package-version@4.0.0-alpha.24(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.24(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.24(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.24(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.24)(@dynamic-labs/wallet-book@4.0.0-alpha.24(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1)
       '@safe-global/safe-apps-provider':
         specifier: 0.18.3
@@ -148,7 +148,7 @@ importers:
         version: 2.21.37(typescript@5.5.4)(zod@3.22.4)
     devDependencies:
       '@dynamic-labs/utils':
-        specifier: ^4.0.0-alpha
+        specifier: ^4.0.0-alpha.24
         version: 4.0.0-alpha.24
       react-dom:
         specifier: 18.2.0
