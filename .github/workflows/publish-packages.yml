@@ -11,17 +11,13 @@ permissions:
   contents: write
   actions: read
   deployments: write
+  packages: write
 
 jobs:
   publish:
     environment: release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout ${{ github.event.inputs.ref }}
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.ref }}
-          fetch-depth: 0
       - name: Publish
         env:
           ACTIONS_RUNNER_DEBUG: true
@@ -30,3 +26,4 @@ jobs:
         uses: dynamic-labs/sdk/.github/actions/release@main
         with:
           type: publish
+          ref: ${{ github.event.inputs.ref }}

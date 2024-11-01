@@ -5,10 +5,10 @@ import * as core from '@actions/core';
 import semver from 'semver';
 import fs from 'fs';
 
-const NX_ROOT = '/home/runner/work/sdk/sdk'
+const { GITHUB_WORKSPACE } = process.env
 
 const writeRootVersion = async (version: string, dryRun = true) => {
-  const rootPackage = await import(NX_ROOT + '/package.json');
+  const rootPackage = await import(GITHUB_WORKSPACE + '/package.json');
   rootPackage.default.version = version;
 
   if (dryRun) {
@@ -17,13 +17,13 @@ const writeRootVersion = async (version: string, dryRun = true) => {
     return;
   }
   
-  await fs.promises.writeFile(NX_ROOT + '/package.json', JSON.stringify(rootPackage.default, null, 2));
+  await fs.promises.writeFile(GITHUB_WORKSPACE + '/package.json', JSON.stringify(rootPackage.default, null, 2));
 }
 
 const bumpVersion = async () => {
   if (process.env.GITHUB_ACTION) {
-    core.info(`Changing directory to ${NX_ROOT}`);
-    process.chdir(NX_ROOT);
+    core.info(`Changing directory to ${GITHUB_WORKSPACE}`);
+    process.chdir(process.env.GITHUB_WORKSPACE);
   }
 
   const options = await yargs(hideBin(process.argv))

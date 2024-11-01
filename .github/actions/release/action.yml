@@ -8,6 +8,9 @@ inputs:
     options:
       - bump
       - publish
+  ref:
+    description: Branch or commit to publish. The ref must be a chore(release) commit
+    default: main
   version: # determines what node version to install
     required: false
     description: node js version
@@ -37,29 +40,63 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Checkout ${{ inputs.ref }}
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.ref }}
+        fetch-depth: 0
+        path: ${{ github.workspace }}
     - name: Setup Node
       uses: dynamic-labs/sdk/.github/actions/setup-node@main
       with:
         version: ${{ inputs.version }}
-    - name: Set git identity
-      shell: bash
-      run: |-
-        git config user.name "github-actions[bot]"
-        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
     - name: Install Packages for Github Action
       shell: bash
       run: |-
         pushd ${GITHUB_ACTION_PATH};
           pnpm install --ignore-workspace
         popd
-    - name: Publish Packages
+    - name: Get Release Commit
       if: "${{ inputs.type == 'publish' }}"
+      id: releasecommits
       shell: bash
       run: |-
         ${GITHUB_ACTION_PATH}/node_modules/.bin/tsx \
+        ${GITHUB_ACTION_PATH}/src/commands/get-release-commit.ts
+    - name: Checkout Release Commit (${{ steps.commit.outputs.sha }})
+      if: "${{ inputs.type == 'publish' }}"
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ steps.releasecommits.outputs.toSha }}
+        fetch-depth: 1
+        clean: true
+    - uses: nrwl/nx-set-shas@v4
+    - name: Install Packages for Release Commit
+      if: "${{ inputs.type == 'publish' }}"
+      shell: bash
+      run: |-
+        pnpm install --frozen-lockfile --strict-peer-dependencies
+        pnpm nx reset
+    - name: Set git identity
+      shell: bash
+      run: |-
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    - name: Publish Packages
+      if: "${{ inputs.type == 'publish' }}"
+      shell: bash
+      env:
+        NX_BASE:
+        NX_HEAD:
+      run: |-
+        NX_VERBOSE_LOGGING=true DEBUG=* ${GITHUB_ACTION_PATH}/node_modules/.bin/tsx \
         ${GITHUB_ACTION_PATH}/src/commands/publish-packages.ts \
           --dryRun=false \
-          --createRelease=true
+          --createRelease=true \
+          --toSha=${{ steps.releasecommits.outputs.toSha }} \
+          --fromSha=${{ steps.releasecommits.outputs.fromSha }} \
+          --workspaceVersion=${{ steps.releasecommits.outputs.version }} \
+          --verbose
     - name: Bump Version
       if: "${{ inputs.type == 'bump' }}"
       shell: bash

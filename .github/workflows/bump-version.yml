@@ -37,11 +37,6 @@ jobs:
     env:
       ACTIONS_RUNNER_DEBUG: true
     steps:
-      - name: Checkout ${{ github.event.inputs.branch }}
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.branch }}
-          fetch-depth: 0
       - name: Bump Versions
         env:
           ACTIONS_RUNNER_DEBUG: true
@@ -50,6 +45,7 @@ jobs:
         with:
           type: bump
           bump: ${{ github.event.inputs.bump }}
+          ref: ${{ github.event.inputs.branch }}
           preId: ${{ github.event.inputs.preId }}
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
