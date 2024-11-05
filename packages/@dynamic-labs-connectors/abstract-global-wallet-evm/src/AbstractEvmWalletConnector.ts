@@ -40,9 +40,9 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
   }
 
   override findProvider(): IEthereum | undefined {
-    const chain = this.getActiveChain();
+    let chain = this.getActiveChain();
     if (!chain) {
-      throw new DynamicError('No active chain');
+      chain = abstractTestnet; // TODO: add mainnet
     }
     const privyProvider = toPrivyWalletProvider({
         providerAppId: AGW_APP_ID,
