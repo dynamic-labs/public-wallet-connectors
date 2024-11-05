@@ -126,7 +126,7 @@ importers:
         specifier: ^17.7.2
         version: 17.7.2
 
-  packages/@dynamic-labs-connectors/abstract-global-wallet:
+  packages/@dynamic-labs-connectors/abstract-global-wallet-evm:
     dependencies:
       '@abstract-foundation/agw-client':
         specifier: ^0.0.1-beta.13
