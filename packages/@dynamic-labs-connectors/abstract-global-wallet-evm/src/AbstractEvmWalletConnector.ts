@@ -4,7 +4,6 @@ import { findWalletBookWallet } from '@dynamic-labs/wallet-book';
 import { toPrivyWalletProvider} from '@privy-io/cross-app-connect'
 import { transformEIP1193Provider } from '@abstract-foundation/agw-client';
 import { abstractTestnet } from 'viem/chains';
-import { DynamicError } from '@dynamic-labs/utils';
 
 const AGW_APP_ID = 'cm04asygd041fmry9zmcyn5o5';
 
