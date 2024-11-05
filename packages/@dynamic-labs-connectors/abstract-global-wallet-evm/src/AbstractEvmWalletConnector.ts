@@ -4,6 +4,8 @@ import { findWalletBookWallet } from '@dynamic-labs/wallet-book';
 import { toPrivyWalletProvider} from '@privy-io/cross-app-connect'
 import { transformEIP1193Provider } from '@abstract-foundation/agw-client';
 import { abstractTestnet } from 'viem/chains';
+import { DynamicError } from '@dynamic-labs/utils';
+import { logger } from '@dynamic-labs/wallet-connector-core';
 
 const AGW_APP_ID = 'cm04asygd041fmry9zmcyn5o5';
 
@@ -13,7 +15,7 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
    * The name of the wallet connector
    * @override Required override from the base connector class
    */
-  override name = 'Abstract';
+  override name = 'Abstract Global Wallet';
 
   /**
    * The constructor for the connector, with the relevant metadata
@@ -24,11 +26,12 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
       ...props,
       metadata: {
         id: 'abstract-global-wallet',
-        name: 'Abstract',
+        name: 'Abstract Global Wallet',
         icon: 'https://d9s2izusg5pvp.cloudfront.net/icon/light.png',
       },
     });
 
+    this.isInitialized = false;
     this.wallet = findWalletBookWallet(this.walletBook, this.key);
   }
   /**
@@ -37,6 +40,23 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
   override supportsNetworkSwitching(): boolean {
     return false;
   }
+
+  override async init(): Promise<void> {
+    // here you should initialize the connector client/sdk
+
+    // this function can be called multiple times, so you must have a flag that indicates if the connector is already initialized
+    // (can't be an instance variable, because it will be reset every time the connector is instantiated)
+    // once the provider is initialized, you should emit the providerReady event once, and only once
+    if (this.isInitialized) {
+      return;
+    }
+    this.isInitialized = true;
+
+    logger.debug('[AbstractEvmWalletConnector] onProviderReady');
+     this.walletConnectorEventsEmitter.emit('providerReady', {
+         connector: this,
+     });
+ }
 
   override findProvider(): IEthereum | undefined {
     let chain = this.getActiveChain();
@@ -64,5 +84,13 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
 
   override async getConnectedAccounts(): Promise<string[]> {
     return await this.findProvider()?.request({ method: 'eth_requestAccounts' }) ?? [];
+  }
+
+  override async signMessage(message: string): Promise<string> {
+    const provider = this.findProvider();
+    if (!provider) {
+      throw new DynamicError('No provider found');
+    }
+    return await provider.request({ method: 'personal_sign', params: [message, this.getAddress()] }) as unknown as string;
   }
 }

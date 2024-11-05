@@ -132,16 +132,16 @@ importers:
         specifier: ^0.0.1-beta.13
         version: 0.0.1-beta.18(abitype@1.0.6(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
       '@dynamic-labs/ethereum':
-        specifier: ^4.0.0-alpha.24
+        specifier: ^4.0.0-alpha.25
         version: 4.0.0-alpha.25(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@dynamic-labs/logger@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
       '@dynamic-labs/ethereum-core':
-        specifier: ^4.0.0-alpha.24
+        specifier: ^4.0.0-alpha.25
         version: 4.0.0-alpha.25(@dynamic-labs/assert-package-version@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.25(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@dynamic-labs/wallet-connector-core@4.0.0-alpha.25(@dynamic-labs/assert-package-version@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.25(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1))(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
       '@dynamic-labs/wallet-book':
-        specifier: ^4.0.0-alpha.24
+        specifier: ^4.0.0-alpha.25
         version: 4.0.0-alpha.25(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@dynamic-labs/wallet-connector-core':
-        specifier: ^4.0.0-alpha.24
+        specifier: ^4.0.0-alpha.25
         version: 4.0.0-alpha.25(@dynamic-labs/assert-package-version@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.25(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1)
       '@privy-io/cross-app-connect':
         specifier: ^0.0.7

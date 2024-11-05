@@ -1,6 +1,6 @@
 {
     "name": "@dynamic-labs-connectors/abstract-global-wallet-evm",
-    "version": "4.0.0-alpha.1",
+    "version": "4.0.0-alpha.25",
     "type": "module",
     "main": "./src/index.js",
     "typings": "./src/index.d.ts",
@@ -20,11 +20,11 @@
     },
     "peerDependencies": {
       "@privy-io/cross-app-connect": "^0.0.7",
-      "@dynamic-labs/ethereum-core": "^4.0.0-alpha.24",
-      "@dynamic-labs/ethereum": "^4.0.0-alpha.24",
-      "@dynamic-labs/utils": "^4.0.0-alpha.24",
-      "@dynamic-labs/wallet-book": "^4.0.0-alpha.24",
-      "@dynamic-labs/wallet-connector-core": "^4.0.0-alpha.24",
+      "@dynamic-labs/ethereum-core": "^4.0.0-alpha.25",
+      "@dynamic-labs/ethereum": "^4.0.0-alpha.25",
+      "@dynamic-labs/utils": "^4.0.0-alpha.25",
+      "@dynamic-labs/wallet-book": "^4.0.0-alpha.25",
+      "@dynamic-labs/wallet-connector-core": "^4.0.0-alpha.25",
       "viem": "^2.21.29"
     },
     "devDependencies": {
