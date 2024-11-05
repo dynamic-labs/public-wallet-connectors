@@ -1,5 +1,5 @@
 {
-    "name": "@dynamic-labs-connectors/abstract-global-wallet",
+    "name": "@dynamic-labs-connectors/abstract-global-wallet-evm",
     "version": "4.0.0-alpha.1",
     "type": "module",
     "main": "./src/index.js",
