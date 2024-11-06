@@ -15,7 +15,7 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
    * The name of the wallet connector
    * @override Required override from the base connector class
    */
-  override name = 'Abstract Global Wallet';
+  override name = 'Abstract';
 
   /**
    * The constructor for the connector, with the relevant metadata
@@ -25,8 +25,8 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
     super({
       ...props,
       metadata: {
-        id: 'abstract-global-wallet',
-        name: 'Abstract Global Wallet',
+        id: 'abstract',
+        name: 'Abstract',
         icon: 'https://d9s2izusg5pvp.cloudfront.net/icon/light.png',
       },
     });
