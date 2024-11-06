@@ -1,15 +1,16 @@
-import { type EthereumWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
-import { EthereumInjectedConnector, type IEthereum } from '@dynamic-labs/ethereum';
-import { findWalletBookWallet } from '@dynamic-labs/wallet-book';
-import { toPrivyWalletProvider} from '@privy-io/cross-app-connect'
+import { EthereumWalletConnector, type EthereumWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
+import { type IEthereum } from '@dynamic-labs/ethereum';
+import { toPrivyWalletProvider } from '@privy-io/cross-app-connect'
 import { transformEIP1193Provider } from '@abstract-foundation/agw-client';
 import { abstractTestnet } from 'viem/chains';
 import { DynamicError } from '@dynamic-labs/utils';
-import { logger } from '@dynamic-labs/wallet-connector-core';
+import { type Chain, logger } from '@dynamic-labs/wallet-connector-core';
+import { type Account, type Transport,createWalletClient, custom, type WalletClient, type Chain as ViemChain } from 'viem';
+import { findWalletBookWallet, getWalletBookWallet } from '@dynamic-labs/wallet-book';
 
 const AGW_APP_ID = 'cm04asygd041fmry9zmcyn5o5';
 
-export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
+export class AbstractEvmWalletConnector extends EthereumWalletConnector {
 
   /**
    * The name of the wallet connector
@@ -17,6 +18,7 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
    */
   override name = 'Abstract';
 
+  wallet: ReturnType<typeof getWalletBookWallet> | undefined;
   /**
    * The constructor for the connector, with the relevant metadata
    * @param props The options for the connector
@@ -41,6 +43,8 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
     return false;
   }
 
+  override canConnectViaCustodialService = true;
+
   override async init(): Promise<void> {
     // here you should initialize the connector client/sdk
 
@@ -53,24 +57,43 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
     this.isInitialized = true;
 
     logger.debug('[AbstractEvmWalletConnector] onProviderReady');
-     this.walletConnectorEventsEmitter.emit('providerReady', {
-         connector: this,
-     });
- }
+    this.walletConnectorEventsEmitter.emit('providerReady', {
+      connector: this,
+    });
+  }
 
-  override findProvider(): IEthereum | undefined {
+  override supportedChains: Chain[] = ["EVM", "ETH"];
+
+  override connectedChain: Chain = "EVM";
+
+  override getWalletClient():  WalletClient<Transport, ViemChain, Account> {
+    const provider = this.findProvider();
+    if (!provider) {
+      throw new DynamicError('No provider found');
+    }
+
+    const walletClient = createWalletClient({
+      transport: custom(provider),
+      chain: abstractTestnet,
+    })
+    return walletClient as unknown as WalletClient<Transport, ViemChain, Account>;
+  }
+
+  findProvider(): IEthereum | undefined {
     let chain = this.getActiveChain();
     if (!chain) {
       chain = abstractTestnet; // TODO: add mainnet
-    }
+    } 
+    
     const privyProvider = toPrivyWalletProvider({
-        providerAppId: AGW_APP_ID,
-        chains: [abstractTestnet] // TODO: add mainnet
+      providerAppId: AGW_APP_ID,
+      chains: [abstractTestnet] // TODO: add mainnet
     });
+
     const provider = transformEIP1193Provider({
-        provider: privyProvider,
-        isPrivyCrossApp: true,
-        chain
+      provider: privyProvider,
+      isPrivyCrossApp: true,
+      chain
     });
     // Casting to IEthereum because the provider implements the eip-1193 interface
     // and that the expected type for the parent class EthereumInjectedConnector
@@ -92,5 +115,14 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
       throw new DynamicError('No provider found');
     }
     return await provider.request({ method: 'personal_sign', params: [message, this.getAddress()] }) as unknown as string;
+  }
+
+  override async getNetwork(): Promise<number | undefined> {
+    const provider = this.findProvider();
+    if (!provider) {
+      throw new DynamicError('No provider found');
+    }
+    const chainId = await provider.request({ method: 'eth_chainId' }) as unknown as number;
+    return chainId;
   }
 }
