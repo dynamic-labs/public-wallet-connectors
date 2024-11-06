@@ -5,9 +5,8 @@ import { transformEIP1193Provider } from '@abstract-foundation/agw-client';
 import { abstractTestnet } from 'viem/chains';
 import { DynamicError } from '@dynamic-labs/utils';
 import { type Chain, logger } from '@dynamic-labs/wallet-connector-core';
+import { findWalletBookWallet } from '@dynamic-labs/wallet-book';
 import { type Account, type Transport,createWalletClient, custom, type WalletClient, type Chain as ViemChain } from 'viem';
-import { findWalletBookWallet, getWalletBookWallet } from '@dynamic-labs/wallet-book';
-
 const AGW_APP_ID = 'cm04asygd041fmry9zmcyn5o5';
 
 export class AbstractEvmWalletConnector extends EthereumWalletConnector {
@@ -18,7 +17,8 @@ export class AbstractEvmWalletConnector extends EthereumWalletConnector {
    */
   override name = 'Abstract';
 
-  wallet: ReturnType<typeof getWalletBookWallet> | undefined;
+  wallet: ReturnType<typeof findWalletBookWallet> | undefined;
+
   /**
    * The constructor for the connector, with the relevant metadata
    * @param props The options for the connector
@@ -66,18 +66,23 @@ export class AbstractEvmWalletConnector extends EthereumWalletConnector {
 
   override connectedChain: Chain = "EVM";
 
-  override getWalletClient():  WalletClient<Transport, ViemChain, Account> {
+  override isInstalledOnBrowser(): boolean {
+    return true;
+  }
+
+  override getWalletClient(): WalletClient<Transport, ViemChain, Account> {
+    
     const provider = this.findProvider();
     if (!provider) {
       throw new DynamicError('No provider found');
     }
 
-    const walletClient = createWalletClient({
+    return createWalletClient({
       transport: custom(provider),
       chain: abstractTestnet,
-    })
-    return walletClient as unknown as WalletClient<Transport, ViemChain, Account>;
+    }) as unknown as WalletClient<Transport, ViemChain, Account>;
   }
+
 
   findProvider(): IEthereum | undefined {
     let chain = this.getActiveChain();
