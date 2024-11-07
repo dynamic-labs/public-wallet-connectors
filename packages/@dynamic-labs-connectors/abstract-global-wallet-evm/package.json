@@ -28,7 +28,7 @@
       "viem": "^2.21.29"
     },
     "devDependencies": {
-      "@dynamic-labs/utils": "^4.0.0-alpha.24",
+      "@dynamic-labs/utils": "^4.0.0-alpha.29",
       "react-dom": "18.2.0"
     }
   }

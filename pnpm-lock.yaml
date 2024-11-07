@@ -136,13 +136,13 @@ importers:
         version: 4.0.0-alpha.29(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
       '@dynamic-labs/ethereum-core':
         specifier: ^4.0.0-alpha.29
-        version: 4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@dynamic-labs/wallet-connector-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1))(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
+        version: 4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@dynamic-labs/wallet-connector-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1))(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
       '@dynamic-labs/wallet-book':
         specifier: ^4.0.0-alpha.29
         version: 4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@dynamic-labs/wallet-connector-core':
         specifier: ^4.0.0-alpha.29
-        version: 4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1)
+        version: 4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1)
       '@privy-io/cross-app-connect':
         specifier: ^0.0.7
         version: 0.0.7(@wagmi/core@2.14.5(react@18.2.0)(typescript@5.5.4)(use-sync-external-store@1.2.0(react@18.2.0))(viem@2.21.38(typescript@5.5.4)(zod@3.22.4)))(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
@@ -151,8 +151,8 @@ importers:
         version: 2.21.38(typescript@5.5.4)(zod@3.22.4)
     devDependencies:
       '@dynamic-labs/utils':
-        specifier: ^4.0.0-alpha.24
-        version: 4.0.0-alpha.25
+        specifier: ^4.0.0-alpha.29
+        version: 4.0.0-alpha.29
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
@@ -7562,7 +7562,7 @@ snapshots:
     dependencies:
       '@dynamic-labs/assert-package-version': 4.0.0-alpha.29(eventemitter3@5.0.1)
       '@dynamic-labs/embedded-wallet': 4.0.0-alpha.29(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(eventemitter3@5.0.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@dynamic-labs/ethereum-core': 4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@dynamic-labs/wallet-connector-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1))(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
+      '@dynamic-labs/ethereum-core': 4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@dynamic-labs/wallet-connector-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1))(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
       '@dynamic-labs/sdk-api-core': 0.0.563
       '@dynamic-labs/types': 4.0.0-alpha.29(eventemitter3@5.0.1)
       '@dynamic-labs/utils': 4.0.0-alpha.29
@@ -7642,19 +7642,7 @@ snapshots:
       '@dynamic-labs/wallet-connector-core': 4.0.0-alpha.25(@dynamic-labs/assert-package-version@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.25(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1)
       viem: 2.21.38(typescript@5.5.4)(zod@3.22.4)
 
-  '@dynamic-labs/ethereum-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@dynamic-labs/wallet-connector-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1))(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))':
-    dependencies:
-      '@dynamic-labs/assert-package-version': 4.0.0-alpha.29(eventemitter3@5.0.1)
-      '@dynamic-labs/logger': 4.0.0-alpha.29(eventemitter3@5.0.1)
-      '@dynamic-labs/rpc-providers': 4.0.0-alpha.25(eventemitter3@5.0.1)
-      '@dynamic-labs/sdk-api-core': 0.0.563
-      '@dynamic-labs/types': 4.0.0-alpha.29(eventemitter3@5.0.1)
-      '@dynamic-labs/utils': 4.0.0-alpha.25
-      '@dynamic-labs/wallet-book': 4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@dynamic-labs/wallet-connector-core': 4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1)
-      viem: 2.21.38(typescript@5.5.4)(zod@3.22.4)
-
-  '@dynamic-labs/ethereum-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@dynamic-labs/wallet-connector-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1))(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))':
+  '@dynamic-labs/ethereum-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@dynamic-labs/wallet-connector-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1))(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))':
     dependencies:
       '@dynamic-labs/assert-package-version': 4.0.0-alpha.29(eventemitter3@5.0.1)
       '@dynamic-labs/logger': 4.0.0-alpha.29(eventemitter3@5.0.1)
@@ -7663,7 +7651,7 @@ snapshots:
       '@dynamic-labs/types': 4.0.0-alpha.29(eventemitter3@5.0.1)
       '@dynamic-labs/utils': 4.0.0-alpha.29
       '@dynamic-labs/wallet-book': 4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@dynamic-labs/wallet-connector-core': 4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1)
+      '@dynamic-labs/wallet-connector-core': 4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1)
       viem: 2.21.38(typescript@5.5.4)(zod@3.22.4)
 
   '@dynamic-labs/ethereum@4.0.0-alpha.25(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@dynamic-labs/logger@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))':
@@ -7712,7 +7700,7 @@ snapshots:
       '@coinbase/wallet-sdk': 4.0.4
       '@dynamic-labs/assert-package-version': 4.0.0-alpha.29(eventemitter3@5.0.1)
       '@dynamic-labs/embedded-wallet-evm': 4.0.0-alpha.29(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(eventemitter3@5.0.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
-      '@dynamic-labs/ethereum-core': 4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@dynamic-labs/wallet-connector-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1))(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
+      '@dynamic-labs/ethereum-core': 4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@dynamic-labs/wallet-connector-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1))(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
       '@dynamic-labs/types': 4.0.0-alpha.29(eventemitter3@5.0.1)
       '@dynamic-labs/utils': 4.0.0-alpha.29
       '@dynamic-labs/wallet-book': 4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -7854,17 +7842,6 @@ snapshots:
       '@dynamic-labs/types': 4.0.0-alpha.25(eventemitter3@5.0.1)
       '@dynamic-labs/utils': 4.0.0-alpha.25
       '@dynamic-labs/wallet-book': 4.0.0-alpha.25(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      eventemitter3: 5.0.1
-
-  '@dynamic-labs/wallet-connector-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.25)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1)':
-    dependencies:
-      '@dynamic-labs/assert-package-version': 4.0.0-alpha.29(eventemitter3@5.0.1)
-      '@dynamic-labs/logger': 4.0.0-alpha.29(eventemitter3@5.0.1)
-      '@dynamic-labs/rpc-providers': 4.0.0-alpha.25(eventemitter3@5.0.1)
-      '@dynamic-labs/sdk-api-core': 0.0.563
-      '@dynamic-labs/types': 4.0.0-alpha.29(eventemitter3@5.0.1)
-      '@dynamic-labs/utils': 4.0.0-alpha.25
-      '@dynamic-labs/wallet-book': 4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       eventemitter3: 5.0.1
 
   '@dynamic-labs/wallet-connector-core@4.0.0-alpha.29(@dynamic-labs/assert-package-version@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.25(eventemitter3@5.0.1))(@dynamic-labs/types@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/utils@4.0.0-alpha.29)(@dynamic-labs/wallet-book@4.0.0-alpha.29(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1)':
