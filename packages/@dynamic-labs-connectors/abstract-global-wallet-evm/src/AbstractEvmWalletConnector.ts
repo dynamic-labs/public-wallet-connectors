@@ -1,23 +1,21 @@
-import { EthereumWalletConnector, type EthereumWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
-import { type IEthereum } from '@dynamic-labs/ethereum';
+import { type EthereumWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
+import { EthereumInjectedConnector, type IEthereum } from '@dynamic-labs/ethereum';
 import { toPrivyWalletProvider } from '@privy-io/cross-app-connect'
 import { transformEIP1193Provider } from '@abstract-foundation/agw-client';
 import { abstractTestnet } from 'viem/chains';
 import { DynamicError } from '@dynamic-labs/utils';
 import { type Chain, logger } from '@dynamic-labs/wallet-connector-core';
 import { findWalletBookWallet } from '@dynamic-labs/wallet-book';
-import { type Account, type Transport,createWalletClient, custom, type WalletClient, type Chain as ViemChain } from 'viem';
+//import { type Account, type Transport,createWalletClient, custom, type WalletClient, type Chain as ViemChain } from 'viem';
 const AGW_APP_ID = 'cm04asygd041fmry9zmcyn5o5';
 
-export class AbstractEvmWalletConnector extends EthereumWalletConnector {
+export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
 
   /**
    * The name of the wallet connector
    * @override Required override from the base connector class
    */
   override name = 'Abstract';
-
-  wallet: ReturnType<typeof findWalletBookWallet> | undefined;
 
   /**
    * The constructor for the connector, with the relevant metadata
@@ -43,7 +41,9 @@ export class AbstractEvmWalletConnector extends EthereumWalletConnector {
     return false;
   }
 
-  override canConnectViaCustodialService = true;
+  override isInstalledOnBrowser(): boolean {
+    return true;
+  }
 
   override async init(): Promise<void> {
     // here you should initialize the connector client/sdk
@@ -66,25 +66,21 @@ export class AbstractEvmWalletConnector extends EthereumWalletConnector {
 
   override connectedChain: Chain = "EVM";
 
-  override isInstalledOnBrowser(): boolean {
-    return true;
-  }
-
-  override getWalletClient(): WalletClient<Transport, ViemChain, Account> {
+  // override getWalletClient(): WalletClient<Transport, ViemChain, Account> {
     
-    const provider = this.findProvider();
-    if (!provider) {
-      throw new DynamicError('No provider found');
-    }
+  //   const provider = this.findProvider();
+  //   if (!provider) {
+  //     throw new DynamicError('No provider found');
+  //   }
 
-    return createWalletClient({
-      transport: custom(provider),
-      chain: abstractTestnet,
-    }) as unknown as WalletClient<Transport, ViemChain, Account>;
-  }
+  //   return createWalletClient({
+  //     transport: custom(provider),
+  //     chain: abstractTestnet,
+  //   }) as unknown as WalletClient<Transport, ViemChain, Account>;
+  // }
 
 
-  findProvider(): IEthereum | undefined {
+  override findProvider(): IEthereum | undefined {
     let chain = this.getActiveChain();
     if (!chain) {
       chain = abstractTestnet; // TODO: add mainnet
@@ -119,15 +115,16 @@ export class AbstractEvmWalletConnector extends EthereumWalletConnector {
     if (!provider) {
       throw new DynamicError('No provider found');
     }
-    return await provider.request({ method: 'personal_sign', params: [message, this.getAddress()] }) as unknown as string;
+    const address = await this.getAddress();
+    return await provider.request({ method: 'personal_sign', params: [message, address] }) as unknown as string;
   }
 
-  override async getNetwork(): Promise<number | undefined> {
-    const provider = this.findProvider();
-    if (!provider) {
-      throw new DynamicError('No provider found');
-    }
-    const chainId = await provider.request({ method: 'eth_chainId' }) as unknown as number;
-    return chainId;
-  }
+  // override async getNetwork(): Promise<number | undefined> {
+  //   const provider = this.findProvider();
+  //   if (!provider) {
+  //     throw new DynamicError('No provider found');
+  //   }
+  //   const chainId = await provider.request({ method: 'eth_chainId' }) as unknown as number;
+  //   return chainId;
+  // }
 }
