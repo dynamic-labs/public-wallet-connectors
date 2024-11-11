@@ -17,6 +17,7 @@ if (swcJestConfig.swcrc === undefined) {
 // https://nx.dev/nx-api/jest/documents/overview#global-setupteardown-with-nx-libraries
 // jest needs EsModule Interop to find the default exported setup/teardown functions
 // swcJestConfig.module.noInterop = false;
+const esmModules = ['@simplewebauthn', "@wagmi", "wagmi"];
 
 export default {
   displayName: '@dynamic-labs-connectors/abstract-global-wallet',
@@ -24,6 +25,9 @@ export default {
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
   },
+  transformIgnorePatterns: [
+    `node_modules/(?!(?:.pnpm/)?(${esmModules.join('|')}))`,
+  ],
   moduleFileExtensions: ['ts', 'js', 'html'],
   testEnvironment: 'node',
   coverageDirectory:

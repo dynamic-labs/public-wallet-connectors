@@ -1,6 +1,6 @@
 const nxPreset = require('@nx/jest/preset').default;
 
-const esmModules = ['@simplewebauthn', "@wagmi", "wagmi"];
+const esmModules = ['@simplewebauthn'];
 
 module.exports = {
   ...nxPreset,
