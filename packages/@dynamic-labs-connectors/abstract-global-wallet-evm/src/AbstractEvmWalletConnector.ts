@@ -6,7 +6,7 @@ import { abstractTestnet } from 'viem/chains';
 import { DynamicError } from '@dynamic-labs/utils';
 import { type Chain, logger } from '@dynamic-labs/wallet-connector-core';
 import { findWalletBookWallet } from '@dynamic-labs/wallet-book';
-import { toHex } from 'viem';
+import { toHex, type Chain as ViemChain } from 'viem';
 const AGW_APP_ID = 'cm04asygd041fmry9zmcyn5o5';
 
 export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
@@ -16,6 +16,8 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
    * @override Required override from the base connector class
    */
   override name = 'Abstract';
+
+  abstractNetworks: ViemChain[];
 
   /**
    * The constructor for the connector, with the relevant metadata
@@ -31,6 +33,16 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
       },
     });
 
+    this.abstractNetworks = [];
+    for (const network of props.evmNetworks) {
+      if (network.chainId === abstractTestnet.id) {
+        this.abstractNetworks.push(abstractTestnet);
+      }
+      // TODO: add mainnet once viem definition is added
+      // if (network.chainId === abstract.id) {
+      //   this.abstractNetworks.push(abstract);
+      // }
+    }
     this.isInitialized = false;
     this.wallet = findWalletBookWallet(this.walletBook, this.key);
   }
@@ -46,12 +58,14 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
   }
 
   override async init(): Promise<void> {
-    // here you should initialize the connector client/sdk
-
     // this function can be called multiple times, so you must have a flag that indicates if the connector is already initialized
     // (can't be an instance variable, because it will be reset every time the connector is instantiated)
     // once the provider is initialized, you should emit the providerReady event once, and only once
     if (this.isInitialized) {
+      return;
+    }
+    // if there are no abstract networks configured, we can't initialize the connector
+    if (this.abstractNetworks.length === 0) {
       return;
     }
     this.isInitialized = true;
@@ -69,12 +83,19 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
   override findProvider(): IEthereum | undefined {
     let chain = this.getActiveChain();
     if (!chain) {
-      chain = abstractTestnet; // TODO: add mainnet
-    } 
-    
+      if (this.abstractNetworks.length === 1) {
+        // use the only configured abstract network from the connector options
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        chain = this.abstractNetworks[0]!;
+      } else {
+        // chain = abstract; // TODO: default to the abstract mainnet once viem definition is added
+        chain = abstractTestnet;
+      }
+    }
+
     const privyProvider = toPrivyWalletProvider({
       providerAppId: AGW_APP_ID,
-      chains: [abstractTestnet] // TODO: add mainnet
+      chains: [chain]
     });
 
     const provider = transformEIP1193Provider({
