@@ -6,7 +6,7 @@ import { abstractTestnet } from 'viem/chains';
 import { DynamicError } from '@dynamic-labs/utils';
 import { type Chain, logger } from '@dynamic-labs/wallet-connector-core';
 import { findWalletBookWallet } from '@dynamic-labs/wallet-book';
-//import { type Account, type Transport,createWalletClient, custom, type WalletClient, type Chain as ViemChain } from 'viem';
+import { toHex } from 'viem';
 const AGW_APP_ID = 'cm04asygd041fmry9zmcyn5o5';
 
 export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
@@ -66,20 +66,6 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
 
   override connectedChain: Chain = "EVM";
 
-  // override getWalletClient(): WalletClient<Transport, ViemChain, Account> {
-    
-  //   const provider = this.findProvider();
-  //   if (!provider) {
-  //     throw new DynamicError('No provider found');
-  //   }
-
-  //   return createWalletClient({
-  //     transport: custom(provider),
-  //     chain: abstractTestnet,
-  //   }) as unknown as WalletClient<Transport, ViemChain, Account>;
-  // }
-
-
   override findProvider(): IEthereum | undefined {
     let chain = this.getActiveChain();
     if (!chain) {
@@ -116,15 +102,6 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
       throw new DynamicError('No provider found');
     }
     const address = await this.getAddress();
-    return await provider.request({ method: 'personal_sign', params: [message, address] }) as unknown as string;
+    return await provider.request({ method: 'personal_sign', params: [toHex(message), address] }) as unknown as string;
   }
-
-  // override async getNetwork(): Promise<number | undefined> {
-  //   const provider = this.findProvider();
-  //   if (!provider) {
-  //     throw new DynamicError('No provider found');
-  //   }
-  //   const chainId = await provider.request({ method: 'eth_chainId' }) as unknown as number;
-  //   return chainId;
-  // }
 }

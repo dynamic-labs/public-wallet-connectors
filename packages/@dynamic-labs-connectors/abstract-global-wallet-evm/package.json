@@ -16,7 +16,7 @@
       }
     },
     "dependencies": {
-      "@abstract-foundation/agw-client": "^0.0.1-beta.15"
+      "@abstract-foundation/agw-client": "^0.0.1-beta.16"
     },
     "peerDependencies": {
       "@privy-io/cross-app-connect": "^0.0.7",
