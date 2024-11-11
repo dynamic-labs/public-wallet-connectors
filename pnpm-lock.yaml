@@ -129,7 +129,7 @@ importers:
   packages/@dynamic-labs-connectors/abstract-global-wallet-evm:
     dependencies:
       '@abstract-foundation/agw-client':
-        specifier: ^0.0.1-beta.16
+        specifier: ^0.0.1-beta.18
         version: 0.0.1-beta.18(abitype@1.0.6(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
       '@dynamic-labs/ethereum':
         specifier: ^4.0.0-alpha.29
