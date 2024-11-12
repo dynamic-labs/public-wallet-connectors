@@ -129,8 +129,8 @@ importers:
   packages/@dynamic-labs-connectors/abstract-global-wallet-evm:
     dependencies:
       '@abstract-foundation/agw-client':
-        specifier: ^0.0.1-beta.18
-        version: 0.0.1-beta.18(abitype@1.0.6(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
+        specifier: ^0.0.1-beta.19
+        version: 0.0.1-beta.19(abitype@1.0.6(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
       '@dynamic-labs/ethereum':
         specifier: ^4.0.0-alpha.29
         version: 4.0.0-alpha.29(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@dynamic-labs/logger@4.0.0-alpha.29(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.29(eventemitter3@5.0.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))
@@ -190,8 +190,8 @@ importers:
 
 packages:
 
-  '@abstract-foundation/agw-client@0.0.1-beta.18':
-    resolution: {integrity: sha512-K49TW/ST0T+qQ1/7nIDk+VT2GrH1yXphOdcaS1q9qHhIw9xVegtwktkbE7vM/CA2aHZq6mvIg8nQwKwdyqjAUQ==}
+  '@abstract-foundation/agw-client@0.0.1-beta.19':
+    resolution: {integrity: sha512-2pC8M2x+zJBxN7ygBSHVscf73we8Gv39IKLtesDn7AhzafvW2zV8wrOX5HKewpalO/efna9kMHJ1a0n25FwUjw==}
     peerDependencies:
       abitype: ^1.0.0
       typescript: '>=5.0.4'
@@ -6370,7 +6370,7 @@ packages:
 
 snapshots:
 
-  '@abstract-foundation/agw-client@0.0.1-beta.18(abitype@1.0.6(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))':
+  '@abstract-foundation/agw-client@0.0.1-beta.19(abitype@1.0.6(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.21.38(typescript@5.5.4)(zod@3.22.4))':
     dependencies:
       abitype: 1.0.6(typescript@5.5.4)(zod@3.22.4)
       viem: 2.21.38(typescript@5.5.4)(zod@3.22.4)
