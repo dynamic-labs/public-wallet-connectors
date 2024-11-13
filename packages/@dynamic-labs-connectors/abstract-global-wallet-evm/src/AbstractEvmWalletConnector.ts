@@ -29,7 +29,7 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
       metadata: {
         id: 'abstract',
         name: 'Abstract',
-        icon: 'https://d9s2izusg5pvp.cloudfront.net/icon/light.png',
+        icon: 'https://abstract-assets.abs.xyz/icons/light.png',
       },
     });
 
