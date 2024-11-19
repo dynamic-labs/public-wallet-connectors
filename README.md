@@ -11,6 +11,7 @@ This repository contains official wallet connector implementations for the [Dyna
 ### Current Packages
 
 - [@dynamic-labs-connectors/safe-evm](packages/@dynamic-labs-connectors/safe-evm/README.md) - Safe (formerly Gnosis Safe) wallet connector for EVM chains
+- [@dynamic-labs-connectors/abstract-global-wallet-evm](packages/@dynamic-labs-connectors/abstract-global-wallet-evm) - Abstract wallet connector for EVM chains
 
 ## Development
 See [Contributing](CONTRIBUTING.md)
