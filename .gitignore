@@ -18,3 +18,5 @@ tmp
 .nx
 
 *.node
+
+.verdaccio/storage/**/*
