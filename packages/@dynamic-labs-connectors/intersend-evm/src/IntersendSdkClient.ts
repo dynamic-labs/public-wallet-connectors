@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { logger } from '@dynamic-labs/wallet-connector-core';
 import { type IEthereum } from '@dynamic-labs/ethereum';
 

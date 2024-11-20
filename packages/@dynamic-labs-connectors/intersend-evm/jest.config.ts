@@ -18,14 +18,14 @@ if (swcJestConfig.swcrc === undefined) {
 // jest needs EsModule Interop to find the default exported setup/teardown functions
 // swcJestConfig.module.noInterop = false;
 
-
 export default {
-  displayName: '@dynamic-labs-connectors/interspace-evm',
+  displayName: '@dynamic-labs-connectors/intersend-evm',
   preset: '../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
+  testEnvironment: 'node',
   coverageDirectory:
-    '../../../coverage/packages/@dynamic-labs-connectors/interspace-evm',
+    '../../../coverage/packages/@dynamic-labs-connectors/intersend-evm',
 };
