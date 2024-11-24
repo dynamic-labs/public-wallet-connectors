@@ -9,6 +9,7 @@ module.exports = [
         'warn',
         {
           ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'],
+          "checkObsoleteDependencies": false, // toggle to disable
         },
       ],
     },

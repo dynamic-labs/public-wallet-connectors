@@ -1,6 +1,6 @@
 {
     "name": "@dynamic-labs-connectors/abstract-global-wallet-evm",
-    "version": "3.0.0",
+    "version": "3.1.0",
     "type": "module",
     "main": "./src/index.js",
     "typings": "./src/index.d.ts",
@@ -32,4 +32,3 @@
       "react-dom": "18.2.0"
     }
   }
-  
