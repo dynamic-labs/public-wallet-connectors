@@ -20,15 +20,14 @@
   },
   "peerDependencies": {
     "@privy-io/cross-app-connect": "^0.0.8",
-    "@dynamic-labs/ethereum-core": "^4.0.0-alpha.29",
-    "@dynamic-labs/ethereum": "^4.0.0-alpha.29",
-    "@dynamic-labs/utils": "^4.0.0-alpha.29",
-    "@dynamic-labs/wallet-book": "^4.0.0-alpha.29",
-    "@dynamic-labs/wallet-connector-core": "^4.0.0-alpha.29",
+    "@dynamic-labs/ethereum-core": "^4.0.0-alpha.35",
+    "@dynamic-labs/ethereum": "^4.0.0-alpha.35",
+    "@dynamic-labs/utils": "^4.0.0-alpha.35",
+    "@dynamic-labs/wallet-connector-core": "^4.0.0-alpha.35",
     "viem": "^2.21.29"
   },
   "devDependencies": {
-    "@dynamic-labs/utils": "^4.0.0-alpha.29",
+    "@dynamic-labs/utils": "^4.0.0-alpha.35",
     "react-dom": "18.2.0"
   }
 }

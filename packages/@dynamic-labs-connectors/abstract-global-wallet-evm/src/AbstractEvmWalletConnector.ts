@@ -4,8 +4,7 @@ import { toPrivyWalletProvider } from '@privy-io/cross-app-connect'
 import { transformEIP1193Provider } from '@abstract-foundation/agw-client';
 import { abstractTestnet } from 'viem/chains';
 import { DynamicError } from '@dynamic-labs/utils';
-import { type Chain, logger } from '@dynamic-labs/wallet-connector-core';
-import { findWalletBookWallet } from '@dynamic-labs/wallet-book';
+import { logger } from '@dynamic-labs/wallet-connector-core';
 import { toHex, type Chain as ViemChain } from 'viem';
 const AGW_APP_ID = 'cm04asygd041fmry9zmcyn5o5';
 
@@ -44,8 +43,8 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
       // }
     }
     this.isInitialized = false;
-    this.wallet = findWalletBookWallet(this.walletBook, this.key);
   }
+
   /**
    * Returns false because we only support Abstract
    */
@@ -75,10 +74,6 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
       connector: this,
     });
   }
-
-  override supportedChains: Chain[] = ["EVM", "ETH"];
-
-  override connectedChain: Chain = "EVM";
 
   override findProvider(): IEthereum | undefined {
     let chain = this.getActiveChain();
