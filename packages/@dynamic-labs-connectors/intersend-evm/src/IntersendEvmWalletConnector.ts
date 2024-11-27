@@ -2,8 +2,7 @@ import { type Hex } from 'viem';
 import { logger } from '@dynamic-labs/wallet-connector-core';
 import { type EthereumWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
 import { EthereumInjectedConnector, type IEthereum } from '@dynamic-labs/ethereum';
-import { findWalletBookWallet } from '@dynamic-labs/wallet-book';
-import { IntersendSdkClient } from './IntersendSdkClient';
+import { IntersendSdkClient } from './IntersendSdkClient.js';
 
 export class IntersendEvmWalletConnector extends EthereumInjectedConnector {
   override name = 'Intersend';
@@ -18,7 +17,6 @@ export class IntersendEvmWalletConnector extends EthereumInjectedConnector {
       },
     });
 
-    this.wallet = findWalletBookWallet(this.walletBook, this.key);
   }
 
   override async init(): Promise<void> {
@@ -50,7 +48,7 @@ export class IntersendEvmWalletConnector extends EthereumInjectedConnector {
 
     if (!address) {
       logger.debug(
-        '[IntersendEvmWalletConnector] tryAutoConnect - no address to connect'
+        '[IntersendEvmWalletConnector] tryAutoConnect - no address to connect',
       );
       return;
     }
@@ -65,6 +63,7 @@ export class IntersendEvmWalletConnector extends EthereumInjectedConnector {
   }
 
   override findProvider(): IEthereum | undefined {
+    //@ts-ignore
     return IntersendSdkClient.getProvider();
   }
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { type EthereumWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
-import { IntersendEvmWalletConnector } from './IntersendEvmWalletConnector';
+import { IntersendEvmWalletConnector } from './IntersendEvmWalletConnector.js';
 import { IntersendSdkClient } from './IntersendSdkClient.js';
 
 jest.mock('./IntersendSdkClient.js');
@@ -34,7 +34,7 @@ describe('IntersendEvmWalletConnector', () => {
   });
 
   describe('init', () => {
-    it('should initialize provider and emit events if in iframe', async () => {
+    it('should initialize provider and emit events', async () => {
       await connector.init();
       await new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -67,10 +67,7 @@ describe('IntersendEvmWalletConnector', () => {
 
   describe('findProvider', () => {
     it('should return the provider from IntersendSdkClient', () => {
-      const mockProvider = {
-        isIntersend: true,
-        request: jest.fn(),
-      } as any;
+      const mockProvider = {} as any;
       (IntersendSdkClient.getProvider as jest.Mock).mockReturnValue(mockProvider);
 
       expect(connector.findProvider()).toBe(mockProvider);
@@ -115,61 +112,22 @@ describe('IntersendEvmWalletConnector', () => {
 
     it('should return the signed message', async () => {
       jest.spyOn(connector, 'getWalletClient').mockReturnValue({
-        signMessage: jest.fn().mockResolvedValue('0x456'),
+        signMessage: jest.fn().mockResolvedValue('0x123'),
       } as any);
 
-      expect(await connector.signMessage('Hello, world!')).toBe('0x456');
+      expect(await connector.signMessage('Hello, world!')).toBe('0x123');
     });
   });
 
   describe('filter', () => {
     it('should return true if provider is available', () => {
-      (IntersendSdkClient.getProvider as jest.Mock).mockReturnValue({
-        isIntersend: true,
-        request: jest.fn(),
-      });
+      (IntersendSdkClient.getProvider as jest.Mock).mockReturnValue({});
       expect(connector.filter()).toBe(true);
     });
 
     it('should return false if provider is not available', () => {
       (IntersendSdkClient.getProvider as jest.Mock).mockReturnValue(undefined);
       expect(connector.filter()).toBe(false);
-    });
-  });
-
-  describe('provider functionality', () => {
-    let mockProvider: any;
-
-    beforeEach(() => {
-      mockProvider = {
-        isIntersend: true,
-        request: jest.fn(),
-      };
-      (IntersendSdkClient.getProvider as jest.Mock).mockReturnValue(mockProvider);
-    });
-
-    it('should handle eth_requestAccounts', async () => {
-      mockProvider.request.mockResolvedValue(['0x123']);
-      const provider = connector.findProvider();
-      const accounts = await provider?.request({ method: 'eth_requestAccounts' });
-      expect(accounts).toEqual(['0x123']);
-    });
-
-    it('should handle eth_chainId', async () => {
-      mockProvider.request.mockResolvedValue('0x89');
-      const provider = connector.findProvider();
-      const chainId = await provider?.request({ method: 'eth_chainId' });
-      expect(chainId).toBe('0x89');
-    });
-
-    it('should handle personal_sign', async () => {
-      mockProvider.request.mockResolvedValue('0x789');
-      const provider = connector.findProvider();
-      const signature = await provider?.request({
-        method: 'personal_sign',
-        params: ['Hello', '0x123'],
-      });
-      expect(signature).toBe('0x789');
     });
   });
 });

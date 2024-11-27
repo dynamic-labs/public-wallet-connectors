@@ -1,6 +1,6 @@
 {
   "name": "@dynamic-labs-connectors/intersend-evm",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.6",
   "description": "Intersend EVM connector for Dynamic SDK",
   "type": "module",
   "main": "./src/index.js",
@@ -17,15 +17,14 @@
     }
   },
   "peerDependencies": {
-    "@dynamic-labs/ethereum": "^4.0.0-alpha.24",
-    "@dynamic-labs/ethereum-core": "^4.0.0-alpha.24",
-    "@dynamic-labs/utils": "^4.0.0-alpha.24",
-    "@dynamic-labs/wallet-book": "^4.0.0-alpha.24",
-    "@dynamic-labs/wallet-connector-core": "^4.0.0-alpha.24",
+    "@dynamic-labs/ethereum": "^4.0.0-alpha.35",
+    "@dynamic-labs/ethereum-core": "^4.0.0-alpha.35",
+    "@dynamic-labs/utils": "^4.0.0-alpha.35",
+    "@dynamic-labs/wallet-connector-core": "^4.0.0-alpha.35",
     "viem": "^2.21.29"
   },
   "devDependencies": {
-    "@dynamic-labs/utils": "^4.0.0-alpha.24",
+    "@dynamic-labs/utils": "^4.0.0-alpha.35",
     "@types/jest": "^29.5.14",
     "react-dom": "18.2.0"
   }

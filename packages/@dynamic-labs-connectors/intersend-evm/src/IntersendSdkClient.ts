@@ -1,11 +1,73 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { createWalletClient, custom, type WalletClient } from 'viem';
+import { polygon } from 'viem/chains';
 import { logger } from '@dynamic-labs/wallet-connector-core';
 import { type IEthereum } from '@dynamic-labs/ethereum';
+import { EventEmitter } from 'events';
+
+interface IntersendInfo {
+  address: string;
+  chainId: number;
+}
+
+// Create a proper provider type that extends IEthereum
+class IntersendProvider extends EventEmitter implements IEthereum {
+  public readonly isIntersend = true;
+  public readonly selectedAddress: string | null = null;
+  public readonly providers?: object[];
+
+  constructor(private intersendInfo?: IntersendInfo) {
+    super();
+    this.selectedAddress = intersendInfo?.address || null;
+  }
+
+  //@ts-ignore
+  async request<T extends string>(params: { method: T; params?: any[] }): Promise<T extends "eth_requestAccounts" ? [string] : any> {
+    const { method, params: methodParams = [] } = params;
+    const requestId = `${Date.now()}-${Math.random()}`;
+
+    switch (method) {
+      case 'eth_requestAccounts':
+      case 'eth_accounts':
+        return [this.intersendInfo?.address] as any;
+
+      case 'eth_chainId':
+        return `0x${this.intersendInfo?.chainId.toString(16)}` as any;
+
+      case 'eth_sendTransaction':
+        return new Promise((resolve) => {
+          //@ts-ignore
+          IntersendSdkClient.pendingRequests.set(requestId, resolve);
+          window.parent.postMessage({
+            type: 'TRANSACTION_REQUEST',
+            payload: { params: methodParams[0] },
+            requestId
+          }, '*');
+        });
+
+      case 'personal_sign':
+      case 'eth_sign':
+        return new Promise((resolve) => {
+          //@ts-ignore
+          IntersendSdkClient.pendingRequests.set(requestId, resolve);
+          window.parent.postMessage({
+            type: 'SIGN_MESSAGE_REQUEST',
+            payload: { message: methodParams[0] },
+            requestId
+          }, '*');
+        });
+
+      default:
+        throw new Error(`Unsupported method: ${method}`);
+    }
+  }
+}
 
 export class IntersendSdkClient {
   static isInitialized = false;
-  static provider: IEthereum;
-  static address: string | undefined;
+  static provider: IntersendProvider;
+  static walletClient: WalletClient;
+  static intersendInfo: IntersendInfo | undefined;
+  private static pendingRequests = new Map<string, (value: any) => void>();
 
   private constructor() {
     throw new Error('IntersendSdkClient is not instantiable');
@@ -16,109 +78,95 @@ export class IntersendSdkClient {
       return;
     }
 
+    IntersendSdkClient.isInitialized = true;
     logger.debug('[IntersendSdkClient] initializing sdk');
 
-    IntersendSdkClient.provider = IntersendSdkClient.createProvider();
-    
-    // Request initial wallet info
-    window.parent.postMessage({
-      type: 'REQUEST_WALLET_INFO',
-      id: Date.now().toString()
-    }, '*');
+    // Setup message listener for communication with parent frame
+    window.addEventListener('message', IntersendSdkClient.handleMessage);
 
-    // Setup message handler for wallet info
-    await new Promise<void>((resolve) => {
-      const handleWalletInfo = (event: MessageEvent) => {
-        const { type, payload } = event.data || {};
-        if (type === 'WALLET_INFO' && payload?.address) {
-          IntersendSdkClient.address = payload.address;
-          window.removeEventListener('message', handleWalletInfo);
-          resolve();
+    // Request initial connection info from parent
+    window.parent.postMessage({ type: 'INTERSEND_CONNECT_REQUEST' }, '*');
+
+    // Wait for connection response
+    IntersendSdkClient.intersendInfo = await new Promise((resolve) => {
+      const timeout = setTimeout(() => resolve(undefined), 1000);
+      
+      const handler = (event: MessageEvent) => {
+        if (event.data.type === 'INTERSEND_CONNECT_RESPONSE') {
+          clearTimeout(timeout);
+          window.removeEventListener('message', handler);
+          resolve(event.data.payload);
         }
       };
 
-      window.addEventListener('message', handleWalletInfo);
+      window.addEventListener('message', handler);
     });
 
-    IntersendSdkClient.isInitialized = true;
-    logger.debug('[IntersendSdkClient] sdk initialized');
+    if (!IntersendSdkClient.intersendInfo) {
+      logger.debug('[IntersendSdkClient] unable to load intersend data');
+      return;
+    }
+
+    logger.debug('[IntersendSdkClient] initializing provider');
+
+    // Create provider instance
+    IntersendSdkClient.provider = new IntersendProvider(IntersendSdkClient.intersendInfo);
+
+    // Initialize viem wallet client
+    IntersendSdkClient.walletClient = createWalletClient({
+      chain: polygon,
+      transport: custom(IntersendSdkClient.provider)
+    });
+
+    // Announce wallet following EIP-6963
+    IntersendSdkClient.announceProvider();
+
+    logger.debug('[IntersendSdkClient] provider initialized');
   };
 
-  private static createProvider(): IEthereum {
-    const provider: IEthereum = {
-      isMetaMask: false,
-      isIntersend: true,
-      isSafe: true,
-      isPortability: true,
-
-      //@ts-ignore
-      request: async ({ method, params }) => {
-        switch (method) {
-          case 'eth_requestAccounts':
-          case 'eth_accounts':
-            return [IntersendSdkClient.address];
-
-          case 'eth_chainId':
-            return '0x89'; // Default to Polygon
-
-          case 'personal_sign':
-          case 'eth_sign':
-          case 'eth_signTypedData':
-          case 'eth_signTypedData_v4':
-            return new Promise((resolve, reject) => {
-              const messageId = Date.now().toString();
-              
-              const handleSignatureResponse = (event: MessageEvent) => {
-                //@ts-ignore
-                const { type, payload, id, error } = event.data || {};
-                if (id === messageId) {
-                  window.removeEventListener('message', handleSignatureResponse);
-                  if (error) reject(new Error(error));
-                  else resolve(payload.signature);
-                }
-              };
-
-              window.addEventListener('message', handleSignatureResponse);
-              window.parent.postMessage({
-                type: 'SIGNATURE_REQUEST',
-                payload: { method, params, address: IntersendSdkClient.address },
-                id: messageId
-              }, '*');
-            });
-
-          default:
-            return new Promise((resolve, reject) => {
-              const messageId = Date.now().toString();
-              
-              const handleResponse = (event: MessageEvent) => {
-                //@ts-ignore
-                const { type, payload, id, error } = event.data || {};
-                if (id === messageId) {
-                  window.removeEventListener('message', handleResponse);
-                  if (error) reject(new Error(error));
-                  else resolve(payload);
-                }
-              };
-
-              window.addEventListener('message', handleResponse);
-              window.parent.postMessage({
-                type: 'RPC_REQUEST',
-                payload: { method, params, address: IntersendSdkClient.address },
-                id: messageId
-              }, '*');
-            });
+  private static handleMessage = (event: MessageEvent) => {
+    const { type, payload, requestId } = event.data;
+    
+    switch (type) {
+      case 'TRANSACTION_RESPONSE':
+      case 'SIGN_MESSAGE_RESPONSE':
+        const pendingResolve = IntersendSdkClient.pendingRequests.get(requestId);
+        if (pendingResolve) {
+          pendingResolve(payload);
+          IntersendSdkClient.pendingRequests.delete(requestId);
         }
-      }
+        break;
+    }
+  };
+
+  // Implement EIP-6963 announcement
+  private static announceProvider() {
+    const info = {
+      uuid: 'intersend-wallet-' + crypto.randomUUID(),
+      name: 'Intersend Wallet',
+      icon: 'data:image/svg+xml;base64,...', // Your wallet icon
+      rdns: 'com.intersend.wallet'
     };
 
-    return provider;
+    window.dispatchEvent(
+      new CustomEvent('eip6963:announceProvider', {
+        detail: {
+          info,
+          provider: IntersendSdkClient.provider
+        }
+      })
+    );
   }
 
   static getAddress = () => {
-    return IntersendSdkClient.address;
+    return IntersendSdkClient.intersendInfo?.address;
   };
 
   static getProvider = () => {
     return IntersendSdkClient.provider;
+  };
+
+  static getWalletClient = () => {
+    return IntersendSdkClient.walletClient;
   };
 }
