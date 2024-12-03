@@ -47,13 +47,7 @@ Your connector implementation should extend the appropriate base connector class
 ```typescript
 constructor(props: WalletConnectorOpts) {
     // call the super constructor with the `props` argument and add the `metadata` property,
-    // that right now must have an id, which is a string that uniquely identifies the connector, usually based off the connector name,
-    // and should match the id in Dynamic's wallet-book
-    super({ ...props, metadata: { id: 'mywallet' } });
-
-    // right now, connectors will only work with the Dynamic SDK if they are added to Dynamic's wallet-book
-    // so, if you are extending EthereumInjectedConnector or SolanaInjectedConnector, you should initialize the wallet here like this:
-    this.wallet = findWalletBookWallet(this.walletBook, this.key);
+    super({ ...props, metadata: { id: 'mywallet', name: 'My Wallet', icon: 'http://url.to.my.icon' } });
 }
 ```
 
@@ -82,10 +76,10 @@ constructor(props: WalletConnectorOpts) {
     }
 ```
 
-- `getProvider: () => ISolana | undefined` - REQUIRED if the connector extends `SolanaInjectedConnector` - should return the wallet provider
+- `findProvider: () => ISolana | undefined` - REQUIRED if the connector extends `SolanaInjectedConnector` - should return the wallet provider
 
 ```typescript
-    override getProvider(): ISolana | undefined {
+    override findProvider(): ISolana | undefined {
         // here you should return the wallet provider
     }
 ```
@@ -167,4 +161,18 @@ This will ensure the connector is not added to the available connectors list if 
         return Boolean(this.findProvider());
     }
 ```
+
+## Releasing
+
+To get your custom connector released, you should follow these steps:
+1. open a PR poiting to main with your new package 
+2. Dynamic will review the PR and if it looks good, it will get merged
+3. once merged, Dynamic will release
+
+### Things to check before submitting a PR
+
+- you have added unit tests
+- there are no lint issues
+- there are no build issues
+- code is clean and well structured (helpers/utils on their own files, classes own their own files, etc)
 
