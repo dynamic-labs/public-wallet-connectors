@@ -25,7 +25,8 @@ export default {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   coverageDirectory:
     '../../../coverage/packages/@dynamic-labs-connectors/intersend-evm',
 };

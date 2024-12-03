@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "@dynamic-labs/utils": "^4.0.0-alpha.35",
-    "@types/jest": "^29.5.14",
-    "react-dom": "18.2.0"
+    "@types/jest": "^29.5.14"
   }
 }

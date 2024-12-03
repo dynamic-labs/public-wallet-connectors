@@ -6,10 +6,10 @@ jest.mock('@dynamic-labs/wallet-connector-core', () => ({
   },
 }));
 
-describe('IntersendSdkClient', () => {
-  let originalPostMessage: typeof window.postMessage;
-  let originalAddEventListener: typeof window.addEventListener;
+const mockPostMessage = jest.fn();
+const mockAddEventListener = jest.fn();
 
+describe('IntersendSdkClient', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     // Reset static properties
@@ -17,16 +17,34 @@ describe('IntersendSdkClient', () => {
     IntersendSdkClient.intersendInfo = undefined;
     IntersendSdkClient.provider = undefined as any;
 
-    // Mock postMessage
-    originalPostMessage = window.postMessage;
-    originalAddEventListener = window.addEventListener;
-    window.postMessage = jest.fn();
-    window.addEventListener = jest.fn();
+    // Setup window mocks
+    global.window = Object.create(window);
+    Object.defineProperty(global.window, 'postMessage', {
+      configurable: true,
+      value: mockPostMessage,
+    });
+    Object.defineProperty(global.window, 'addEventListener', {
+      configurable: true,
+      value: mockAddEventListener,
+    });
+
+    Object.defineProperty(global.window, 'crypto', {
+      configurable: true,
+      value: {
+        randomUUID: jest.fn().mockReturnValue('123'),
+      },
+    });
   });
 
   afterEach(() => {
-    window.postMessage = originalPostMessage;
-    window.addEventListener = originalAddEventListener;
+    // Clean up
+    jest.resetAllMocks();
+  });
+
+  describe('constructor', () => {
+    it('should not be instantiable', () => {
+      expect(() => new (IntersendSdkClient as any)()).toThrow();
+    });
   });
 
   describe('init', () => {
@@ -36,10 +54,9 @@ describe('IntersendSdkClient', () => {
         chainId: 1,
       };
 
-      // Mock the message event
-      window.addEventListener = jest.fn((event, handler) => {
+      mockAddEventListener.mockImplementation((event, handler) => {
         if (event === 'message') {
-          //@ts-ignore
+          // @ts-expect-error - Event handler type is complex
           handler({
             data: {
               type: 'INTERSEND_CONNECT_RESPONSE',
@@ -52,10 +69,11 @@ describe('IntersendSdkClient', () => {
       await IntersendSdkClient.init();
       expect(IntersendSdkClient.isInitialized).toBe(true);
       expect(IntersendSdkClient.intersendInfo).toEqual(mockInfo);
+      expect(mockAddEventListener).toHaveBeenCalledTimes(2);
 
       // Second init should not reinitialize
       await IntersendSdkClient.init();
-      expect(window.addEventListener).toHaveBeenCalledTimes(1);
+      expect(mockAddEventListener).toHaveBeenCalledTimes(2);
     });
 
     it('should handle timeout when info is not received', async () => {
@@ -94,18 +112,25 @@ describe('IntersendSdkClient', () => {
     });
   });
 
-  describe('constructor', () => {
-    it('should not be instantiable', () => {
-      expect(() => new (IntersendSdkClient as any)()).toThrow();
-    });
-  });
-
   describe('provider methods', () => {
     beforeEach(async () => {
-      IntersendSdkClient.intersendInfo = {
+      const mockInfo = {
         address: '0x123',
         chainId: 1,
       };
+
+      mockAddEventListener.mockImplementation((event, handler) => {
+        if (event === 'message') {
+          // @ts-expect-error - Event handler type is complex
+          handler({
+            data: {
+              type: 'INTERSEND_CONNECT_RESPONSE',
+              payload: mockInfo,
+            },
+          });
+        }
+      });
+
       await IntersendSdkClient.init();
     });
 
@@ -124,7 +149,7 @@ describe('IntersendSdkClient', () => {
         method: 'eth_chainId',
         params: [],
       });
-      expect(chainId).toBe(1);
+      expect(chainId).toBe('0x1');
     });
 
     it('should throw error for unsupported methods', async () => {

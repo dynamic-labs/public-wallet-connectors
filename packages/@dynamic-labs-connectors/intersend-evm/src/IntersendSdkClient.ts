@@ -10,7 +10,7 @@ interface IntersendInfo {
 }
 
 // Create a proper provider type that extends IEthereum
-class IntersendProvider extends EventEmitter implements IEthereum {
+class IntersendProvider extends EventEmitter {
   public readonly isIntersend = true;
   public readonly selectedAddress: string | null = null;
   public readonly providers?: object[];
@@ -20,7 +20,6 @@ class IntersendProvider extends EventEmitter implements IEthereum {
     this.selectedAddress = intersendInfo?.address || null;
   }
 
-  //@ts-ignore
   async request<T extends string>(params: { method: T; params?: any[] }): Promise<T extends "eth_requestAccounts" ? [string] : any> {
     const { method, params: methodParams = [] } = params;
     const requestId = `${Date.now()}-${Math.random()}`;
@@ -35,8 +34,7 @@ class IntersendProvider extends EventEmitter implements IEthereum {
 
       case 'eth_sendTransaction':
         return new Promise((resolve) => {
-          //@ts-ignore
-          IntersendSdkClient.pendingRequests.set(requestId, resolve);
+          IntersendSdkClient.setPendingRequest(requestId, resolve);
           window.parent.postMessage({
             type: 'TRANSACTION_REQUEST',
             payload: { params: methodParams[0] },
@@ -47,8 +45,7 @@ class IntersendProvider extends EventEmitter implements IEthereum {
       case 'personal_sign':
       case 'eth_sign':
         return new Promise((resolve) => {
-          //@ts-ignore
-          IntersendSdkClient.pendingRequests.set(requestId, resolve);
+          IntersendSdkClient.setPendingRequest(requestId, resolve);
           window.parent.postMessage({
             type: 'SIGN_MESSAGE_REQUEST',
             payload: { message: methodParams[0] },
@@ -129,13 +126,14 @@ export class IntersendSdkClient {
     
     switch (type) {
       case 'TRANSACTION_RESPONSE':
-      case 'SIGN_MESSAGE_RESPONSE':
+      case 'SIGN_MESSAGE_RESPONSE': {
         const pendingResolve = IntersendSdkClient.pendingRequests.get(requestId);
         if (pendingResolve) {
           pendingResolve(payload);
           IntersendSdkClient.pendingRequests.delete(requestId);
         }
         break;
+      }
     }
   };
 
@@ -163,10 +161,14 @@ export class IntersendSdkClient {
   };
 
   static getProvider = () => {
-    return IntersendSdkClient.provider;
+    return IntersendSdkClient.provider as unknown as IEthereum;
   };
 
   static getWalletClient = () => {
     return IntersendSdkClient.walletClient;
+  };
+
+  static setPendingRequest = (requestId: string, func: (value: any) => void) => {
+    IntersendSdkClient.pendingRequests.set(requestId, func);
   };
 }

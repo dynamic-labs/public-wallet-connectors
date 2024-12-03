@@ -63,7 +63,6 @@ export class IntersendEvmWalletConnector extends EthereumInjectedConnector {
   }
 
   override findProvider(): IEthereum | undefined {
-    //@ts-ignore
     return IntersendSdkClient.getProvider();
   }
 
