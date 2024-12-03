@@ -133,6 +133,31 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
 
+  packages/@dynamic-labs-connectors/intersend-evm:
+    dependencies:
+      '@dynamic-labs/ethereum':
+        specifier: ^3.4.6
+        version: 3.8.0(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@dynamic-labs/logger@3.8.0(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@3.8.0(eventemitter3@5.0.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(viem@2.21.48(typescript@5.5.4)(zod@3.22.4))
+      '@dynamic-labs/ethereum-core':
+        specifier: ^3.4.6
+        version: 3.8.0(@dynamic-labs/assert-package-version@3.8.0(eventemitter3@5.0.1))(@dynamic-labs/logger@3.8.0(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@3.8.0(eventemitter3@5.0.1))(@dynamic-labs/types@3.8.0(eventemitter3@5.0.1))(@dynamic-labs/utils@3.8.0)(@dynamic-labs/wallet-book@3.8.0(eventemitter3@5.0.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@dynamic-labs/wallet-connector-core@3.8.0(@dynamic-labs/assert-package-version@3.8.0(eventemitter3@5.0.1))(@dynamic-labs/logger@3.8.0(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@3.8.0(eventemitter3@5.0.1))(@dynamic-labs/types@3.8.0(eventemitter3@5.0.1))(@dynamic-labs/utils@3.8.0)(@dynamic-labs/wallet-book@3.8.0(eventemitter3@5.0.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1))(viem@2.21.48(typescript@5.5.4)(zod@3.22.4))
+      '@dynamic-labs/wallet-book':
+        specifier: ^3.4.6
+        version: 3.8.0(eventemitter3@5.0.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@dynamic-labs/wallet-connector-core':
+        specifier: ^3.4.6
+        version: 3.8.0(@dynamic-labs/assert-package-version@3.8.0(eventemitter3@5.0.1))(@dynamic-labs/logger@3.8.0(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@3.8.0(eventemitter3@5.0.1))(@dynamic-labs/types@3.8.0(eventemitter3@5.0.1))(@dynamic-labs/utils@3.8.0)(@dynamic-labs/wallet-book@3.8.0(eventemitter3@5.0.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1)
+      viem:
+        specifier: ^2.21.29
+        version: 2.21.48(typescript@5.5.4)(zod@3.22.4)
+    devDependencies:
+      '@dynamic-labs/utils':
+        specifier: ^3.4.6
+        version: 3.8.0
+      '@types/jest':
+        specifier: ^29.5.14
+        version: 29.5.14
+
   packages/@dynamic-labs-connectors/safe-evm:
     dependencies:
       '@dynamic-labs/ethereum':
