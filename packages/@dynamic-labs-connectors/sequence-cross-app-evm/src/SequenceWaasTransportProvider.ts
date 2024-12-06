@@ -1,4 +1,3 @@
-import { allNetworks, type EIP1193Provider } from '@0xsequence/network';
 import {
   createPublicClient,
   getAddress,
@@ -8,15 +7,18 @@ import {
   type Hash,
   type Transaction,
   http,
-  type Client,
 } from 'viem';
 
 import { ProviderTransport } from './ProviderTransport.js';
+import { networks } from './networks.js';
 import { normalizeChainId } from './utils.js';
 
-type WalletSwitchEthereumChainParameter = {
-  chainId: string;
-};
+export interface EIP1193Provider {
+  request(args: {
+    method: string;
+    params?: readonly unknown[];
+  }): Promise<unknown>;
+}
 
 export class SequenceWaasTransportProvider implements EIP1193Provider {
   publicClient: PublicClient;
@@ -29,12 +31,16 @@ export class SequenceWaasTransportProvider implements EIP1193Provider {
     public initialChainId: number,
     public nodesUrl: string,
   ) {
-    const initialChainName = allNetworks.find(
-      (n) => n.chainId === initialChainId,
-    )?.name;
+    const network = Object.values(networks).find(
+      (network) => network.chainId === initialChainId && !network.deprecated,
+    );
+
+    if (!network) {
+      throw new Error(`Unsupported chain ID: ${initialChainId}`);
+    }
 
     this.publicClient = createPublicClient({
-      transport: http(`${nodesUrl}/${initialChainName}/${projectAccessKey}`),
+      transport: http(`${nodesUrl}/${network.name}/${projectAccessKey}`),
     });
 
     this.transport = new ProviderTransport(walletUrl);
@@ -64,13 +70,19 @@ export class SequenceWaasTransportProvider implements EIP1193Provider {
     }
 
     if (method === 'wallet_switchEthereumChain') {
-      const param = params?.[0] as WalletSwitchEthereumChainParameter;
+      const param = params?.[0] as { chainId: string };
       const chainId = normalizeChainId(param.chainId);
-      const networkName = allNetworks.find((n) => n.chainId === chainId)?.name;
+      const network = Object.values(networks).find(
+        (network) => network.chainId === chainId && !network.deprecated,
+      );
+
+      if (!network) {
+        throw new Error(`Unsupported chain ID: ${chainId}`);
+      }
 
       this.publicClient = createPublicClient({
         transport: http(
-          `${this.nodesUrl}/${networkName}/${this.projectAccessKey}`,
+          `${this.nodesUrl}/${network.name}/${this.projectAccessKey}`,
         ),
       });
       this.currentChainId = chainId;
@@ -147,11 +159,8 @@ export class SequenceWaasTransportProvider implements EIP1193Provider {
     }
 
     // For all other RPC methods, forward to the public client
-    // We use type assertions here because we're implementing the more general EIP1193Provider
-    // interface while viem's PublicClient has stricter typing. The actual RPC call will
-    // validate the parameters at runtime.
     return await this.publicClient.request({
-      method: method as keyof Client['transport']['request'],
+      method: method as Parameters<PublicClient['request']>[0]['method'],
       params: params as Parameters<PublicClient['request']>[0]['params'],
     });
   }

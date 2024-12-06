@@ -15,9 +15,6 @@
       "types": "./src/index.d.ts"
     }
   },
-  "dependencies": {
-    "@0xsequence/network": "^2.0.26"
-  },
   "peerDependencies": {
     "@dynamic-labs/ethereum": "^3.6.3",
     "@dynamic-labs/ethereum-core": "^3.6.3",
