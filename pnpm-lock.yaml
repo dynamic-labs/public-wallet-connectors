@@ -135,8 +135,8 @@ importers:
   packages/@dynamic-labs-connectors/abstract-global-wallet-evm:
     dependencies:
       '@abstract-foundation/agw-client':
-        specifier: ^0.0.1-beta.19
-        version: 0.0.1-beta.20(abitype@1.0.6(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.21.38(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+        specifier: ^0.1.0
+        version: 0.1.0(abitype@1.0.6(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.21.38(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       '@dynamic-labs/ethereum':
         specifier: ^4.0.0-alpha.35
         version: 4.0.0-alpha.35(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@dynamic-labs/rpc-providers@4.0.0-alpha.33(eventemitter3@5.0.1))(bufferutil@4.0.8)(react-dom@18.2.0(react@18.2.0))(react-native@0.74.0(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)(utf-8-validate@5.0.10)(viem@2.21.38(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
@@ -206,8 +206,8 @@ importers:
 
 packages:
 
-  '@abstract-foundation/agw-client@0.0.1-beta.20':
-    resolution: {integrity: sha512-zKw7RhowvbOtmi2zg8DgNaPiMpEHF74rLRSsnHFAe71zFrk1+kIkX5CAWOc+F5QHzQwKABTDA9ZbsiWoUh2Azg==}
+  '@abstract-foundation/agw-client@0.1.0':
+    resolution: {integrity: sha512-wxba70JjRq9iQl2FDudMEvO2V7f4vksTIq/Wm8aKZXaFmt7Rv1KGvrHOSZpkNtlkpjWU2fAqAL1a31+7w+FNyA==}
     peerDependencies:
       abitype: ^1.0.0
       typescript: '>=5.0.4'
@@ -6940,7 +6940,7 @@ packages:
 
 snapshots:
 
-  '@abstract-foundation/agw-client@0.0.1-beta.20(abitype@1.0.6(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.21.38(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
+  '@abstract-foundation/agw-client@0.1.0(abitype@1.0.6(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.21.38(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
     dependencies:
       abitype: 1.0.6(typescript@5.5.4)(zod@3.22.4)
       viem: 2.21.38(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)
