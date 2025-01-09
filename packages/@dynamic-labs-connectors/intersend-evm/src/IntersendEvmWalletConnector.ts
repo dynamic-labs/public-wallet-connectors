@@ -7,17 +7,6 @@ import { IntersendSdkClient } from './IntersendSdkClient.js';
 export class IntersendEvmWalletConnector extends EthereumInjectedConnector {
   override name = 'Intersend';
 
-  // Define supported networks
-  private readonly SUPPORTED_CHAIN_IDS = [
-    1,      // Ethereum Mainnet
-    137,    // Polygon
-    42161,  // Arbitrum
-    10,     // Optimism
-    8453,   // Base
-    59144,  // Linea
-    43114,  // Avalanche
-  ];
-
   constructor(props: EthereumWalletConnectorOpts) {
     super({
       ...props,
@@ -28,10 +17,6 @@ export class IntersendEvmWalletConnector extends EthereumInjectedConnector {
       },
     });
 
-    // Filter EVMNetworks to only include supported networks
-    this.evmNetworks = this.evmNetworks.filter((network) =>
-      this.SUPPORTED_CHAIN_IDS.includes(network.chainId)
-    );
   }
 
   override async init(): Promise<void> {
@@ -74,55 +59,7 @@ export class IntersendEvmWalletConnector extends EthereumInjectedConnector {
   }
 
   override supportsNetworkSwitching(): boolean {
-    return true;
-  }
-
-  override async switchNetwork(chainId: number): Promise<void> {
-    try {
-      if (!this.SUPPORTED_CHAIN_IDS.includes(chainId)) {
-        throw new Error(`Chain ID ${chainId} is not supported`);
-      }
-
-      const provider = this.findProvider();
-      if (!provider) {
-        throw new Error('Provider not found');
-      }
-
-      const network = this.evmNetworks.find((n) => n.chainId === chainId);
-      if (!network) {
-        throw new Error(`Network configuration not found for chain ID ${chainId}`);
-      }
-
-      await provider.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: `0x${chainId.toString(16)}` }],
-      }).catch(async (error) => {
-        // If the chain hasn't been added to the user's wallet
-        if (error.code === 4902) {
-          await provider.request({
-            method: 'wallet_addEthereumChain',
-            params: [{
-              chainId: `0x${chainId.toString(16)}`,
-              chainName: network.name,
-              nativeCurrency: network.nativeCurrency,
-              rpcUrls: network.rpcUrls,
-              blockExplorerUrls: [network.blockExplorerUrl],
-            }],
-          });
-        } else {
-          throw error;
-        }
-      });
-
-      // Emit network changed event
-      this.walletConnectorEventsEmitter.emit('networkChanged', {
-        chainId,
-        connector: this,
-      });
-    } catch (error) {
-      logger.error('[IntersendEvmWalletConnector] switchNetwork error:', error);
-      throw error;
-    }
+    return false;
   }
 
   override findProvider(): IEthereum | undefined {
@@ -159,21 +96,5 @@ export class IntersendEvmWalletConnector extends EthereumInjectedConnector {
 
   override filter(): boolean {
     return Boolean(IntersendSdkClient.getProvider());
-  }
-
-  // Add method to get current chain ID
-  async getChainId(): Promise<number | undefined> {
-    try {
-      const provider = this.findProvider();
-      if (!provider) {
-        return undefined;
-      }
-
-      const chainId = await provider.request({ method: 'eth_chainId' });
-      return parseInt(chainId, 16);
-    } catch (error) {
-      logger.error('[IntersendEvmWalletConnector] getChainId error:', error);
-      return undefined;
-    }
   }
 }
