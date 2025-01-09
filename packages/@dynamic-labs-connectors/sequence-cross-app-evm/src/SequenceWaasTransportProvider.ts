@@ -1,17 +1,28 @@
-import { ethers } from 'ethers';
-import { allNetworks, type EIP1193Provider } from '@0xsequence/network';
-import { getAddress, TransactionRejectedRpcError } from 'viem';
+import {
+  createPublicClient,
+  getAddress,
+  TransactionRejectedRpcError,
+  type PublicClient,
+  toHex,
+  type Hash,
+  type Transaction,
+  http,
+} from 'viem';
 
 import { ProviderTransport } from './ProviderTransport.js';
+import { networks } from './networks.js';
 import { normalizeChainId } from './utils.js';
 
-export class SequenceWaasTransportProvider
-  extends ethers.AbstractProvider
-  implements EIP1193Provider
-{
-  jsonRpcProvider: ethers.JsonRpcProvider;
-  currentNetwork: ethers.Network;
+export interface EIP1193Provider {
+  request(args: {
+    method: string;
+    params?: readonly unknown[];
+  }): Promise<unknown>;
+}
 
+export class SequenceWaasTransportProvider implements EIP1193Provider {
+  publicClient: PublicClient;
+  currentChainId: number;
   transport: ProviderTransport;
 
   constructor(
@@ -20,22 +31,29 @@ export class SequenceWaasTransportProvider
     public initialChainId: number,
     public nodesUrl: string,
   ) {
-    super(initialChainId);
-
-    const initialChainName = allNetworks.find(
-      (n) => n.chainId === initialChainId,
-    )?.name;
-    const initialJsonRpcProvider = new ethers.JsonRpcProvider(
-      `${nodesUrl}/${initialChainName}/${projectAccessKey}`,
+    const network = Object.values(networks).find(
+      (network) => network.chainId === initialChainId && !network.deprecated,
     );
 
+    if (!network) {
+      throw new Error(`Unsupported chain ID: ${initialChainId}`);
+    }
+
+    this.publicClient = createPublicClient({
+      transport: http(`${nodesUrl}/${network.name}/${projectAccessKey}`),
+    });
+
     this.transport = new ProviderTransport(walletUrl);
-    this.jsonRpcProvider = initialJsonRpcProvider;
-    this.currentNetwork = ethers.Network.from(initialChainId);
+    this.currentChainId = initialChainId;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async request({ method, params }: { method: string; params?: any[] }) {
+  async request({
+    method,
+    params,
+  }: {
+    method: string;
+    params?: readonly unknown[];
+  }) {
     if (method === 'eth_requestAccounts') {
       let walletAddress = this.transport.getWalletAddress();
       if (!walletAddress) {
@@ -52,21 +70,28 @@ export class SequenceWaasTransportProvider
     }
 
     if (method === 'wallet_switchEthereumChain') {
-      const chainId = normalizeChainId(params?.[0].chainId);
-
-      const networkName = allNetworks.find((n) => n.chainId === chainId)?.name;
-      const jsonRpcProvider = new ethers.JsonRpcProvider(
-        `${this.nodesUrl}/${networkName}/${this.projectAccessKey}`,
+      const param = params?.[0] as { chainId: string };
+      const chainId = normalizeChainId(param.chainId);
+      const network = Object.values(networks).find(
+        (network) => network.chainId === chainId && !network.deprecated,
       );
 
-      this.jsonRpcProvider = jsonRpcProvider;
-      this.currentNetwork = ethers.Network.from(chainId);
+      if (!network) {
+        throw new Error(`Unsupported chain ID: ${chainId}`);
+      }
+
+      this.publicClient = createPublicClient({
+        transport: http(
+          `${this.nodesUrl}/${network.name}/${this.projectAccessKey}`,
+        ),
+      });
+      this.currentChainId = chainId;
 
       return null;
     }
 
     if (method === 'eth_chainId') {
-      return ethers.toQuantity(this.currentNetwork.chainId);
+      return toHex(this.currentChainId);
     }
 
     if (method === 'eth_accounts') {
@@ -86,19 +111,17 @@ export class SequenceWaasTransportProvider
       try {
         const response = await this.transport.sendRequest(
           method,
-          params,
+          Array.from(params),
           this.getChainId(),
         );
 
         if (response.code === 'transactionFailed') {
-          // Failed
           throw new TransactionRejectedRpcError(
             new Error(`Unable to send transaction: ${response.data.error}`),
           );
         }
 
         if (response.code === 'transactionReceipt') {
-          // Success
           const { txHash } = response.data;
           return txHash;
         }
@@ -122,7 +145,7 @@ export class SequenceWaasTransportProvider
       try {
         const response = await this.transport.sendRequest(
           method,
-          params,
+          Array.from(params),
           this.getChainId(),
         );
 
@@ -135,19 +158,19 @@ export class SequenceWaasTransportProvider
       }
     }
 
-    return await this.jsonRpcProvider.send(method, params ?? []);
+    // For all other RPC methods, forward to the public client
+    return await this.publicClient.request({
+      method: method as Parameters<PublicClient['request']>[0]['method'],
+      params: params as Parameters<PublicClient['request']>[0]['params'],
+    });
   }
 
-  override async getTransaction(txHash: string) {
-    return await this.jsonRpcProvider.getTransaction(txHash);
-  }
-
-  detectNetwork(): Promise<ethers.Network> {
-    return Promise.resolve(this.currentNetwork);
+  async getTransaction(txHash: Hash): Promise<Transaction | null> {
+    return await this.publicClient.getTransaction({ hash: txHash });
   }
 
   getChainId() {
-    return Number(this.currentNetwork.chainId);
+    return this.currentChainId;
   }
 
   disconnect() {

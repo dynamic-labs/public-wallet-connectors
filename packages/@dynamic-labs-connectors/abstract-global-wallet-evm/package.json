@@ -1,6 +1,6 @@
 {
   "name": "@dynamic-labs-connectors/abstract-global-wallet-evm",
-  "version": "3.1.1",
+  "version": "3.2.2",
   "type": "module",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
@@ -16,7 +16,7 @@
     }
   },
   "dependencies": {
-    "@abstract-foundation/agw-client": "^0.0.1-beta.19"
+    "@abstract-foundation/agw-client": "^0.1.0"
   },
   "peerDependencies": {
     "@privy-io/cross-app-connect": "^0.0.8",

@@ -5,6 +5,8 @@ interface SessionData {
   lastConnected: number;
 }
 
+const isClient = typeof window !== 'undefined';
+
 export class ProviderTransport {
   private walletOrigin: string;
   private walletWindow: Window | null = null;
@@ -18,9 +20,12 @@ export class ProviderTransport {
   constructor(walletUrl: string) {
     const url = new URL(walletUrl);
     this.walletOrigin = url.origin;
-    window.addEventListener('message', this.handleMessage);
-    this.loadSession();
-    this.observeCallbacks();
+
+    if (isClient) {
+      window.addEventListener('message', this.handleMessage);
+      this.loadSession();
+      this.observeCallbacks();
+    }
   }
 
   private observeCallbacks() {
@@ -49,6 +54,8 @@ export class ProviderTransport {
   }
 
   private ensureWalletCheckActive() {
+    if (!isClient) return;
+
     if (this.walletCheckInterval === undefined) {
       this.walletCheckInterval = window.setInterval(() => {
         if (!this.isWalletOpen()) {
@@ -59,6 +66,8 @@ export class ProviderTransport {
   }
 
   private ensureWalletCheckInactive() {
+    if (!isClient) return;
+
     if (this.walletCheckInterval !== undefined) {
       clearInterval(this.walletCheckInterval);
       this.walletCheckInterval = undefined;
@@ -66,19 +75,33 @@ export class ProviderTransport {
   }
 
   private loadSession() {
-    const sessionData = localStorage.getItem('walletSession');
-    if (sessionData) {
-      this.session = JSON.parse(sessionData);
-      this.connectionState = 'connected';
+    if (!isClient) return;
+
+    try {
+      const sessionData = localStorage.getItem('walletSession');
+      if (sessionData) {
+        this.session = JSON.parse(sessionData);
+        this.connectionState = 'connected';
+      }
+    } catch (error) {
+      console.warn('Failed to load wallet session:', error);
     }
   }
 
   private saveSession(walletAddress: string) {
-    this.session = { walletAddress, lastConnected: Date.now() };
-    localStorage.setItem('walletSession', JSON.stringify(this.session));
+    if (!isClient) return;
+
+    try {
+      this.session = { walletAddress, lastConnected: Date.now() };
+      localStorage.setItem('walletSession', JSON.stringify(this.session));
+    } catch (error) {
+      console.warn('Failed to save wallet session:', error);
+    }
   }
 
   private tryCloseWalletWindow() {
+    if (!isClient) return;
+
     if (this.pendingRequests.size === 0 && this.isWalletOpen()) {
       setTimeout(() => {
         // Double check that no new requests came in during the delay
@@ -91,6 +114,10 @@ export class ProviderTransport {
   }
 
   async connect(): Promise<{ walletAddress: string }> {
+    if (!isClient) {
+      throw new Error('Cannot connect to wallet in non-browser environment');
+    }
+
     if (this.connectionState === 'connected' && this.session) {
       return { walletAddress: this.session.walletAddress };
     }
@@ -126,6 +153,10 @@ export class ProviderTransport {
     chainId: number,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
+    if (!isClient) {
+      throw new Error('Cannot send request in non-browser environment');
+    }
+
     if (this.connectionState !== 'connected') {
       throw new Error('Not connected to wallet. Call connect() first.');
     }
@@ -166,6 +197,12 @@ export class ProviderTransport {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private openWalletAndPostMessage(message: any): Promise<void> {
+    if (!isClient) {
+      return Promise.reject(
+        new Error('Cannot open wallet in non-browser environment'),
+      );
+    }
+
     return new Promise((resolve, reject) => {
       console.log('Opening wallet and posting message:', message);
       if (!this.isWalletOpen()) {
@@ -201,6 +238,8 @@ export class ProviderTransport {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private postMessageToWallet(message: any) {
+    if (!isClient) return;
+
     console.log('Posting message to wallet:', message);
     this.walletWindow?.postMessage(message, {
       targetOrigin: this.walletOrigin,
@@ -208,6 +247,7 @@ export class ProviderTransport {
   }
 
   private isWalletOpen(): boolean {
+    if (!isClient) return false;
     return this.walletWindow !== null && !this.walletWindow?.closed;
   }
 
@@ -232,9 +272,15 @@ export class ProviderTransport {
   };
 
   disconnect() {
+    if (!isClient) return;
+
     this.connectionState = 'disconnected';
     this.session = undefined;
-    localStorage.removeItem('walletSession');
+    try {
+      localStorage.removeItem('walletSession');
+    } catch (error) {
+      console.warn('Failed to remove wallet session:', error);
+    }
     if (this.isWalletOpen()) {
       this.walletWindow?.close();
     }

@@ -1,6 +1,6 @@
 {
   "name": "@dynamic-labs-connectors/safe-evm",
-  "version": "3.1.1",
+  "version": "3.2.2",
   "type": "module",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",

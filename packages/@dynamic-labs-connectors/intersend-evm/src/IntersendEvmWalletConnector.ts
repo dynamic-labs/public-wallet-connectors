@@ -69,6 +69,7 @@ export class IntersendEvmWalletConnector extends EthereumInjectedConnector {
     return IntersendSdkClient.getProvider();
   }
 
+
   override isInstalledOnBrowser(): boolean {
     return true;
   }
