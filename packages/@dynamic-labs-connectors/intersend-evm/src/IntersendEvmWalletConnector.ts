@@ -66,6 +66,10 @@ export class IntersendEvmWalletConnector extends EthereumInjectedConnector {
     return IntersendSdkClient.getProvider();
   }
 
+  override isInstalledOnBrowser(): boolean {
+    return true;
+  }
+
   override async getAddress(): Promise<string | undefined> {
     return IntersendSdkClient.getAddress();
   }
