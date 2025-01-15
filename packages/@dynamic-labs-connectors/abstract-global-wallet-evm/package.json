@@ -16,10 +16,10 @@
     }
   },
   "dependencies": {
-    "@abstract-foundation/agw-client": "^0.1.0"
+    "@abstract-foundation/agw-client": "^1.0.0"
   },
   "peerDependencies": {
-    "@privy-io/cross-app-connect": "^0.0.8",
+    "@privy-io/cross-app-connect": "^0.1.2",
     "@dynamic-labs/ethereum-core": "^4.0.0-alpha.35",
     "@dynamic-labs/ethereum": "^4.0.0-alpha.35",
     "@dynamic-labs/utils": "^4.0.0-alpha.35",
