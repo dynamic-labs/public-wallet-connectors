@@ -1,6 +1,6 @@
 {
   "name": "@dynamic-labs-connectors/intersend-evm",
-  "version": "3.2.4",
+  "version": "3.2.5",
   "description": "Intersend EVM connector for Dynamic SDK",
   "type": "module",
   "main": "./src/index.js",
