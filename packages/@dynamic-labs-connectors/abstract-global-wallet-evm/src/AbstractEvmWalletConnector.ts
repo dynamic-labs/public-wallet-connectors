@@ -43,7 +43,6 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
       //   this.abstractNetworks.push(abstract);
       // }
     }
-    this.isInitialized = false;
     this.wallet = findWalletBookWallet(this.walletBook, this.key);
   }
   /**
