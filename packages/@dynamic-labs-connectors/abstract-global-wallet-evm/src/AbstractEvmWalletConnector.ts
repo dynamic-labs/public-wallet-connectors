@@ -19,6 +19,8 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
 
   abstractNetworks: ViemChain[];
 
+  static initHasRun = false;
+
   /**
    * The constructor for the connector, with the relevant metadata
    * @param props The options for the connector
@@ -60,14 +62,14 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
     // this function can be called multiple times, so you must have a flag that indicates if the connector is already initialized
     // (can't be an instance variable, because it will be reset every time the connector is instantiated)
     // once the provider is initialized, you should emit the providerReady event once, and only once
-    if (this.isInitialized) {
+    if (AbstractEvmWalletConnector.initHasRun) {
       return;
     }
     // if there are no abstract networks configured, we can't initialize the connector
     if (this.abstractNetworks.length === 0) {
       return;
     }
-    this.isInitialized = true;
+    AbstractEvmWalletConnector.initHasRun = true;
 
     logger.debug('[AbstractEvmWalletConnector] onProviderReady');
     this.walletConnectorEventsEmitter.emit('providerReady', {
