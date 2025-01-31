@@ -2,7 +2,7 @@ import { type EthereumWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
 import { EthereumInjectedConnector, type IEthereum } from '@dynamic-labs/ethereum';
 import { toPrivyWalletProvider } from '@privy-io/cross-app-connect'
 import { transformEIP1193Provider } from '@abstract-foundation/agw-client';
-import { abstractTestnet } from 'viem/chains';
+import { abstract, abstractTestnet } from 'viem/chains';
 import { DynamicError } from '@dynamic-labs/utils';
 import { type Chain, logger } from '@dynamic-labs/wallet-connector-core';
 import { findWalletBookWallet } from '@dynamic-labs/wallet-book';
@@ -40,10 +40,9 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
       if (network.chainId === abstractTestnet.id) {
         this.abstractNetworks.push(abstractTestnet);
       }
-      // TODO: add mainnet once viem definition is added
-      // if (network.chainId === abstract.id) {
-      //   this.abstractNetworks.push(abstract);
-      // }
+      if (network.chainId === abstract.id) {
+        this.abstractNetworks.push(abstract);
+      }
     }
     this.wallet = findWalletBookWallet(this.walletBook, this.key);
   }
