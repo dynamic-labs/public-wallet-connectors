@@ -135,16 +135,16 @@ importers:
   packages/@dynamic-labs-connectors/abstract-global-wallet-evm:
     dependencies:
       '@abstract-foundation/agw-client':
-        specifier: ^1.3.1
-        version: 1.3.1(abitype@1.0.8(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.22.17(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+        specifier: ^1.4.0
+        version: 1.4.0(abitype@1.0.8(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.22.17(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       '@dynamic-labs/ethereum':
-        specifier: ^4.0.0
+        specifier: ^4.0.0-alpha.35
         version: 4.4.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@dynamic-labs/rpc-providers@4.0.0-alpha.33(eventemitter3@5.0.1))(bufferutil@4.0.8)(react-dom@18.2.0(react@18.2.0))(react-native@0.74.0(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)(utf-8-validate@5.0.10)(viem@2.22.17(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       '@dynamic-labs/ethereum-core':
-        specifier: ^4.0.0
+        specifier: ^4.0.0-alpha.35
         version: 4.4.3(@dynamic-labs/assert-package-version@4.4.3(eventemitter3@5.0.1))(@dynamic-labs/logger@4.4.3(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.33(eventemitter3@5.0.1))(@dynamic-labs/types@4.4.3(eventemitter3@5.0.1))(@dynamic-labs/utils@4.4.3)(@dynamic-labs/wallet-book@4.4.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@dynamic-labs/wallet-connector-core@4.4.3(@dynamic-labs/assert-package-version@4.4.3(eventemitter3@5.0.1))(@dynamic-labs/logger@4.4.3(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.33(eventemitter3@5.0.1))(@dynamic-labs/types@4.4.3(eventemitter3@5.0.1))(@dynamic-labs/utils@4.4.3)(@dynamic-labs/wallet-book@4.4.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1))(viem@2.22.17(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       '@dynamic-labs/wallet-connector-core':
-        specifier: ^4.0.0
+        specifier: ^4.0.0-alpha.35
         version: 4.4.3(@dynamic-labs/assert-package-version@4.4.3(eventemitter3@5.0.1))(@dynamic-labs/logger@4.4.3(eventemitter3@5.0.1))(@dynamic-labs/rpc-providers@4.0.0-alpha.33(eventemitter3@5.0.1))(@dynamic-labs/types@4.4.3(eventemitter3@5.0.1))(@dynamic-labs/utils@4.4.3)(@dynamic-labs/wallet-book@4.4.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(eventemitter3@5.0.1)
       '@privy-io/cross-app-connect':
         specifier: ^0.1.5
@@ -154,7 +154,7 @@ importers:
         version: 2.22.17(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)
     devDependencies:
       '@dynamic-labs/utils':
-        specifier: ^4.0.0
+        specifier: ^4.0.0-alpha.35
         version: 4.4.3
 
   packages/@dynamic-labs-connectors/intersend-evm:
@@ -240,8 +240,8 @@ importers:
 
 packages:
 
-  '@abstract-foundation/agw-client@1.3.1':
-    resolution: {integrity: sha512-RwCO2eGZz+qPFR7n3hc8uu2WbPafMI1mSiQq0S5qN90GD0iNvDWj48UPJD8jkRuwkrLCYfo5+R+lorNvQmu97Q==}
+  '@abstract-foundation/agw-client@1.4.0':
+    resolution: {integrity: sha512-LyjeBknZFtE2crLeUP5vmnvI3D98I4/IqdX1alicBUQE2T++0FU4h12qjqYXpiP43xb9GJbIY+mY/RmjItA1Aw==}
     peerDependencies:
       abitype: ^1.0.0
       typescript: '>=5.0.4'
@@ -7094,7 +7094,7 @@ packages:
 
 snapshots:
 
-  '@abstract-foundation/agw-client@1.3.1(abitype@1.0.8(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.22.17(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
+  '@abstract-foundation/agw-client@1.4.0(abitype@1.0.8(typescript@5.5.4)(zod@3.22.4))(typescript@5.5.4)(viem@2.22.17(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
     dependencies:
       abitype: 1.0.8(typescript@5.5.4)(zod@3.22.4)
       viem: 2.22.17(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)
