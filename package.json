@@ -45,5 +45,9 @@
     "overrides": {
       "cross-spawn": "^7.0.5"
     }
+  },
+  "dependencies": {
+    "@dynamic-labs/bitcoin": "^4.5.1",
+    "bitcoinjs-lib": "^6.1.7"
   }
 }
