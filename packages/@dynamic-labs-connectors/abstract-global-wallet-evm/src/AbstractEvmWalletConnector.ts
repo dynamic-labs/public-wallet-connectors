@@ -2,7 +2,7 @@ import { type EthereumWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
 import { EthereumInjectedConnector, type IEthereum } from '@dynamic-labs/ethereum';
 import { toPrivyWalletProvider } from '@privy-io/cross-app-connect'
 import { transformEIP1193Provider } from '@abstract-foundation/agw-client';
-import { abstractTestnet } from 'viem/chains';
+import { abstractTestnet, abstract } from 'viem/chains';
 import { DynamicError } from '@dynamic-labs/utils';
 import { logger } from '@dynamic-labs/wallet-connector-core';
 import { toHex, type Chain as ViemChain } from 'viem';
@@ -39,10 +39,9 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
       if (network.chainId === abstractTestnet.id) {
         this.abstractNetworks.push(abstractTestnet);
       }
-      // TODO: add mainnet once viem definition is added
-      // if (network.chainId === abstract.id) {
-      //   this.abstractNetworks.push(abstract);
-      // }
+      if (network.chainId === abstract.id) {
+        this.abstractNetworks.push(abstract);
+      }
     }
   }
 
@@ -87,6 +86,11 @@ export class AbstractEvmWalletConnector extends EthereumInjectedConnector {
         // chain = abstract; // TODO: default to the abstract mainnet once viem definition is added
         chain = abstractTestnet;
       }
+      // @ts-expect-error Chain is never undefined here; it is checked in the above if statement
+    } else if (!this.abstractNetworks.some(n => n.id === chain.id)) {
+      // use the first configured abstract network from the connector options
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      chain = this.abstractNetworks[0]!;
     }
 
     const privyProvider = toPrivyWalletProvider({
