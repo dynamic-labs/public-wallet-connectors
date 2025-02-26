@@ -4,13 +4,13 @@ import { isInIframe } from '@dynamic-labs/utils';
 // import { SafeEvmWalletConnector } from './SafeEvmWalletConnector.js';
 
 // export { SafeEvmWalletConnector } from './SafeEvmWalletConnector.js';
-import { DefinitiveSolanaWalletConnector } from './DefinitiveSolanaWalletConnector.js';
+import { SolanaWalletConnector } from './SolanaWalletConnector.js';
 
-export { DefinitiveSolanaWalletConnector } from './DefinitiveSolanaWalletConnector.js';
+export { SolanaWalletConnector } from './SolanaWalletConnector.js';
 
 
-export const DefinitiveSolanaWalletConnectors = (
+export const SolanaWalletConnectors = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars -- we don't care about the props
   _props: any
 ): WalletConnectorConstructor[] =>
-  isInIframe() ? [DefinitiveSolanaWalletConnector] : [];
+  isInIframe() ? [SolanaWalletConnector] : [];

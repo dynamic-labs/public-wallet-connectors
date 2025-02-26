@@ -1,6 +1,6 @@
 import { type SolanaWalletConnectorOpts } from '@dynamic-labs/solana-core';
+import { ISolana } from '@dynamic-labs/solana-core';
 import { SolanaInjectedConnector } from '@dynamic-labs/solana';
-import type { ISolana } from '@dynamic-labs/solana-core';
 import { DynamicError } from '@dynamic-labs/utils';
 import { logger } from '@dynamic-labs/wallet-connector-core';
 import { PublicKey } from '@solana/web3.js';
@@ -9,7 +9,7 @@ import { Buffer } from 'buffer';
 
 // This file mimics the structure of the Abstract EVM connector but for Solana.
 // It assumes that a Solana wallet provider (like Phantom) is injected on window.solana.
-export class DefinitiveSolanaWalletConnector extends SolanaInjectedConnector {
+export class SolanaWalletConnector extends SolanaInjectedConnector {
   /**
    * Unique identifier for this wallet connector.
    */
@@ -106,13 +106,13 @@ export class DefinitiveSolanaWalletConnector extends SolanaInjectedConnector {
    * Ensures initialization is run only once and emits the providerReady event.
    */
   override async init(): Promise<void> {
-    if (DefinitiveSolanaWalletConnector.initHasRun) {
+    if (SolanaWalletConnector.initHasRun) {
       return;
     }
     if (this.solanaNetworks.length === 0) {
       return;
     }
-    DefinitiveSolanaWalletConnector.initHasRun = true;
+    SolanaWalletConnector.initHasRun = true;
     logger.debug('[DefinitiveSolanaWalletConnector] onProviderReady');
     this.walletConnectorEventsEmitter.emit('providerReady', { connector: this });
   }
