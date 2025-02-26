@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { SolanaWalletConnectorOpts } from '@dynamic-labs/solana-core';
-import { DefinitiveSolanaWalletConnector } from './DefinitiveSolanaWalletConnector.js';
+import { SolanaWalletConnector } from './SolanaWalletConnector.js';
 
 jest.mock('@dynamic-labs/wallet-connector-core', () => ({
   ...jest.requireActual('@dynamic-labs/wallet-connector-core'),
@@ -14,7 +14,7 @@ const walletConnectorProps: SolanaWalletConnectorOpts = {
   solNetworks: [],
 } as any as SolanaWalletConnectorOpts;
 
-describe('DefinitiveSolanaWalletConnector', () => {
+describe('SolanaWalletConnector', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     // Clear any previously defined window.solana.
@@ -32,7 +32,7 @@ describe('DefinitiveSolanaWalletConnector', () => {
       // Simulate an injected Solana provider
       (global as any).window = { solana: dummyProvider };
 
-      const connector = new DefinitiveSolanaWalletConnector(walletConnectorProps);
+      const connector = new SolanaWalletConnector(walletConnectorProps);
       const provider = connector.findProvider();
       expect(provider).toBeDefined();
       expect(provider).toBe(dummyProvider);
@@ -41,7 +41,7 @@ describe('DefinitiveSolanaWalletConnector', () => {
     it('should return undefined if window.solana is not defined', () => {
       // Ensure window.solana is not defined.
       (global as any).window = {};
-      const connector = new DefinitiveSolanaWalletConnector(walletConnectorProps);
+      const connector = new SolanaWalletConnector(walletConnectorProps);
       expect(connector.findProvider()).toBeUndefined();
     });
   });
