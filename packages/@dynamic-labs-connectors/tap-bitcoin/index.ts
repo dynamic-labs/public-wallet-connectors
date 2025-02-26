@@ -1,1 +1,1 @@
-export { TapConnector } from './TapConnector.js';
+export { TapWalletConnector } from './TapWalletConnector.js';

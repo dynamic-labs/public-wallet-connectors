@@ -1,7 +1,11 @@
-import { BitcoinWalletConnector } from '@dynamic-labs/bitcoin';
+import {
+  // eslint-disable-next-line import/named
+  BitcoinTransaction,
+  BitcoinWalletConnector,
+} from '@dynamic-labs/bitcoin';
 import bitcoinjsLib from 'bitcoinjs-lib';
 
-export class TapConnector extends BitcoinWalletConnector {
+export class TapWalletConnector extends BitcoinWalletConnector {
   override name = 'Tap Wallet';
   override overrideKey = 'tap-wallet';
 
@@ -9,20 +13,21 @@ export class TapConnector extends BitcoinWalletConnector {
     super({
       ...props,
       metadata: {
-        id: "tap-wallet",
-        name: "Tap Wallet",
-        icon: "https://tap.trac.network/tap-logo.png",
+        id: 'tap-wallet',
+        name: 'Tap Wallet',
+        icon: 'https://tap.trac.network/tap-logo.png',
       },
     });
   }
 
-   // Initialize the wallet (can be used to check if extension is installed)
-   override async init(): Promise<void> {
-    if (typeof window !== "undefined" && (window as any).tapprotocol) {
-      this.walletConnectorEventsEmitter.emit("providerReady", { connector: this });
+  // Initialize the wallet (can be used to check if extension is installed)
+  override async init(): Promise<void> {
+    if (typeof window !== 'undefined' && (window as any).tapprotocol) {
+      this.walletConnectorEventsEmitter.emit('providerReady', {
+        connector: this,
+      });
     }
   }
-
 
   getConnectorName() {
     return `${this.name.replace(' ', '')}Connector`;
@@ -48,13 +53,15 @@ export class TapConnector extends BitcoinWalletConnector {
     return await provider.signMessage(messageToSign);
   }
 
-  override async sendBitcoin(transaction: any): Promise<string | undefined> {
+  override async sendBitcoin(
+    transaction: BitcoinTransaction,
+  ): Promise<string | undefined> {
     const provider = this.findProvider();
     const connectedAddress = await this.getAddress();
     if (!connectedAddress || !provider) return;
     return await provider.sendBitcoin(
       transaction.recipientAddress,
-      Number(transaction.amount),
+      transaction.amount,
     );
   }
 
@@ -68,7 +75,7 @@ export class TapConnector extends BitcoinWalletConnector {
     return { signedPsbt: bitcoinjsLib.Psbt.fromHex(signedPsbtHex).toBase64() };
   }
 
-  override async signPsbts(requests: any): Promise<any> {
+   override async signPsbts(requests: any): Promise<any> {
     const provider = this.findProvider();
     if (!provider) return;
     const psbtHexs = requests.map((req) =>
