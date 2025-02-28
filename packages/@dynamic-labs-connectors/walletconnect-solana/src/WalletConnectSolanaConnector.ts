@@ -3,7 +3,6 @@ import { ISolana } from '@dynamic-labs/solana-core';
 import { SolanaInjectedConnector } from '@dynamic-labs/solana';
 import { DynamicError } from '@dynamic-labs/utils';
 import { logger } from '@dynamic-labs/wallet-connector-core';
-import { PublicKey } from '@solana/web3.js';
 import { Buffer } from 'buffer';
 import { ReownSdkClient } from './ReownSdkClient';
 
@@ -107,17 +106,49 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
    * Ensures initialization is run only once and emits the providerReady event.
    */
   override async init(): Promise<void> {
-    if (WalletConnectSolanaConnector.initHasRun) {
+    if (ReownSdkClient.isInitialized) {
       return;
     }
     if (this.solanaNetworks.length === 0) {
       return;
     }
-    ReownSdkClient.init()
+    await ReownSdkClient.init()
+    this.onProviderReady;
     WalletConnectSolanaConnector.initHasRun = true;
-    logger.debug('[WalletConnectSolanaConnector] onProviderReady');
-    this.walletConnectorEventsEmitter.emit('providerReady', { connector: this });
   }
+
+  private onProviderReady = (): void => {
+    logger.debug('[WalletConnectSolanaConnector] onProviderReady');
+
+    // Emits the providerReady Event
+    this.walletConnectorEventsEmitter.emit('providerReady', {
+      connector: this,
+    })
+
+    this.tryAutoConnect();
+  }
+
+  private async tryAutoConnect(): Promise<void> {
+    const walletConnectAddress = await this.getAddress;
+
+    logger.debug(
+      '[WalletConnectSolanaConnect] tryAutoConnect - address:',
+      walletConnectAddress,
+    );
+
+    if (!walletConnectAddress) {
+      logger.debug(
+        '[WalletConnectSolanaConnect] tryAutoConnect - no address to connect',
+        walletConnectAddress,
+      );
+    }
+
+    // If there's an address, emit the autoConnect event
+    this.walletConnectorEventsEmitter.emit('autoConnect', {
+      connector: this,
+    });
+  }
+
 
   /**
    * Finds and returns the injected Solana wallet provider.
@@ -168,18 +199,10 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
   }
 
   /**
-   * Retrieves the connected accounts as an array.
-   */
-  override async getConnectedAccounts(): Promise<string[]> {
-    const address = await this.getAddress();
-    return address ? [address] : [];
-  }
-
-  /**
    * Signs a message.
    * Encodes the message as a Uint8Array and returns the signature as a hex string.
    */
-  override async signMessage(message: string): Promise<string> {
+  override async signMessage(message: string): Promise<string> {    
     const provider = this.findProvider();
     if (!provider) {
       throw new DynamicError('Wallet provider not found');

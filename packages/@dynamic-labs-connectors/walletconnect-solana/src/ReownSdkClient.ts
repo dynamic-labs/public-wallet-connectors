@@ -4,10 +4,6 @@ import { logger } from '@dynamic-labs/wallet-connector-core';
 import { WalletConnectWalletAdapter, type WalletConnectWalletAdapterConfig } from '@solana/wallet-adapter-walletconnect';
 import { ISolana } from '@dynamic-labs/solana-core';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { removeItemAsync } from '@dynamic-labs/utils';
-import { PublicKey } from '@solana/web3.js'
-
-export type WalletInfo = { publicKey?: PublicKey };
 
 export enum WalletConnectChainID {
   Mainnet = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
@@ -19,9 +15,8 @@ export enum WalletConnectChainID {
 
 export class ReownSdkClient {
 
-  private static isInitialized = false;
+  static isInitialized = false;
   private static adapter: SolanaAdapter;
-  private static walletInfo: WalletInfo | undefined;
   static walletConnectSdk: WalletConnectWalletAdapter;
 
 
@@ -55,11 +50,7 @@ export class ReownSdkClient {
     ReownSdkClient.walletConnectSdk  = new WalletConnectWalletAdapter(walletConnectConfig);
 
     await ReownSdkClient.walletConnectSdk.connect();
-
-    ReownSdkClient.walletInfo = {
-        publicKey: ReownSdkClient.walletConnectSdk.publicKey ?? undefined
-      };
-
+    ReownSdkClient.isInitialized = true;
   }
 
     // Returns the connected wallet's address (public key).
