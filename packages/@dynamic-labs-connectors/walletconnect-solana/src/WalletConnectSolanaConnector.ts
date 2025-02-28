@@ -3,7 +3,6 @@ import { ISolana } from '@dynamic-labs/solana-core';
 import { SolanaInjectedConnector } from '@dynamic-labs/solana';
 import { DynamicError } from '@dynamic-labs/utils';
 import { logger } from '@dynamic-labs/wallet-connector-core';
-import { Buffer } from 'buffer';
 import { ReownSdkClient } from './ReownSdkClient';
 
 
@@ -23,33 +22,7 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
   /**
    * URL to the wallet's icon.
    */
-  iconUrl = 'https://example.com/path/to/WalletConnectSolanaConnector-solana-icon.png';
-
-  /**
-   * Background color for the icon.
-   */
-  iconBackground = '#ffffff';
-
-  /**
-   * Mobile deep-link configuration.
-   */
-  // mobile = {
-  //   deepLink: 'WalletConnectSolanaConnector://connect',
-  // };
-
-  /**
-   * QR code configuration.
-   */
-  // qrCode = {
-  //   url: 'https://example.com/WalletConnectSolanaConnector-solana-qrcode',
-  // };
-
-  /**
-   * Browser extension configuration.
-   */
-  // extension = {
-  //   installUrl: 'https://chrome.google.com/webstore/detail/WalletConnectSolanaConnector-wallet',
-  // };
+  iconUrl = 'https://reown.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fuvy10p5b%2Fproduction%2F01495a4964c8df30a7e8859c4f469e67dc9545a2-1024x1024.png&w=256&q=100';
 
   // Array to store supported Solana networks from connector options.
   solanaNetworks: any[];
@@ -125,6 +98,7 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
       connector: this,
     })
 
+    // Tries to auto connect to the walletConnect
     this.tryAutoConnect();
   }
 
@@ -164,19 +138,6 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
    */
   override async connect(): Promise<void> {
     ReownSdkClient.connect();
-    // const provider = this.findProvider();
-    // if (!provider) {
-    //   throw new DynamicError('Wallet provider not found');
-    // }
-    // if (provider.connect && typeof provider.connect === 'function') {
-    //   await provider.connect();
-    // }
-    // const address = await this.getAddress();
-    // if (!address) {
-    //   throw new DynamicError('No address returned after connecting');
-    // }
-    // this.activeAccount = address;
-    // logger.debug('[WalletConnectSolanaConnector] Connected with address:', address);
   }
 
   /**
@@ -202,22 +163,11 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
    * Signs a message.
    * Encodes the message as a Uint8Array and returns the signature as a hex string.
    */
-  override async signMessage(message: string): Promise<string> {    
-    const provider = this.findProvider();
-    if (!provider) {
-      throw new DynamicError('Wallet provider not found');
-    }
-    if (typeof provider.signMessage !== 'function') {
-      throw new DynamicError('Wallet provider does not support signMessage');
-    }
-    const encodedMessage = new TextEncoder().encode(message);
+  override async signMessage(message: string): Promise<string> {   
+    const msg = new  TextEncoder().encode(message);
+    const signature = ReownSdkClient.signMessage(msg);
     
-    // Await the signMessage result; assume it returns an object with a 'signature' property.
-    const result = await provider.signMessage(encodedMessage);
-    
-    // Extract the actual signature (a Uint8Array) from the result.
-    const signature: Uint8Array = result.signature;
-    return Buffer.from(signature).toString('hex');
+    return (await signature).toString()
   }
   
 }
