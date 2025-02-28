@@ -4,8 +4,10 @@ import { logger } from '@dynamic-labs/wallet-connector-core';
 import { WalletConnectWalletAdapter, type WalletConnectWalletAdapterConfig } from '@solana/wallet-adapter-walletconnect';
 import { ISolana } from '@dynamic-labs/solana-core';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { removeItemAsync } from '@dynamic-labs/utils';
+import { PublicKey } from '@solana/web3.js'
 
-export type WalletInfo = { address?: string };
+export type WalletInfo = { publicKey?: PublicKey };
 
 export enum WalletConnectChainID {
   Mainnet = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
@@ -52,43 +54,35 @@ export class ReownSdkClient {
     // Instantiate your Solana adapter.
     ReownSdkClient.walletConnectSdk  = new WalletConnectWalletAdapter(walletConnectConfig);
 
-    // Now wrap this adapter in a SolanaAdapter.
-    ReownSdkClient.adapter = new SolanaAdapter({
-      wallets: [ReownSdkClient.walletConnectSdk],
-    });
+    await ReownSdkClient.walletConnectSdk.connect();
 
-    try {
-      // Optionally attempt to auto-connect (if supported by your adapter)
-      ReownSdkClient.walletInfo = await ReownSdkClient.adapter.connect({
-        id: '',
-        type: ''
-      });
-      logger.debug('[ReownSdkClient] Connected, wallet info:', ReownSdkClient.walletInfo);
-    } catch (error) {
-      logger.debug('[ReownSdkClient] Could not auto-connect:', error);
-      // You might leave walletInfo as undefined here.
+    ReownSdkClient.walletInfo = {
+        publicKey: ReownSdkClient.walletConnectSdk.publicKey ?? undefined
+      };
+
+  }
+
+    // Returns the connected wallet's address (public key).
+    static getAddress = () => {
+        return ReownSdkClient.walletConnectSdk.publicKey;
     }
-  }
 
-  // Returns the connected wallet's address (public key).
-  static getAddress(): string | undefined {
-    return ReownSdkClient.walletInfo?.address;
-  }
-  
-
-  // Returns the provider from the adapter. Adjust as needed if your adapter exposes a different property.
-  static getProvider = () => {
-    // Casting to IEthereum because the Safe provider implements the eip-1193 interface
-    // And that the expected type for the parent class EthereumInjectedConnector
-    return ReownSdkClient.adapter as unknown as ISolana;
-  };
+    // Returns the provider from the adapter. Adjust as needed if your adapter exposes a different property.
+    static getProvider = () => {
+        // Casting to IEthereum because the Safe provider implements the eip-1193 interface
+        // And that the expected type for the parent class EthereumInjectedConnector
+        return ReownSdkClient.adapter as unknown as ISolana;
+    };
 
 
-  // // Sign a message using the connected wallet.
-  // static async signMessage(message: string): Promise<string> {
-  //   if (!ReownSdkClient.walletInfo) {
-  //     throw new Error('Wallet is not connected.');
-  //   }
+   // Sign a message using the connected wallet.
+    static async signMessage(message: Uint8Array): Promise<Uint8Array> {
+        return ReownSdkClient.walletConnectSdk.signMessage(message);
+    }
+
+    static async connect() {
+        ReownSdkClient.walletConnectSdk.connect();
+    }
   //   // Convert the message to a Uint8Array (for example, using TextEncoder)
   //   const encoder = new TextEncoder();
   //   const messageBytes = encoder.encode(message);

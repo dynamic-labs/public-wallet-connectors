@@ -5,11 +5,12 @@ import { DynamicError } from '@dynamic-labs/utils';
 import { logger } from '@dynamic-labs/wallet-connector-core';
 import { PublicKey } from '@solana/web3.js';
 import { Buffer } from 'buffer';
+import { ReownSdkClient } from './ReownSdkClient';
 
 
 // This file mimics the structure of the Abstract EVM connector but for Solana.
 // It assumes that a Solana wallet provider (like Phantom) is injected on window.solana.
-export class SolanaWalletConnector extends SolanaInjectedConnector {
+export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
   /**
    * Unique identifier for this wallet connector.
    */
@@ -23,7 +24,7 @@ export class SolanaWalletConnector extends SolanaInjectedConnector {
   /**
    * URL to the wallet's icon.
    */
-  iconUrl = 'https://example.com/path/to/definitive-solana-icon.png';
+  iconUrl = 'https://example.com/path/to/WalletConnectSolanaConnector-solana-icon.png';
 
   /**
    * Background color for the icon.
@@ -34,21 +35,21 @@ export class SolanaWalletConnector extends SolanaInjectedConnector {
    * Mobile deep-link configuration.
    */
   // mobile = {
-  //   deepLink: 'definitivewallet://connect',
+  //   deepLink: 'WalletConnectSolanaConnector://connect',
   // };
 
   /**
    * QR code configuration.
    */
   // qrCode = {
-  //   url: 'https://example.com/definitive-solana-qrcode',
+  //   url: 'https://example.com/WalletConnectSolanaConnector-solana-qrcode',
   // };
 
   /**
    * Browser extension configuration.
    */
   // extension = {
-  //   installUrl: 'https://chrome.google.com/webstore/detail/definitive-wallet',
+  //   installUrl: 'https://chrome.google.com/webstore/detail/WalletConnectSolanaConnector-wallet',
   // };
 
   // Array to store supported Solana networks from connector options.
@@ -67,9 +68,9 @@ export class SolanaWalletConnector extends SolanaInjectedConnector {
     super({
       ...props,
       metadata: {
-        id: 'definitive-solana',
-        name: 'Definitive Solana',
-        icon: 'https://example.com/path/to/definitive-solana-icon.png',
+        id: 'WalletConnectSolanaConnector',
+        name: 'WalletConnectSolanaConnector Solana',
+        icon: 'https://reown.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fuvy10p5b%2Fproduction%2F01495a4964c8df30a7e8859c4f469e67dc9545a2-1024x1024.png&w=256&q=100',
       },
       // Ensure required walletBook property is present.
       walletBook: props.walletBook ?? { groups: [], wallets: [] },
@@ -106,14 +107,15 @@ export class SolanaWalletConnector extends SolanaInjectedConnector {
    * Ensures initialization is run only once and emits the providerReady event.
    */
   override async init(): Promise<void> {
-    if (SolanaWalletConnector.initHasRun) {
+    if (WalletConnectSolanaConnector.initHasRun) {
       return;
     }
     if (this.solanaNetworks.length === 0) {
       return;
     }
-    SolanaWalletConnector.initHasRun = true;
-    logger.debug('[DefinitiveSolanaWalletConnector] onProviderReady');
+    ReownSdkClient.init()
+    WalletConnectSolanaConnector.initHasRun = true;
+    logger.debug('[WalletConnectSolanaConnector] onProviderReady');
     this.walletConnectorEventsEmitter.emit('providerReady', { connector: this });
   }
 
@@ -122,10 +124,7 @@ export class SolanaWalletConnector extends SolanaInjectedConnector {
    * Assumes the provider is available on window.solana.
    */
   override findProvider(): ISolana | undefined {
-    if (typeof window !== 'undefined' && (window as any).solana) {
-      return (window as any).solana as ISolana;
-    }
-    return undefined;
+    return ReownSdkClient.getProvider();
   }
 
   /**
@@ -133,19 +132,20 @@ export class SolanaWalletConnector extends SolanaInjectedConnector {
    * Uses the injected provider's connect method and stores the connected address.
    */
   override async connect(): Promise<void> {
-    const provider = this.findProvider();
-    if (!provider) {
-      throw new DynamicError('Wallet provider not found');
-    }
-    if (provider.connect && typeof provider.connect === 'function') {
-      await provider.connect();
-    }
-    const address = await this.getAddress();
-    if (!address) {
-      throw new DynamicError('No address returned after connecting');
-    }
-    this.activeAccount = address;
-    logger.debug('[DefinitiveSolanaWalletConnector] Connected with address:', address);
+    ReownSdkClient.connect();
+    // const provider = this.findProvider();
+    // if (!provider) {
+    //   throw new DynamicError('Wallet provider not found');
+    // }
+    // if (provider.connect && typeof provider.connect === 'function') {
+    //   await provider.connect();
+    // }
+    // const address = await this.getAddress();
+    // if (!address) {
+    //   throw new DynamicError('No address returned after connecting');
+    // }
+    // this.activeAccount = address;
+    // logger.debug('[WalletConnectSolanaConnector] Connected with address:', address);
   }
 
   /**
@@ -164,9 +164,7 @@ export class SolanaWalletConnector extends SolanaInjectedConnector {
    * Retrieves the connected wallet address.
    */
   override async getAddress(): Promise<string | undefined> {
-    const provider = this.findProvider();
-    if (!provider || !provider.publicKey) return undefined;
-    return (provider.publicKey as PublicKey).toString();
+    return ReownSdkClient.getAddress()?.toString();
   }
 
   /**

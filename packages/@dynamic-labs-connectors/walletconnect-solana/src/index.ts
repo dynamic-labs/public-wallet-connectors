@@ -4,9 +4,9 @@ import { isInIframe } from '@dynamic-labs/utils';
 // import { SafeEvmWalletConnector } from './SafeEvmWalletConnector.js';
 
 // export { SafeEvmWalletConnector } from './SafeEvmWalletConnector.js';
-import { SolanaWalletConnector } from './SolanaWalletConnector.js';
+import { SolanaWalletConnector } from './WalletConnectSolanaConnector.js';
 
-export { SolanaWalletConnector } from './SolanaWalletConnector.js';
+export { SolanaWalletConnector } from './WalletConnectSolanaConnector.js';
 
 
 export const SolanaWalletConnectors = (
