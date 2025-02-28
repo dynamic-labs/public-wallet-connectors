@@ -5,18 +5,10 @@ import { WalletConnectWalletAdapter, type WalletConnectWalletAdapterConfig } fro
 import { ISolana } from '@dynamic-labs/solana-core';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 
-export enum WalletConnectChainID {
-  Mainnet = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-  Devnet = 'solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1',
-  Deprecated_Mainnet = 'solana:4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZ',
-  Deprecated_Devnet = 'solana:8E9rvCKLFQia2Y35HXjjpWzj8weVo44K',
-}
-
-
 export class ReownSdkClient {
 
   static isInitialized = false;
-  private static adapter: SolanaAdapter;
+  static adapter: SolanaAdapter;
   static walletConnectSdk: WalletConnectWalletAdapter;
 
 
@@ -44,12 +36,12 @@ export class ReownSdkClient {
       },
     // Use a literal string that matches one of the allowed values.
     };
-      // Add any other required properties here
 
     // Instantiate your Solana adapter.
     ReownSdkClient.walletConnectSdk  = new WalletConnectWalletAdapter(walletConnectConfig);
 
-    await ReownSdkClient.walletConnectSdk.connect();
+    await ReownSdkClient.connect();
+
     ReownSdkClient.isInitialized = true;
   }
 
@@ -71,17 +63,19 @@ export class ReownSdkClient {
         return ReownSdkClient.walletConnectSdk.signMessage(message);
     }
 
-    static async connect() {
-        ReownSdkClient.walletConnectSdk.connect();
+    // The walletConnectSdk.connect() returns a private key. But I am only using it to verify connection because
+    // the SolanaInjectedConnector.connect() function does not return any values. It was throwing errors when I
+    // tried to pass the publicKey through.
+    static async connect(): Promise<void> {
+        if (!ReownSdkClient.walletConnectSdk) {
+            throw new Error("WalletConnect adapter not initialized. Call init() first.");
+        }
+
+        await ReownSdkClient.walletConnectSdk.connect();
+
+        const publicKey = ReownSdkClient.walletConnectSdk.publicKey;
+            if (!publicKey) {
+        throw new Error("Failed to connect wallet: publicKey is undefined");
+        }
     }
-  //   // Convert the message to a Uint8Array (for example, using TextEncoder)
-  //   const encoder = new TextEncoder();
-  //   const messageBytes = encoder.encode(message);
-
-  //   // Call the adapter’s signMessage method (adjust if the method signature differs)
-  //   const signed: Uint8Array = await ReownSdkClient.adapter.signMessage(messageBytes);
-  //   // Convert the signature to a hex string
-  //   return Buffer.from(signed).toString('hex');
-  // }
-
 }

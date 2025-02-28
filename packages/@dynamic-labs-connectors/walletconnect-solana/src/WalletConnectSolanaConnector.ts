@@ -19,9 +19,8 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
    */
   override name = 'WalletConnect Solana';
 
-  /**
-   * URL to the wallet's icon.
-   */
+  
+  // URL to the wallet's icon.
   iconUrl = 'https://reown.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fuvy10p5b%2Fproduction%2F01495a4964c8df30a7e8859c4f469e67dc9545a2-1024x1024.png&w=256&q=100';
 
   // Array to store supported Solana networks from connector options.
@@ -71,7 +70,7 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
    * Indicates that the wallet is assumed to be installed in the browser.
    */
   override isInstalledOnBrowser(): boolean {
-    return true;
+    return false;
   }
 
   /**
@@ -86,7 +85,7 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
       return;
     }
     await ReownSdkClient.init()
-    this.onProviderReady;
+    this.onProviderReady();
     WalletConnectSolanaConnector.initHasRun = true;
   }
 
@@ -137,7 +136,7 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
    * Uses the injected provider's connect method and stores the connected address.
    */
   override async connect(): Promise<void> {
-    ReownSdkClient.connect();
+    await ReownSdkClient.connect();
   }
 
   /**

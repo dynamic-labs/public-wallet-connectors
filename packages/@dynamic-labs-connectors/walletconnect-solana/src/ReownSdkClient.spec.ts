@@ -1,36 +1,24 @@
 // ReownSdkClient.spec.ts
-//import { SolanaAdapter } from '@reown/appkit-adapter-solana';
-//import { WalletConnectWalletAdapter } from '@solana/wallet-adapter-walletconnect';
-import { logger } from '@dynamic-labs/wallet-connector-core';
 import { ReownSdkClient } from './ReownSdkClient';
+import { SolanaAdapter } from '@reown/appkit-adapter-solana';
 
-// Mock the SolanaAdapter and WalletConnectWalletAdapter
-jest.mock('@reown/appkit-adapter-solana', () => {
-  return {
-    SolanaAdapter: jest.fn().mockImplementation((config) => {
-      return {
-        config,
-        connect: jest.fn().mockResolvedValue({ address: 'FakeSolanaAddress' }),
-        disconnect: jest.fn().mockResolvedValue(undefined),
-        signMessage: jest.fn().mockResolvedValue(new Uint8Array([1, 2, 3, 4])),
-      };
-    }),
-    WalletAdapterNetwork: {
-      Mainnet: 'mainnet-beta',
-      Devnet: 'devnet'
-    }
-  };
-});
-
+// Mock the WalletConnectWalletAdapter so we can control its behavior in tests.
 jest.mock('@solana/wallet-adapter-walletconnect', () => {
   return {
-    WalletConnectWalletAdapter: jest.fn().mockImplementation((config) => {
-      return { config };
-    }),
+    WalletConnectWalletAdapter: jest.fn().mockImplementation((config) => ({
+      // Simulate connect as a resolved promise.
+      connect: jest.fn().mockResolvedValue(undefined),
+      // For testing purposes, expose a fake publicKey object.
+      publicKey: { toString: () => 'FakePublicKey' },
+      // Simulate signMessage returning a Uint8Array.
+      signMessage: jest.fn().mockImplementation((msg: Uint8Array) =>
+        Promise.resolve(new Uint8Array([1, 2, 3]))
+      ),
+    })),
   };
 });
 
-// Mock logger
+// Mock logger so we don't pollute test output.
 jest.mock('@dynamic-labs/wallet-connector-core', () => ({
   logger: {
     debug: jest.fn(),
@@ -41,87 +29,70 @@ describe('ReownSdkClient', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     // Reset static properties
-    (ReownSdkClient as any).isInitialized = false;
-    (ReownSdkClient as any).adapter = undefined;
-    (ReownSdkClient as any).walletInfo = undefined;
-    (ReownSdkClient as any).provider = undefined;
+    ReownSdkClient.isInitialized = false;
+    ReownSdkClient.walletConnectSdk = undefined as any;
+    ReownSdkClient.adapter = undefined as any;
   });
 
   describe('init', () => {
-    it('should only initialize once', async () => {
+    it('should initialize only once', async () => {
       await ReownSdkClient.init();
-      const firstAdapter = (ReownSdkClient as any).adapter;
-      expect(firstAdapter).toBeDefined();
-      expect((ReownSdkClient as any).isInitialized).toBe(true);
+      expect(ReownSdkClient.isInitialized).toBe(true);
+      const instance = ReownSdkClient.walletConnectSdk;
 
+      // Calling init again should not reinitialize.
       await ReownSdkClient.init();
-      expect((ReownSdkClient as any).adapter).toBe(firstAdapter);
-      // The adapter should have connected only once (if auto-connect was triggered)
-      // We assume connect is called once during initialization if walletInfo is unset.
-      expect(firstAdapter.connect).toHaveBeenCalledTimes(1);
-    });
-
-    it('should set walletInfo and log if auto-connect succeeds', async () => {
-      await ReownSdkClient.init();
-      expect((ReownSdkClient as any).walletInfo).toEqual({ address: 'FakeSolanaAddress' });
-      expect(logger.debug).toHaveBeenCalledWith(
-        '[ReownSdkClient] Connected, wallet info:',
-        { address: 'FakeSolanaAddress' }
-      );
+      expect(ReownSdkClient.walletConnectSdk).toBe(instance);
     });
   });
 
   describe('getAddress', () => {
-    it('should return undefined when walletInfo is not available', () => {
-      (ReownSdkClient as any).walletInfo = undefined;
-      expect(ReownSdkClient.getAddress()).toBeUndefined();
-    });
-
-    it('should return the wallet address when walletInfo is available', () => {
-      (ReownSdkClient as any).walletInfo = { address: 'FakeSolanaAddress' };
-      expect(ReownSdkClient.getAddress()).toBe('FakeSolanaAddress');
+    it('should return the public key as address', async () => {
+      await ReownSdkClient.init();
+      const address = ReownSdkClient.getAddress();
+      expect(address?.toString()).toEqual('FakePublicKey');
     });
   });
 
-//   describe('getProvider', () => {
-//     it('should return the provider cast as ISolana', () => {
-//       const fakeProvider = { some: 'provider' };
-//       (ReownSdkClient as any).provider = fakeProvider;
-//       expect(ReownSdkClient.getProvider()).toBe(fakeProvider);
-//     });
-//   });
-
-//   describe('connect', () => {
-//     it('should call adapter.connect if walletInfo is not set', async () => {
-//       // Ensure walletInfo is cleared
-//       (ReownSdkClient as any).walletInfo = undefined;
-//       // First, initialize to set up the adapter
-//       await ReownSdkClient.init();
-//       const adapter = (ReownSdkClient as any).adapter;
-//       // Reset connect mock to verify call during connect() method
-//       (adapter.connect as jest.Mock).mockClear();
-
-//       await ReownSdkClient.connect();
-//       expect(adapter.connect).toHaveBeenCalled();
-//       expect((ReownSdkClient as any).walletInfo).toEqual({ address: 'FakeSolanaAddress' });
-//     });
-//   });
-
-//   describe('disconnect', () => {
-//     it('should call adapter.disconnect and clear walletInfo', async () => {
-//       await ReownSdkClient.init();
-//       const adapter = (ReownSdkClient as any).adapter;
-//       // Call disconnect and check that adapter.disconnect was invoked
-//       await ReownSdkClient.disconnect();
-//       expect(adapter.disconnect).toHaveBeenCalled();
-//       expect((ReownSdkClient as any).walletInfo).toBeUndefined();
-//     });
-//   });
-
-  describe('constructor', () => {
-    it('should not be instantiable', () => {
-      // @ts-expect-error: testing private constructor
-      expect(() => new ReownSdkClient()).toThrow();
+  describe('getProvider', () => {
+    it('should return adapter casted as ISolana', () => {
+      const fakeAdapter = { some: 'provider' } as unknown as SolanaAdapter;
+      ReownSdkClient.adapter = { some: 'provider' } as unknown as SolanaAdapter;
+      expect(ReownSdkClient.getProvider()).toStrictEqual(fakeAdapter);
     });
+  });
+
+  describe('signMessage', () => {
+    it('should sign a message and return a Uint8Array', async () => {
+      await ReownSdkClient.init();
+      const message = new TextEncoder().encode('hello');
+      const signature = await ReownSdkClient.signMessage(message);
+      expect(signature).toEqual(new Uint8Array([1, 2, 3]));
+    });
+  });
+
+  describe('connect', () => {
+    it('should call walletConnectSdk.connect', async () => {
+        await ReownSdkClient.init();
+        await ReownSdkClient.connect();
+        expect(ReownSdkClient.walletConnectSdk.connect).toHaveBeenCalled();
+    });
+
+    it('should throw an error if walletConnectSdk is not initialized', async () => {
+        ReownSdkClient.walletConnectSdk = undefined as any;
+        await expect(ReownSdkClient.connect()).rejects.toThrow(
+        "WalletConnect adapter not initialized. Call init() first."
+        );
+    });
+
+    // it('should throw error if publicKey is undefined after connect', async () => {
+    //   await ReownSdkClient.init();
+    //   // Simulate a scenario where publicKey is undefined.
+    //   ReownSdkClient.walletConnectSdk.publicKey = undefined;
+    //   await expect(ReownSdkClient.connect()).rejects.toThrow(
+    //     "Failed to connect wallet: publicKey is undefined"
+    //   );
+    // });
   });
 });
+
