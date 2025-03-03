@@ -59,19 +59,19 @@ describe('ReownSdkClient', () => {
 
   describe('getProvider', () => {
     it('should return return true for all these proving it is casted to ISolana as Dynamic WalletConnect', async () => {
-      // const fakeAdapter = { 
-      //   connect: jest.fn(),
-      //   publicKey: { 
-      //     toString: () => 'FakePublicKey', 
-      //   },
-      //   signMessage: jest.fn(),
-      // } as unknown as WalletConnectWalletAdapter;
+      const fakeAdapter = { 
+        connect: jest.fn(),
+        publicKey: { 
+          toString: () => 'FakePublicKey', 
+        },
+        signMessage: jest.fn(),
+      } as unknown as WalletConnectWalletAdapter;
 
       await ReownSdkClient.init();
-      // expect(ReownSdkClient.getProvider()).toStrictEqual(fakeAdapter);   
-      expect(typeof ReownSdkClient.getProvider().connect).toBe('function');
-      expect(typeof ReownSdkClient.getProvider().signMessage).toBe('function');
-      expect(ReownSdkClient.getProvider().publicKey).toHaveProperty('toString');
+      expect(ReownSdkClient.getProvider()).toStrictEqual(fakeAdapter);   
+      // expect(typeof ReownSdkClient.getProvider().signTransaction).toBe('function');
+      // expect(typeof ReownSdkClient.getProvider().signMessage).toBe('function');
+      // expect(ReownSdkClient.getProvider().publicKey).toHaveProperty('toString');
     });
   });
 
