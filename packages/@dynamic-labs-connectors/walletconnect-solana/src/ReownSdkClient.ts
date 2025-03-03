@@ -10,7 +10,7 @@ export class ReownSdkClient {
   static isInitialized = false;
   static adapter: SolanaAdapter;
   static walletConnectSdk: WalletConnectWalletAdapter;
-
+  static isConnected = false;
 
   // Private constructor: this class is a singleton.
   private constructor() {
@@ -22,8 +22,6 @@ export class ReownSdkClient {
     if (ReownSdkClient.isInitialized) {
       return;
     }
-
-    ReownSdkClient.isInitialized = true;
     
     logger.debug('[ReownSdkClient] Initializing Solana adapter');
 
@@ -41,7 +39,6 @@ export class ReownSdkClient {
     ReownSdkClient.walletConnectSdk  = new WalletConnectWalletAdapter(walletConnectConfig);
 
     await ReownSdkClient.connect();
-
     ReownSdkClient.isInitialized = true;
   }
 
@@ -52,9 +49,9 @@ export class ReownSdkClient {
 
     // Returns the provider from the adapter. Adjust as needed if your adapter exposes a different property.
     static getProvider = () => {
-        // Casting to IEthereum because the Safe provider implements the eip-1193 interface
-        // And that the expected type for the parent class EthereumInjectedConnector
-        return ReownSdkClient.adapter as unknown as ISolana;
+        // Casting to ISolana because the walletConnect provider implements the solana interface
+        // And that the expected type for the parent class SolanaInjectedContainer
+        return ReownSdkClient.walletConnectSdk as unknown as ISolana;
     };
 
 
@@ -77,5 +74,7 @@ export class ReownSdkClient {
             if (!publicKey) {
         throw new Error("Failed to connect wallet: publicKey is undefined");
         }
+
+        ReownSdkClient.isConnected = ReownSdkClient.walletConnectSdk.connected;
     }
 }

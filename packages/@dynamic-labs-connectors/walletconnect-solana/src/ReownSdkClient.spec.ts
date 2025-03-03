@@ -1,17 +1,18 @@
 // ReownSdkClient.spec.ts
+import { WalletConnectWalletAdapter } from '@solana/wallet-adapter-walletconnect';
 import { ReownSdkClient } from './ReownSdkClient.js';
 import { SolanaAdapter } from '@reown/appkit-adapter-solana';
 
 // Mock the WalletConnectWalletAdapter so we can control its behavior in tests.
 jest.mock('@solana/wallet-adapter-walletconnect', () => {
   return {
-    WalletConnectWalletAdapter: jest.fn().mockImplementation((config) => ({
+    WalletConnectWalletAdapter: jest.fn().mockImplementation((_config) => ({
       // Simulate connect as a resolved promise.
       connect: jest.fn().mockResolvedValue(undefined),
       // For testing purposes, expose a fake publicKey object.
       publicKey: { toString: () => 'FakePublicKey' },
       // Simulate signMessage returning a Uint8Array.
-      signMessage: jest.fn().mockImplementation((msg: Uint8Array) =>
+      signMessage: jest.fn().mockImplementation((_msg: Uint8Array) =>
         Promise.resolve(new Uint8Array([1, 2, 3]))
       ),
     })),
@@ -32,11 +33,13 @@ describe('ReownSdkClient', () => {
     ReownSdkClient.isInitialized = false;
     ReownSdkClient.walletConnectSdk = undefined as any;
     ReownSdkClient.adapter = undefined as any;
+    ReownSdkClient.isConnected = false;
   });
 
   describe('init', () => {
     it('should initialize only once', async () => {
       await ReownSdkClient.init();
+
       expect(ReownSdkClient.isInitialized).toBe(true);
       const instance = ReownSdkClient.walletConnectSdk;
 
@@ -55,12 +58,20 @@ describe('ReownSdkClient', () => {
   });
 
   describe('getProvider', () => {
-    it('should return adapter casted as ISolana', async () => {
-      const fakeAdapter = { some: 'provider' } as unknown as SolanaAdapter;
-      ReownSdkClient.adapter = { some: 'provider' } as unknown as SolanaAdapter;
+    it('should return return true for all these proving it is casted to ISolana as Dynamic WalletConnect', async () => {
+      // const fakeAdapter = { 
+      //   connect: jest.fn(),
+      //   publicKey: { 
+      //     toString: () => 'FakePublicKey', 
+      //   },
+      //   signMessage: jest.fn(),
+      // } as unknown as WalletConnectWalletAdapter;
 
       await ReownSdkClient.init();
-      expect(ReownSdkClient.getProvider()).toStrictEqual(fakeAdapter);
+      // expect(ReownSdkClient.getProvider()).toStrictEqual(fakeAdapter);   
+      expect(typeof ReownSdkClient.getProvider().connect).toBe('function');
+      expect(typeof ReownSdkClient.getProvider().signMessage).toBe('function');
+      expect(ReownSdkClient.getProvider().publicKey).toHaveProperty('toString');
     });
   });
 
@@ -87,14 +98,6 @@ describe('ReownSdkClient', () => {
         );
     });
 
-    // it('should throw error if publicKey is undefined after connect', async () => {
-    //   await ReownSdkClient.init();
-    //   // Simulate a scenario where publicKey is undefined.
-    //   ReownSdkClient.walletConnectSdk.publicKey = undefined;
-    //   await expect(ReownSdkClient.connect()).rejects.toThrow(
-    //     "Failed to connect wallet: publicKey is undefined"
-    //   );
-    // });
   });
 });
 

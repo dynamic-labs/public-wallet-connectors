@@ -79,7 +79,9 @@ describe('WalletConnectSolanaConnector', () => {
   describe('connect', () => {
     it('should call ReownSdkClient.connect', async () => {
       await connector.connect();
+      // const provider = ReownSdkClient.getProvider();
       expect(ReownSdkClient.connect).toHaveBeenCalled();
+      // expect(provider.isConnected).toBe(true);
     });
   });
 
@@ -113,4 +115,20 @@ describe('WalletConnectSolanaConnector', () => {
       expect(signature).toEqual(new Uint8Array([1, 2, 3]).toString());
     });
   });
+
+  // describe('getProvider compatibility', () => {
+  //   it('should return a provider compatible with ISolana', async () => {
+  //     // Retrieve the provider (this should already satisfy the ISolana interface).
+  //     const provider = ReownSdkClient.getProvider();
+  //     // Check that the provider has the expected methods and properties.
+  //     expect(typeof provider.connect).toBe('function');
+  //     expect(typeof provider.signMessage).toBe('function');
+  //     // You can add more checks for other required methods or properties.
+  
+  //     // Similarly, if signMessage is supposed to return a specific signature:
+  //     const signature = await provider.signMessage(new Uint8Array([10, 20, 30]));
+  //     expect(signature).toEqual(new Uint8Array([10, 20, 30])); // Adjust the expected output as needed.
+  //   });
+  // });
+  
 });
