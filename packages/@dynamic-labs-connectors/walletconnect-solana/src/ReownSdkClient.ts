@@ -2,7 +2,7 @@
 import { SolanaAdapter } from '@reown/appkit-adapter-solana';
 import { logger } from '@dynamic-labs/wallet-connector-core';
 import { WalletConnectWalletAdapter, type WalletConnectWalletAdapterConfig } from '@solana/wallet-adapter-walletconnect';
-import { ISolana } from '@dynamic-labs/solana-core';
+import type { ISolana } from '@dynamic-labs/solana-core';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 
 export class ReownSdkClient {

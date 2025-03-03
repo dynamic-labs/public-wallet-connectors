@@ -1,9 +1,9 @@
 import { type SolanaWalletConnectorOpts } from '@dynamic-labs/solana-core';
-import { ISolana } from '@dynamic-labs/solana-core';
+import type { ISolana } from '@dynamic-labs/solana-core';
 import { SolanaInjectedConnector } from '@dynamic-labs/solana';
 import { DynamicError } from '@dynamic-labs/utils';
 import { logger } from '@dynamic-labs/wallet-connector-core';
-import { ReownSdkClient } from './ReownSdkClient';
+import { ReownSdkClient } from './ReownSdkClient.js';
 
 
 // This file mimics the structure of the Abstract EVM connector but for Solana.

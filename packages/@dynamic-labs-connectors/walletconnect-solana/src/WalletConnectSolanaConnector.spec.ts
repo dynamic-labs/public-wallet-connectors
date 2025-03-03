@@ -1,8 +1,8 @@
 // WalletConnectSolanaConnector.spec.ts
-import { WalletConnectSolanaConnector } from './WalletConnectSolanaConnector';
-import { ReownSdkClient } from './ReownSdkClient';
+import { WalletConnectSolanaConnector } from './WalletConnectSolanaConnector.js';
+import { ReownSdkClient } from './ReownSdkClient.js';
 import { DynamicError } from '@dynamic-labs/utils';
-import { ISolana } from '@dynamic-labs/solana-core';
+import type { ISolana } from '@dynamic-labs/solana-core';
 
 describe('WalletConnectSolanaConnector', () => {
   let connector: WalletConnectSolanaConnector;
@@ -73,6 +73,7 @@ describe('WalletConnectSolanaConnector', () => {
       expect(provider).toEqual(fakeProvider);
       expect(ReownSdkClient.getProvider).toHaveBeenCalled();
     });
+    // check 
   });
 
   describe('connect', () => {

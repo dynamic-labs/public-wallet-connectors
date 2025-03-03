@@ -1,5 +1,5 @@
 // ReownSdkClient.spec.ts
-import { ReownSdkClient } from './ReownSdkClient';
+import { ReownSdkClient } from './ReownSdkClient.js';
 import { SolanaAdapter } from '@reown/appkit-adapter-solana';
 
 // Mock the WalletConnectWalletAdapter so we can control its behavior in tests.
@@ -55,9 +55,11 @@ describe('ReownSdkClient', () => {
   });
 
   describe('getProvider', () => {
-    it('should return adapter casted as ISolana', () => {
+    it('should return adapter casted as ISolana', async () => {
       const fakeAdapter = { some: 'provider' } as unknown as SolanaAdapter;
       ReownSdkClient.adapter = { some: 'provider' } as unknown as SolanaAdapter;
+
+      await ReownSdkClient.init();
       expect(ReownSdkClient.getProvider()).toStrictEqual(fakeAdapter);
     });
   });
