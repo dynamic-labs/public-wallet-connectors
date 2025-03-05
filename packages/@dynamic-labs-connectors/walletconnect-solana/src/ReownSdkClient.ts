@@ -37,7 +37,7 @@ export class ReownSdkClient {
     };
     // Instantiate your Solana adapter.
     ReownSdkClient.walletConnectSdk  = new WalletConnectWalletAdapter(walletConnectConfig);
-    ReownSdkClient.walletConnectSdk.connect();
+    await ReownSdkClient.connect();
 
     ReownSdkClient.isInitialized = true;
   }
@@ -72,6 +72,9 @@ export class ReownSdkClient {
       if (!ReownSdkClient.walletConnectSdk) {
         throw new Error("WalletConnect adapter not initialized. Call init() first.");
       }
+
+      console.log("WalletConnectSdk instance:", ReownSdkClient.walletConnectSdk);
+
       return await ReownSdkClient.walletConnectSdk.signMessage(message);
     }
     

@@ -79,9 +79,9 @@ export class ReownProvider extends EventEmitter<ISolanaEvents> implements ISolan
     return { signature: result };
   }
 
-  connect = async (
+  async connect (
     //args?: { onlyIfTrusted: boolean }
-  ): Promise<ConnectionResult> => {
+  ): Promise<ConnectionResult> {
     // Implement your connection logic here.
     await this.sdk.connect();
     this.isConnected = this.sdk.connected;
@@ -94,7 +94,7 @@ export class ReownProvider extends EventEmitter<ISolanaEvents> implements ISolan
     }
 
     return { publicKey: this.publicKey.toBytes() };
-  };
+  }
 
   // Convert from type: PublicKey | Null to type: PublicKey | Undefined
   wrapPublicKey(key: PublicKey | null): PublicKey | undefined {
@@ -104,24 +104,9 @@ export class ReownProvider extends EventEmitter<ISolanaEvents> implements ISolan
   
   async disconnect(): Promise<void> {
     // Implement your disconnection logic here.
-    this.sdk.disconnect();
+    await this.sdk.disconnect();
     this.isConnected = this.sdk.connected;
     this.publicKey = undefined;
   }
 
-  
-  // override listeners<T extends keyof ISolanaEvents & (string | symbol)>(
-  //   event: T
-  // ): ((...args: EventEmitter.ArgumentMap<ISolanaEvents>[T]) => void)[] {
-  //   return super.listeners(event) as ((...args: EventEmitter.ArgumentMap<ISolanaEvents>[T]) => void)[];
-  // }
-  
-  // // Override eventNames to satisfy the type requirement.
-  // override eventNames(): (keyof ISolanaEvents)[] {
-  //   // For example, assume our ISolanaEvents only includes "connect" and "disconnect".
-  //   const allowed: (keyof ISolanaEvents)[] = ['connect', 'disconnect'];
-  //   return super.eventNames().filter((name): name is keyof ISolanaEvents => {
-  //     return typeof name === "string" && allowed.includes(name as keyof ISolanaEvents);
-  //   });
-  // }
 }

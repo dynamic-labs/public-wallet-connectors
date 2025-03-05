@@ -97,6 +97,7 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
       connector: this,
     })
 
+    this.findProvider();
     // Tries to auto connect to the walletConnect
     this.tryAutoConnect();
   }
