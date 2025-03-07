@@ -47,7 +47,7 @@ export class SequenceCrossAppConnector extends EthereumInjectedConnector {
   }
 
   override supportsNetworkSwitching(): boolean {
-    return false;
+    return true;
   }
 
   override isInstalledOnBrowser(): boolean {
