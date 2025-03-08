@@ -6,7 +6,9 @@
     "preinstall": "npx only-allow pnpm",
     "postinstall": "lefthook install",
     "release:bump-version": "pnpm nx run release:bump-version",
-    "release:publish": "pnpm nx run release:publish"
+    "release:publish": "pnpm nx run release:publish",
+    "test": "pnpm nx run-many --target test --parallel --maxParallel=4",
+    "nuke": "rm -fr node_modules/.cache dist && npx nx daemon --stop"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
