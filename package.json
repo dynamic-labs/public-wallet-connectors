@@ -7,10 +7,12 @@
     "postinstall": "lefthook install",
     "release:bump-version": "pnpm nx run release:bump-version",
     "release:publish": "pnpm nx run release:publish",
-    "test": "pnpm nx run-many --target test --parallel --maxParallel=4",
+    "test": "pnpm nx run-many --target test --parallel --maxParallel=4 -- --detectOpenHandles --forceExit",
     "nuke": "rm -fr node_modules/.cache dist && npx nx daemon --stop"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-typescript": "^7.26.0",
     "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
     "@commitlint/config-nx-scopes": "^19.5.0",
@@ -26,6 +28,7 @@
     "@swc/jest": "~0.2.37",
     "@types/jest": "^29.5.14",
     "@types/node": "18.16.9",
+    "babel-jest": "^29.7.0",
     "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.3",

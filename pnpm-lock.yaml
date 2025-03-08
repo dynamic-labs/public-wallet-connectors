@@ -11,6 +11,12 @@ importers:
 
   .:
     devDependencies:
+      '@babel/preset-env':
+        specifier: ^7.26.9
+        version: 7.26.9(@babel/core@7.26.9)
+      '@babel/preset-typescript':
+        specifier: ^7.26.0
+        version: 7.26.0(@babel/core@7.26.9)
       '@commitlint/cli':
         specifier: ^19.6.0
         version: 19.8.0(@types/node@18.16.9)(typescript@5.5.4)
@@ -56,6 +62,9 @@ importers:
       '@types/node':
         specifier: 18.16.9
         version: 18.16.9
+      babel-jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@babel/core@7.26.9)
       eslint:
         specifier: ^9.15.0
         version: 9.22.0(jiti@2.4.2)
