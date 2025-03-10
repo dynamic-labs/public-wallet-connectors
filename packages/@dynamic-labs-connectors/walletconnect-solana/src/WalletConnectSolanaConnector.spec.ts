@@ -1,17 +1,12 @@
 // WalletConnectSolanaConnector.spec.ts
 import { WalletConnectSolanaConnector } from './WalletConnectSolanaConnector.js';
 import { ReownSdkClient } from './ReownSdkClient.js';
-import { DynamicError } from '@dynamic-labs/utils';
-import type { ISolana } from '@dynamic-labs/solana-core';
 import { ReownProvider } from './ReownProvider.js';
-import { Wallet } from '@dynamic-labs/wallet-connector-core';
-import { WalletConnectWalletAdapter } from '@walletconnect/solana-adapter';
 
 describe('WalletConnectSolanaConnector', () => {
   let connector: WalletConnectSolanaConnector;
   let emitSpy: jest.SpyInstance;
 
-  const fakeProvider = { provider: 'fakeProvider' } as unknown as ISolana;
   const fakePublicKey = { toString: () => 'FakePublicKey' };
 
   beforeEach(() => {
@@ -49,6 +44,18 @@ describe('WalletConnectSolanaConnector', () => {
   describe('isInstalledOnBrowser', () => {
     it('should return true', () => {
       expect(connector.isInstalledOnBrowser()).toBe(false);
+    });
+  });
+
+  describe('isWalletConnect', () => {
+    it('should return true', () => {
+      expect(connector.isWalletConnect).toBe(true);
+    });
+  });
+
+  describe('canConnectViaQRCode', () => {
+    it('should return true', () => {
+      expect(connector.canConnectViaQrCode).toBe(true);
     });
   });
 
@@ -137,10 +144,8 @@ describe('WalletConnectSolanaConnector', () => {
       expect(typeof provider.signMessage).toBe('function');
       expect(typeof provider.disconnect).toBe('function');
       expect(typeof provider.publicKey).toBe('object');
-
+      expect(typeof provider.providers).toBe('object');
       // You can add more checks for other required methods or properties.
-  
     });
   });
-  
 });

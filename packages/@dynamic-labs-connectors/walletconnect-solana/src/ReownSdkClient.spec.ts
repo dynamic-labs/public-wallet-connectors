@@ -2,6 +2,7 @@
 import { ReownProvider } from './ReownProvider.js';
 import { ReownSdkClient } from './ReownSdkClient.js';
 import { PublicKey, Transaction } from '@solana/web3.js';
+
 // Mock the WalletConnectWalletAdapter so we can control its behavior in tests.
 jest.mock('@walletconnect/solana-adapter', () => {
   return {
@@ -15,7 +16,13 @@ jest.mock('@walletconnect/solana-adapter', () => {
         // Simulate signing by returning the transaction with a dummy signature.
         Promise.resolve({ ...tx, signature: Buffer.from("dummy_signature") })
       ),
-      // You can add mocks for signAllTransactions/signAndSendTransaction as needed.
+      signAllTransactions: jest.fn().mockImplementation((txs: any[]) =>
+        // Simulate signing all transactions by returning each transaction with a dummy signature.
+        Promise.resolve(
+          txs.map((tx) => ({ ...tx, signature: Buffer.from("dummy_signature") }))
+        )
+      ),
+      // You can add mocks for signAndSendTransaction as needed.
     })),
   };
 });
@@ -70,6 +77,7 @@ describe('ReownSdkClient', () => {
       expect(typeof provider.signTransaction).toBe('function');
       expect(typeof provider.signMessage).toBe('function');
       expect(typeof provider.connect).toBe('function');
+      expect(typeof provider.signAllTransactions).toBe('function');
       expect(typeof provider.disconnect).toBe('function');
       expect(typeof provider.signAndSendTransaction).toBe('function');
 
@@ -132,8 +140,8 @@ describe('ReownSdkClient', () => {
       const result = await ReownSdkClient.signAndSendTransaction(tx);
       // Expect that a signature string is returned.
       expect(result.signatures).toEqual(expect.any(Object));
-      // Optionally, check for a specific dummy signature value.
-      // expect(result.signatures).toEqual(expect.any(String));
     });
   });
+
+  
 });

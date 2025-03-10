@@ -32,6 +32,10 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
   // Property to store the connected wallet address.
   activeAccount?: string;
 
+  // To ensure WC works
+  override canConnectViaQrCode = true;
+  override isWalletConnect = true;
+
   /**
    * The constructor accepts options and sets metadata.
    */
