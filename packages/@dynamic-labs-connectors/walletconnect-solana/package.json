@@ -1,0 +1,25 @@
+{
+  "name": "definitive-solana",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@dynamic-labs/solana": "^4.8.1",
+    "@dynamic-labs/solana-core": "^4.8.1",
+    "@dynamic-labs/utils": "^4.8.1",
+    "@dynamic-labs/wallet-connector-core": "^4.8.1",
+    "@solana/wallet-adapter-base": "^0.9.23",
+    "@solana/web3.js": "^1.92.1",
+    "@walletconnect/solana-adapter": "^0.0.6",
+    "eventemitter3": "^5.0.1"
+  },
+  "devDependencies": {
+    "@swc/jest": "^0.2.37"
+  }
+}
