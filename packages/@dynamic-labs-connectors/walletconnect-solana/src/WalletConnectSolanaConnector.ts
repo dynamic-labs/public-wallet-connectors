@@ -1,13 +1,13 @@
 import { type SolanaWalletConnectorOpts } from '@dynamic-labs/solana-core';
 import type { ISolana } from '@dynamic-labs/solana-core';
-import { SolanaInjectedConnector, SolanaWalletConnector } from '@dynamic-labs/solana';
+import { SolanaInjectedConnector } from '@dynamic-labs/solana';
 import { DynamicError } from '@dynamic-labs/utils';
 import { logger } from '@dynamic-labs/wallet-connector-core';
 import { ReownSdkClient } from './ReownSdkClient.js';
 
 // This file mimics the structure of the Abstract EVM connector but for Solana.
 // It assumes that a Solana wallet provider (like Phantom) is injected on window.solana.
-export class WalletConnectSolanaConnector extends SolanaWalletConnector {
+export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
   
   /**
    * Unique identifier for this wallet connector.
@@ -132,7 +132,7 @@ export class WalletConnectSolanaConnector extends SolanaWalletConnector {
    * Finds and returns the injected Solana wallet provider.
    * Assumes the provider is available on window.solana.
    */
-   findProvider(): ISolana | undefined {
+   override findProvider(): ISolana | undefined {
     return ReownSdkClient.getProvider();
   }
 
