@@ -11,7 +11,7 @@ export class ReownSdkClient {
   static isInitialized = false;
   static walletConnectSdk: WalletConnectWalletAdapter;
   static isConnected = false;
-  static provider: ReownProvider;
+  static provider: ReownProvider | undefined;
 
   // Private constructor: this class is a singleton.
   private constructor() {
@@ -37,14 +37,27 @@ export class ReownSdkClient {
     };
     // Instantiate your Solana adapter.
     ReownSdkClient.walletConnectSdk  = new WalletConnectWalletAdapter(walletConnectConfig);
+    console.log("Wallet connect SDK: " + ReownSdkClient.walletConnectSdk);
+    // Connect the adapter. This will throw if connection fails.
     await ReownSdkClient.connect();
-
+    
+    // Mark initialization as complete.
     ReownSdkClient.isInitialized = true;
   }
 
     // Returns the connected wallet's address (public key).
-    static getAddress = () => {
-        return ReownSdkClient.walletConnectSdk.publicKey;
+    // static getAddress = () => {
+    //   if (!ReownSdkClient.walletConnectSdk) {
+    //     throw new Error("WalletConnect adapter not initialized. Call init() first.");
+    //   }
+  
+    //   return ReownSdkClient.walletConnectSdk.publicKey;
+    // }
+    static getAddress = (): PublicKey | undefined => {
+      if (!ReownSdkClient.walletConnectSdk || !ReownSdkClient.isConnected) {
+        return undefined;
+      }
+      return ReownSdkClient.walletConnectSdk.publicKey || undefined;
     }
 
     static async connect(): Promise<void> {
@@ -57,6 +70,7 @@ export class ReownSdkClient {
           if (!publicKey) {
       throw new Error("Failed to connect wallet: publicKey is undefined");
       }
+      ReownSdkClient.isConnected = true;
     }
 
     static signAndSendTransaction = async <T extends Transaction | VersionedTransaction>(t: T): Promise<T> => {
@@ -82,18 +96,16 @@ export class ReownSdkClient {
 
     // Returns the provider from the adapter. Adjust as needed if your adapter exposes a different property.
     static getProvider = (): ISolana => {
-      const adapter = ReownSdkClient.walletConnectSdk;
-      if (!adapter) {
+      if (!ReownSdkClient.walletConnectSdk) {
         throw new Error("WalletConnect adapter is not initialized");
       }
     
-      // Create an instance of your custom provider.
-      ReownSdkClient.provider = new ReownProvider(this.walletConnectSdk);
-      
-      // Set the underlying properties from the adapter.
-      ReownSdkClient.provider.publicKey = adapter.publicKey as PublicKey;
+      // Create the provider only once.
+    if (!ReownSdkClient.provider) {
+      ReownSdkClient.provider = new ReownProvider(ReownSdkClient.walletConnectSdk);
+      ReownSdkClient.provider.publicKey = ReownSdkClient.walletConnectSdk.publicKey as PublicKey;
       ReownSdkClient.provider.isConnected = ReownSdkClient.isConnected;
-    
+      
       // Set the extension locator flags as desired.
       ReownSdkClient.provider.isBraveWallet = true;
       ReownSdkClient.provider.isGlow = true;
@@ -102,7 +114,8 @@ export class ReownSdkClient {
       ReownSdkClient.provider.isExodus = true;
       ReownSdkClient.provider.isBackpack = true;
       ReownSdkClient.provider.isMagicEden = true;
-      
-      return ReownSdkClient.provider;
+    }
+    
+    return ReownSdkClient.provider;
     };
 }
