@@ -82,15 +82,21 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
    * Ensures initialization is run only once and emits the providerReady event.
    */
   override async init(): Promise<void> {
-    if (ReownSdkClient.isInitialized) {
+    if (ReownSdkClient.isInitialized && ReownSdkClient.walletConnectSdk) {
+      this.onProviderReady();
       return;
     }
     if (this.solanaNetworks.length === 0) {
       return;
     }
-    await ReownSdkClient.init()
-    this.onProviderReady();
-    WalletConnectSolanaConnector.initHasRun = true;
+    try {
+      await ReownSdkClient.init();
+      this.onProviderReady();
+      WalletConnectSolanaConnector.initHasRun = true;
+    } catch (error) {
+      console.error("Failed to initialize WalletConnectSolanaConnector:", error);
+      throw error;
+    }
   }
 
   private onProviderReady = (): void => {
@@ -159,9 +165,11 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
   /**
    * Retrieves the connected wallet address.
    */
-  override async getAddress(): Promise<string | undefined> {
-    return ReownSdkClient.getAddress()?.toString();
-  }
+  
+override async getAddress(): Promise<string | undefined> {
+  const publicKey = ReownSdkClient.getAddress();
+  return publicKey?.toString();
+}
 
   /**
    * Signs a message.

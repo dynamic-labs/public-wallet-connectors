@@ -13,7 +13,7 @@ jest.mock('@walletconnect/solana-adapter', () => {
         Promise.resolve(new Uint8Array([1, 2, 3]))
       ),
       signTransaction: jest.fn().mockImplementation((tx: any) =>
-        // Simulate signing by returning the transaction with a dummy signature.
+        //aSimulate signing by returning the transaction with a dummy signature.
         Promise.resolve({ ...tx, signature: Buffer.from("dummy_signature") })
       ),
       signAllTransactions: jest.fn().mockImplementation((txs: any[]) =>
