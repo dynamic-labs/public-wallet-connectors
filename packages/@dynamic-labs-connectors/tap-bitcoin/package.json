@@ -1,0 +1,30 @@
+{
+    "name": "@dynamic-labs-connectors/tap-bitcoin",
+    "version": "1.0.0",
+    "type": "module",
+    "main": "./src/index.js",
+    "typings": "./src/index.d.ts",
+    "publishConfig": {
+      "access": "public"
+    },
+    "private": false,
+    "exports": {
+      ".": {
+        "import": "./src/index.js",
+        "require": "./src/index.js",
+        "types": "./src/index.d.ts"
+      }
+    },
+    "dependencies": {
+      "@dynamic-labs/bitcoin": "^4.9.3",
+      "bitcoinjs-lib": "^6.1.7"
+    },
+    "peerDependencies": {
+      "@dynamic-labs/utils": "^4.0.0-alpha.35",
+      "@dynamic-labs/wallet-connector-core": "^4.0.0-alpha.35"
+    },
+    "devDependencies": {
+      "@dynamic-labs/utils": "^4.0.0-alpha.35"
+    }
+  }
+  
