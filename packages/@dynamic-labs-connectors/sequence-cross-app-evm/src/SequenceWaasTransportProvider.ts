@@ -13,14 +13,22 @@ import { ProviderTransport } from './ProviderTransport.js';
 import { networks } from './networks.js';
 import { normalizeChainId } from './utils.js';
 
+type EventType = 'chainChanged';
+
+type EventCallback = (args: unknown) => void;
+
 export interface EIP1193Provider {
   request(args: {
     method: string;
     params?: readonly unknown[];
   }): Promise<unknown>;
+  on(eventName: EventType, callback: EventCallback): void;
+  removeListener(eventName: EventType, callback: EventCallback): void;
+  emit(eventName: EventType, args: unknown): void;
 }
 
 export class SequenceWaasTransportProvider implements EIP1193Provider {
+  private eventListeners: Map<EventType, Set<EventCallback>> = new Map();
   publicClient: PublicClient;
   currentChainId: number;
   transport: ProviderTransport;
@@ -80,14 +88,20 @@ export class SequenceWaasTransportProvider implements EIP1193Provider {
         throw new Error(`Unsupported chain ID: ${chainId}`);
       }
 
-      this.publicClient = createPublicClient({
-        transport: http(
-          `${this.nodesUrl}/${network.name}/${this.projectAccessKey}`,
-        ),
-      });
-      this.currentChainId = chainId;
+      try {
+        this.publicClient = createPublicClient({
+          transport: http(
+            `${this.nodesUrl}/${network.name}/${this.projectAccessKey}`,
+          ),
+        });
+        this.currentChainId = chainId;
+        this.emitChainChanged(chainId);
 
-      return null;
+        return null;
+      } catch (error) {
+        console.error('[Debug] Chain switch failed:', error);
+        throw error;
+      }
     }
 
     if (method === 'eth_chainId') {
@@ -175,5 +189,34 @@ export class SequenceWaasTransportProvider implements EIP1193Provider {
 
   disconnect() {
     this.transport.disconnect();
+  }
+
+  // EIP-1193 Event Methods
+  on(eventName: EventType, callback: EventCallback): void {
+    if (!this.eventListeners.has(eventName)) {
+      this.eventListeners.set(eventName, new Set());
+    }
+    this.eventListeners.get(eventName)?.add(callback);
+  }
+
+  removeListener(eventName: EventType, callback: EventCallback): void {
+    this.eventListeners.get(eventName)?.delete(callback);
+    if (this.eventListeners.get(eventName)?.size === 0) {
+      this.eventListeners.delete(eventName);
+    }
+  }
+
+  emit(eventName: EventType, args: unknown): void {
+    this.eventListeners.get(eventName)?.forEach((callback) => {
+      try {
+        callback(args);
+      } catch (error) {
+        console.error(`Error in ${eventName} event handler:`, error);
+      }
+    });
+  }
+
+  private emitChainChanged(chainId: number): void {
+    this.emit('chainChanged', toHex(chainId));
   }
 }

@@ -72,8 +72,8 @@ describe('SequenceCrossAppConnector', () => {
   });
 
   describe('supportsNetworkSwitching', () => {
-    it('should return false', () => {
-      expect(connector.supportsNetworkSwitching()).toBe(false);
+    it('should return true', () => {
+      expect(connector.supportsNetworkSwitching()).toBe(true);
     });
   });
 
