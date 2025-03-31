@@ -55,7 +55,8 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
           icons: ["https://reown.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fuvy10p5b%2Fproduction%2F01495a4964c8df30a7e8859c4f469e67dc9545a2-1024x1024.png&w=256&q=100"] // Replace with your app's icon
         }
       });
-
+      
+      this._connectionUri
       await this.connect();
 
       // Add event listeners
@@ -101,12 +102,14 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
       this._connectionUri = uri;
       console.log("Connection URI:", uri);
       // You can now use this URI to generate a QR code or for deep linking
+      
   
       // Handle the approval to complete the connection
       this._provider.session = await approval();
       console.log("Connected session:", this._provider.session);
-
       const publicKey = this.extractPublicKeyFromSession(this._provider.session);
+      
+      console.log("Connected account:", publicKey.toString());
       return { publicKey: publicKey.toBytes() };
     } catch (error) {
       console.error("Connection failed:", error);
@@ -122,8 +125,14 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
     if (!solanaNamespace.accounts || solanaNamespace.accounts.length === 0) {
       throw new Error("No accounts found in the Solana namespace.");
     }
-    return new PublicKey(solanaNamespace.accounts[0]);
+    const accountStr = solanaNamespace.accounts[0];
+    // If the account is in CAIP-10 format "solana:chainId:publicKey", split and take the public key
+    const parts = accountStr.split(':');
+    const publicKeyStr = parts.length === 3 ? parts[2] : accountStr;
+    this.publicKey = publicKeyStr;
+    return new PublicKey(publicKeyStr);
   }
+  
 
   public async signMessage(message: Uint8Array): Promise<SignedMessage> {
     if (!this._provider || !this._isConnected) {
@@ -205,12 +214,13 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
      if (!publicKeyStr) {
       throw new Error('Public key is not available.');
     }
+    console.log("public key is: ", publicKeyStr);
     // Now that we've verified publicKeyStr is a string, we can safely pass it.
     return new PublicKey(publicKeyStr);
   }
   
   public findProvider() {
-    
+
   }
 
   public getConnectionUri(): string | undefined {
