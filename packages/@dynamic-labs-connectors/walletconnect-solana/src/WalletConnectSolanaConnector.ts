@@ -3,9 +3,10 @@ import { SolanaInjectedConnector } from '@dynamic-labs/solana';
 import { universalProviderClient } from './SolanaUniversalProvider';
 import { PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js';
 import { ISolana, SolanaWalletConnectorOpts } from '@dynamic-labs/solana-core';
+import { logger } from '@dynamic-labs/wallet-connector-core';
 
 export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
-  override name = 'Test WC Solana';
+  override name = 'WalletConnect Solana';
   /**
    * Initializes the Solana universal provider with optional configuration.
    */
@@ -14,51 +15,52 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
   override canConnectViaQrCode = true;
   override isWalletConnect = true;
   static initHasRun = false;
+  override isAvailable = true;
 
   constructor(props: SolanaWalletConnectorOpts) {
     super({
       ...props,
       metadata: {
-        id: 'testwcsolana',
-        name: 'Test WC Solana',
+        id: 'WalletConnect Solana',
+        name: 'WalletConnect Solana',
         icon: 'https://reown.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fuvy10p5b%2Fproduction%2F01495a4964c8df30a7e8859c4f469e67dc9545a2-1024x1024.png&w=256&q=100',
       },
-      // Ensure required walletBook property is present.
-      walletBook: {
-        groups: {},
-        wallets: {},
-      },    
     });
   }
 
   override async init(): Promise<void> {
     console.log("[WalletConnectSolanaConnector] Initializing");
-
-  try {
-    await universalProviderClient.init();
-    this.walletConnectorEventsEmitter.emit('providerReady', {
-      connector: this,
-    });
-    WalletConnectSolanaConnector.initHasRun = true;
-    console.log("[WalletConnectSolanaConnector] Initialization successful!");
-  } catch (error) {
-    console.error("[WalletConnectSolanaConnector] Failed to initialize:", error);
-    throw error;
-  }
-}
+    if (WalletConnectSolanaConnector.initHasRun == true) {
+      return;
+    }
+    try {
+      await universalProviderClient.init();
+      WalletConnectSolanaConnector.initHasRun = true;
+      logger.debug('[WalletConnectSolanaConnector] onProviderReady');
+      this.walletConnectorEventsEmitter.emit('providerReady', {
+        connector: this,
+      });
+      console.log("[WalletConnectSolanaConnector] Initialization successful!");
+    } catch (error) {
+      console.error("[WalletConnectSolanaConnector] Failed to initialize:", error);
+      throw error;
+    }
+  } 
 
   /**
    * Connects to the wallet and returns the connected public key.
    */
   override async connect(): Promise<void> {
+    console.log("[WalletConnectSolanaConnector] universalProviderClient state:", universalProviderClient);
     const result = await universalProviderClient.connect();
+    console.log("[WalletConnectSolanaConnector] Connection result:", result);
+    // console.log("[WalletConnectSolanaConnector] Connection state after connect:", universalProviderClient.isConnected);
 
-    if (!result) {
-      console.error("[WalletConnectSolanaConnector] Failed to connect:");
-    }
-    this.walletConnectorEventsEmitter.emit('providerReady', { 
-      connector: this,
-    });
+    // logger.debug('[WalletConnectSolanaConnector] onProviderReady');
+
+    // this.walletConnectorEventsEmitter.emit('providerReady', { 
+    //   connector: this,
+    // });
     console.log("WalletConnectSolanaConnector: providerReady event emitted");
   }
 
@@ -136,4 +138,5 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
   public isConnected(): boolean {
     return universalProviderClient.isConnected;
   }
+
 }

@@ -19,7 +19,7 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
   private _connectionUri: string | undefined;
   public readonly isBraveWallet: boolean = true;
   public readonly isGlow: boolean = true;
-  public readonly isPhantom: boolean = true;
+  public readonly isPhantom: boolean = false;
   public readonly isSolflare: boolean = true;
   public readonly isExodus: boolean = true;
   public readonly isBackpack: boolean = true;
@@ -58,7 +58,7 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
       //   }
       // });
       this._provider = await UniversalProvider.init({
-        projectId: '650bf06b2ba268309996256ccf0ac529'
+        projectId: '7569c63c696a4e8aeb3217c1b1332bd7'
       });
 
       this.connect();
@@ -109,13 +109,26 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
       // You can now use this URI to generate a QR code or for deep linking
   
       // Handle the approval to complete the connection
-      const session = await approval();
-      console.log("Connected session:", session);
-      return { publicKey: (await this.getPublicKey()).toBytes() };
+      this._provider.session = await approval();
+      console.log("Connected session:", this._provider.session);
+
+      const publicKey = this.extractPublicKeyFromSession(this._provider.session);
+      return { publicKey: publicKey.toBytes() };
     } catch (error) {
       console.error("Connection failed:", error);
       throw error;
     }
+  }
+
+  private extractPublicKeyFromSession(session: any): PublicKey {
+    if (!session.namespaces || !session.namespaces['solana']) {
+      throw new Error("Solana namespace is missing in session.");
+    }
+    const solanaNamespace = session.namespaces['solana'];
+    if (!solanaNamespace.accounts || solanaNamespace.accounts.length === 0) {
+      throw new Error("No accounts found in the Solana namespace.");
+    }
+    return new PublicKey(solanaNamespace.accounts[0]);
   }
 
   public async signMessage(message: Uint8Array): Promise<SignedMessage> {
@@ -176,48 +189,32 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
       throw new Error('Provider not initialized. Call init() first.');
     }
   
-    const proposalNamespace = {
-      requiredNamespaces: {
-        solana: {
-          methods: ["solana_signTransaction", "solana_signMessage"],
-          chains: ["solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"],
-          events: ["chainChanged", "accountsChanged"],
-        },
-      },
-    };
-  
-    try {
-      this._provider = await UniversalProvider.init({
-        projectId: '650bf06b2ba268309996256ccf0ac529'
-      });
-
-      const { approval } = await this._provider.client.connect(proposalNamespace);
-      const session = await approval();
-  
-      // Check if namespaces and the solana namespace exist in the session
-      if (!session.namespaces || !session.namespaces['solana']) {
-        throw new Error("Solana namespace is missing in session.");
-      }
-      
-      const solanaNamespace = session.namespaces['solana'];
-  
-      // Ensure that there is at least one account available
-      if (!solanaNamespace.accounts || solanaNamespace.accounts.length === 0) {
-        throw new Error("No accounts found in the Solana namespace.");
-      }
-  
-      // Retrieve the public key string and convert it to a PublicKey object.
-      const publicKeyStr = solanaNamespace.accounts[0];
-      console.log("Solana Public Key:", publicKeyStr);
-      if (publicKeyStr != null) {
-        return new PublicKey(publicKeyStr);
-      }
-      throw new Error("Can't find public key");
-    } catch (error) {
-      console.error("Error getting public key:", error);
-      throw error;
+    // Check if there is an active session on the provider
+    const session = this._provider.session;
+    if (!session) {
+      throw new Error('No active session. Please connect first.');
     }
+    
+    // Make sure the session contains the solana namespace
+    const solanaNamespace = session.namespaces?.['solana'];
+    if (!solanaNamespace) {
+      throw new Error('Solana namespace is missing in the session.');
+    }
+    
+    // Check if there is at least one account in the Solana namespace
+    if (!solanaNamespace.accounts || solanaNamespace.accounts.length === 0) {
+      throw new Error('No accounts found in the Solana namespace.');
+    }
+    
+    // The first account is the public address
+    const publicKeyStr = solanaNamespace.accounts[0];
+     if (!publicKeyStr) {
+      throw new Error('Public key is not available.');
+    }
+    // Now that we've verified publicKeyStr is a string, we can safely pass it.
+    return new PublicKey(publicKeyStr);
   }
+  
   
 
   public getConnectionUri(): string | undefined {
@@ -264,7 +261,14 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
   if (!this._provider) {
     throw new Error('Provider not initialized. Call init() first.');
   }
-  await this._provider.client.disconnect;
+  await this._provider.client.disconnect({
+    // passing in dummy args for now, unsure if these are correct
+    topic: "disconnect",
+    reason: {
+      code: 1, 
+      message: "disconnect",
+    }
+  });
 }
 
 
