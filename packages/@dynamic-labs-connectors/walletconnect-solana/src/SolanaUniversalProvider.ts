@@ -39,29 +39,24 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
     return UniversalProviderClient.instance;
   }
 
-  // public async init(options?: {
-  //   projectId?: string;
-  //   relayUrl?: string;
-  //   metadata?: any;
-  // }): Promise<void> {
-    public async init(): Promise<void> {
-    // const projectId = options?.projectId || '650bf06b2ba268309996256ccf0ac529';
+  public async init(options?: {
+    projectId?: string;
+    relayUrl?: string;
+    metadata?: any;
+  }): Promise<void> {
     
     try {
-      // this._provider = await UniversalProvider.init({
-      //   projectId,
-      //   relayUrl: options?.relayUrl,
-      //   metadata: options?.metadata || {
-      //     name: "Reown",
-      //     description: "Reown Wallet Connection",
-      //     icons: ["https://reown.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fuvy10p5b%2Fproduction%2F01495a4964c8df30a7e8859c4f469e67dc9545a2-1024x1024.png&w=256&q=100"] // Replace with your app's icon
-      //   }
-      // });
       this._provider = await UniversalProvider.init({
-        projectId: '7569c63c696a4e8aeb3217c1b1332bd7'
+        projectId: "7569c63c696a4e8aeb3217c1b1332bd7",
+        relayUrl: options?.relayUrl,
+        metadata: options?.metadata || {
+          name: "WalletConnect Solana",
+          description: "WalletConnect Solana",
+          icons: ["https://reown.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fuvy10p5b%2Fproduction%2F01495a4964c8df30a7e8859c4f469e67dc9545a2-1024x1024.png&w=256&q=100"] // Replace with your app's icon
+        }
       });
 
-      this.connect();
+      await this.connect();
 
       // Add event listeners
       // this._provider.on('display_uri', (uri: string) => {
@@ -89,9 +84,8 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
 
   public async connect(): Promise<ConnectionResult> {
     if (!this._provider) {
-      throw new Error('Provider not initialized. Call init() first.');
+      return;
     }
-
     const proposalNamespace = {
       requiredNamespaces: {
         solana: {
@@ -215,7 +209,9 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
     return new PublicKey(publicKeyStr);
   }
   
-  
+  public findProvider() {
+    
+  }
 
   public getConnectionUri(): string | undefined {
     return this._connectionUri;

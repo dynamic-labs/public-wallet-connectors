@@ -99,7 +99,7 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
    override findProvider(): ISolana | undefined {
     try {
       // Attempt to retrieve the public key as a check that the provider is initialized.
-      universalProviderClient.getPublicKey();
+      universalProviderClient.init();
       return universalProviderClient as ISolana;
     } catch (error) {
       // If the provider isn't fully initialized or connected, return undefined.
