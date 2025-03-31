@@ -1,6 +1,6 @@
 import { type WalletConnectorConstructor } from '@dynamic-labs/wallet-connector-core';
 import { isInIframe } from '@dynamic-labs/utils';
-import type { WalletConnectSolanaConnector } from './WalletConnectSolanaConnector.js';
+import { WalletConnectSolanaConnector } from './WalletConnectSolanaConnector.js';
 
 export { WalletConnectSolanaConnector } from './WalletConnectSolanaConnector.js';
 
