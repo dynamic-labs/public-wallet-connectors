@@ -214,7 +214,7 @@ describe('WalletConnectSolanaConnector', () => {
     const mockPublicKey = new PublicKey('11111111111111111111111111111111');
     (universalProviderClient.getPublicKey as jest.Mock).mockResolvedValue(mockPublicKey);
     
-    const result = await connector.getPublicKey();
+    const result = await connector.getAddress();
     expect(result).toBeInstanceOf(PublicKey);
     expect(result).toEqual(mockPublicKey);
   });

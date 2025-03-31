@@ -1,7 +1,7 @@
 // WalletConnectSolanaConnector.ts
 import { SolanaInjectedConnector } from '@dynamic-labs/solana';
 import { universalProviderClient } from './SolanaUniversalProvider';
-import { PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js';
+import { Transaction, VersionedTransaction } from '@solana/web3.js';
 import { ISolana, SolanaWalletConnectorOpts } from '@dynamic-labs/solana-core';
 import { logger } from '@dynamic-labs/wallet-connector-core';
 
@@ -51,17 +51,8 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
    * Connects to the wallet and returns the connected public key.
    */
   override async connect(): Promise<void> {
-    console.log("[WalletConnectSolanaConnector] universalProviderClient state:", universalProviderClient);
     const result = await universalProviderClient.connect();
     console.log("[WalletConnectSolanaConnector] Connection result:", result);
-    // console.log("[WalletConnectSolanaConnector] Connection state after connect:", universalProviderClient.isConnected);
-
-    // logger.debug('[WalletConnectSolanaConnector] onProviderReady');
-
-    // this.walletConnectorEventsEmitter.emit('providerReady', { 
-    //   connector: this,
-    // });
-    console.log("WalletConnectSolanaConnector: providerReady event emitted");
   }
 
   /**
@@ -69,6 +60,14 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
    */
   public async disconnect(): Promise<void> {
     await universalProviderClient.disconnect();
+  }
+
+  override async getConnectedAccounts(): Promise<string[]> {
+    if (universalProviderClient.connectedAccounts) {
+      return Promise.resolve(universalProviderClient.connectedAccounts);
+    }
+    // Optionally handle the case where connectedAccounts is undefined
+    return Promise.resolve([]);
   }
 
   /**
@@ -121,8 +120,8 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
   /**
    * Returns the current connected public key.
    */
-  public async getPublicKey(): Promise<PublicKey> {
-    return await universalProviderClient.getPublicKey();
+  override async getAddress(): Promise<string | undefined> {
+    return (await universalProviderClient.getPublicKey()).toString();
   }
 
   /**

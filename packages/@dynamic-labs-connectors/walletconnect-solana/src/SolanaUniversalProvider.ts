@@ -13,6 +13,8 @@ interface ISolanaEvents {
 
 export class UniversalProviderClient extends EventEmitter<ISolanaEvents> implements ISolanaSigner  {
   private static instance: UniversalProviderClient;
+  private static initHasRun: boolean = false;
+  private static topic: string | undefined;
   private _provider: UniversalProvider | undefined;
   // private _publicKey: PublicKey | undefined;
   private _isConnected = false;
@@ -30,6 +32,7 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
   }
   
   publicKey?: { toBytes(): Uint8Array; } | undefined;
+  connectedAccounts? : string [] | undefined;
   providers: ISolanaSigner[] = [];;
 
   public static getInstance(): UniversalProviderClient {
@@ -44,7 +47,9 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
     relayUrl?: string;
     metadata?: any;
   }): Promise<void> {
-    
+    if (UniversalProviderClient.initHasRun == true) {
+      return;
+    }
     try {
       this._provider = await UniversalProvider.init({
         projectId: "7569c63c696a4e8aeb3217c1b1332bd7",
@@ -56,7 +61,7 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
         }
       });
       
-      this._connectionUri
+      UniversalProviderClient.initHasRun = true;
       await this.connect();
 
       // Add event listeners
@@ -101,10 +106,13 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
       const { uri, approval } = await this._provider.client.connect(proposalNamespace);
       this._connectionUri = uri;
       console.log("Connection URI:", uri);
+      this._isConnected = true;
       // You can now use this URI to generate a QR code or for deep linking
       
   
       // Handle the approval to complete the connection
+      
+      UniversalProviderClient.topic = this._provider.session?.topic;
       this._provider.session = await approval();
       console.log("Connected session:", this._provider.session);
       const publicKey = this.extractPublicKeyFromSession(this._provider.session);
@@ -130,24 +138,44 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
     const parts = accountStr.split(':');
     const publicKeyStr = parts.length === 3 ? parts[2] : accountStr;
     this.publicKey = publicKeyStr;
+    this.connectedAccounts?.push(publicKeyStr);
     return new PublicKey(publicKeyStr);
   }
   
 
   public async signMessage(message: Uint8Array): Promise<SignedMessage> {
-    if (!this._provider || !this._isConnected) {
+    if (!this._provider || !this._isConnected ) {
       throw new Error('Provider not connected');
     }
   
     try {
-      const signedMessageResult = await this._provider.request({
-        method: 'solana_signMessage',
-        params: [
-          Buffer.from(message).toString('base64'),
-          'base64'
-        ]
+      const signedMessageResult = await this._provider.client.request({
+      //   topic: this._provider.session.topic,
+      //   request: {
+      //     method: 'solana_signMessage',
+      //     params: [
+      //       Buffer.from(message).toString('base64'),
+      //       'base64'
+      //     ]
+      //   },
+      //   // Use the same chainId you used in the connect() method.
+      //   chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'
+      //   // Optionally, add expiry if required:
+      //   // expiry: 300, // expiry in seconds (example)
+      // });
+
+          topic: UniversalProviderClient.topic!,
+          chainId: "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+          request: {
+          method: "solana_signMessage",
+          params: {
+            pubkey: this.publicKey,
+            message:  Buffer.from(message).toString('base64'),
+          }
+        }
       });
-  
+      console.log("Signed message:", signedMessageResult);
+
       // Safely handle the response
       if (typeof signedMessageResult === 'string') {
         // Convert the returned base64 string back into a Uint8Array.
@@ -188,39 +216,14 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
   }
 
   public async getPublicKey(): Promise<PublicKey> {
-    if (!this._provider) {
+    if (!this._provider || !this.publicKey) {
       throw new Error('Provider not initialized. Call init() first.');
     }
-  
-    // Check if there is an active session on the provider
-    const session = this._provider.session;
-    if (!session) {
-      throw new Error('No active session. Please connect first.');
-    }
     
-    // Make sure the session contains the solana namespace
-    const solanaNamespace = session.namespaces?.['solana'];
-    if (!solanaNamespace) {
-      throw new Error('Solana namespace is missing in the session.');
-    }
     
-    // Check if there is at least one account in the Solana namespace
-    if (!solanaNamespace.accounts || solanaNamespace.accounts.length === 0) {
-      throw new Error('No accounts found in the Solana namespace.');
-    }
-    
-    // The first account is the public address
-    const publicKeyStr = solanaNamespace.accounts[0];
-     if (!publicKeyStr) {
-      throw new Error('Public key is not available.');
-    }
-    console.log("public key is: ", publicKeyStr);
+    console.log("public key is: ", this.publicKey);
     // Now that we've verified publicKeyStr is a string, we can safely pass it.
-    return new PublicKey(publicKeyStr);
-  }
-  
-  public findProvider() {
-
+    return new PublicKey(this.publicKey);
   }
 
   public getConnectionUri(): string | undefined {
