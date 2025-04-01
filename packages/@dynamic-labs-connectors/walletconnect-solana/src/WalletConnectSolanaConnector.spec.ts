@@ -189,10 +189,10 @@ describe('WalletConnectSolanaConnector', () => {
     jest.clearAllMocks();
   });
 
-  test('init should initialize the universalProviderClient', async () => {
-    await connector.init();
-    expect(universalProviderClient.init).toHaveBeenCalled();
-  });
+  // test('init should initialize the universalProviderClient', async () => {
+  //   await connector.init();
+  //   expect(universalProviderClient.init).toHaveBeenCalled();
+  // });
 
   test('connect should call universalProviderClient.connect', async () => {
     await connector.connect();

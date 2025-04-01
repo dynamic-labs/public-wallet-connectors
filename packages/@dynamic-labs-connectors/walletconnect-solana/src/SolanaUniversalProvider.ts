@@ -3,6 +3,9 @@ import { PublicKey, SendOptions, Transaction, TransactionSignature, VersionedTra
 import { logger } from '@dynamic-labs/wallet-connector-core';
 import type { ISolanaSigner, SignedMessage, ConnectionResult  } from "@dynamic-labs/solana-core";
 import EventEmitter from 'eventemitter3';
+import * as QRCode from 'qrcode';
+
+
 
 interface ISolanaEvents {
   connect(...args: unknown[]): unknown;
@@ -32,7 +35,7 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
   }
   
   publicKey?: { toBytes(): Uint8Array; } | undefined;
-  connectedAccounts? : string [] | undefined;
+  connectedAccounts: string[] = [];
   providers: ISolanaSigner[] = [];;
 
   public static getInstance(): UniversalProviderClient {
@@ -106,6 +109,7 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
       const { uri, approval } = await this._provider.client.connect(proposalNamespace);
       this._connectionUri = uri;
       console.log("Connection URI:", uri);
+      this.generateQRCode(uri);
       this._isConnected = true;
       // You can now use this URI to generate a QR code or for deep linking
       
@@ -140,6 +144,17 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
     this.publicKey = publicKeyStr;
     this.connectedAccounts?.push(publicKeyStr);
     return new PublicKey(publicKeyStr);
+  }
+
+  public async generateQRCode(data: any) {
+    try {
+      // Generate a base64-encoded image (PNG by default)
+      const qrImageDataURL = await QRCode.toDataURL(data);
+      return qrImageDataURL;
+    } catch (err) {
+      console.error("Error generating QR code:", err);
+      throw err;
+    }
   }
   
 
@@ -278,8 +293,8 @@ export class UniversalProviderClient extends EventEmitter<ISolanaEvents> impleme
       message: "disconnect",
     }
   });
-}
 
+}
 
 }
 

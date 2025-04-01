@@ -20,10 +20,12 @@
     "@solana/web3.js": "^1.92.1",
     "@walletconnect/solana-adapter": "^0.0.6",
     "@walletconnect/universal-provider": "^2.19.2",
-    "eventemitter3": "^5.0.1"
+    "eventemitter3": "^5.0.1",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
-    "@swc/jest": "^0.2.37"
+    "@swc/jest": "^0.2.37",
+    "@types/qrcode": "^1.5.5"
   },
   "peerDependencies": {
     "@dynamic-labs/solana": "^4.8.1",

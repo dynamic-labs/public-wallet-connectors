@@ -15,6 +15,7 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
   override canConnectViaQrCode = true;
   override isWalletConnect = true;
   static initHasRun = false;
+  static providerFound = false;
   override isAvailable = true;
 
   constructor(props: SolanaWalletConnectorOpts) {
@@ -34,7 +35,7 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
       return;
     }
     try {
-      await universalProviderClient.init();
+      // await universalProviderClient.init();
       WalletConnectSolanaConnector.initHasRun = true;
       logger.debug('[WalletConnectSolanaConnector] onProviderReady');
       this.walletConnectorEventsEmitter.emit('providerReady', {
@@ -64,6 +65,7 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
 
   override async getConnectedAccounts(): Promise<string[]> {
     if (universalProviderClient.connectedAccounts) {
+      console.log("Connected Accounts: ", universalProviderClient.connectedAccounts);
       return Promise.resolve(universalProviderClient.connectedAccounts);
     }
     // Optionally handle the case where connectedAccounts is undefined
@@ -98,14 +100,19 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
    override findProvider(): ISolana | undefined {
     try {
       // Attempt to retrieve the public key as a check that the provider is initialized.
+      if (WalletConnectSolanaConnector.providerFound) {
+        return;
+      }
       universalProviderClient.init();
+      console.log("Connected Accounts: ", this.getConnectedAccounts());
+      console.log("Get Address: ", this.getAddress());
+      WalletConnectSolanaConnector.providerFound = true;
       return universalProviderClient as ISolana;
     } catch (error) {
       // If the provider isn't fully initialized or connected, return undefined.
       return undefined;
     }
   }
-  
 
   /**
    * Signs a transaction using the connected wallet.
@@ -121,7 +128,13 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
    * Returns the current connected public key.
    */
   override async getAddress(): Promise<string | undefined> {
-    return (await universalProviderClient.getPublicKey()).toString();
+    // return (await universalProviderClient.getPublicKey()).toString();
+    if (universalProviderClient.connectedAccounts) {
+      console.log("Connected Accounts: ", universalProviderClient.connectedAccounts);
+      return Promise.resolve(universalProviderClient.connectedAccounts[0]);
+    }
+    // Optionally handle the case where connectedAccounts is undefined
+    return Promise.resolve("");
   }
 
   /**
