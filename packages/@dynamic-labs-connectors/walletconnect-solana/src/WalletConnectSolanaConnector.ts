@@ -1,185 +1,115 @@
-import { type SolanaWalletConnectorOpts } from '@dynamic-labs/solana-core';
-import type { ISolana } from '@dynamic-labs/solana-core';
-import { SolanaInjectedConnector } from '@dynamic-labs/solana';
-import { DynamicError } from '@dynamic-labs/utils';
-import { logger } from '@dynamic-labs/wallet-connector-core';
-import { ReownSdkClient } from './ReownSdkClient.js';
+// // WalletConnectSolanaConnector.ts
+import { SolanaInjectedConnector } from "@dynamic-labs/solana";
+import {
+  type SolanaWalletConnectorOpts,
+  type ISolana,
+} from "@dynamic-labs/solana-core";
+import { ReownSolanaSdkClient } from "./ReownSolanaSdkClient.js";
+import { Chain } from "@dynamic-labs/wallet-connector-core";
 
-// This file mimics the structure of the Abstract EVM connector but for Solana.
-// It assumes that a Solana wallet provider (like Phantom) is injected on window.solana.
 export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
-  
   /**
-   * Unique identifier for this wallet connector.
+   * The name of the wallet connector
+   * @override Required override from the base connector class
    */
-  id = 'walletConnect-solana';
 
-  /**
-   * Display name for the wallet.
-   */
-  override name = 'WalletConnect Solana';
+  override name = "WalletConnect Solana";
 
-  
-  // URL to the wallet's icon.
-  iconUrl = 'https://reown.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fuvy10p5b%2Fproduction%2F01495a4964c8df30a7e8859c4f469e67dc9545a2-1024x1024.png&w=256&q=100';
-
-  // Array to store supported Solana networks from connector options.
-  solanaNetworks: any[];
-
-  // A flag to ensure initialization happens only once.
-  static initHasRun = false;
-
-  // Property to store the connected wallet address.
-  activeAccount?: string;
-
-  // To ensure WC works
-  override canConnectViaQrCode = true;
   override isWalletConnect = true;
 
+  static projectId: string;
+
+  override supportedChains: Chain[] = ["SOL"];
+
   /**
-   * The constructor accepts options and sets metadata.
+   * The constructor for the connector, with the relevant metadata
+   * @param props The options for the connector
    */
   constructor(props: SolanaWalletConnectorOpts) {
     super({
       ...props,
       metadata: {
-        id: 'WalletConnectSolanaConnector',
-        name: 'WalletConnectSolanaConnector Solana',
-        icon: 'https://reown.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fuvy10p5b%2Fproduction%2F01495a4964c8df30a7e8859c4f469e67dc9545a2-1024x1024.png&w=256&q=100',
+        id: "WalletConnect Solana",
+        name: "WalletConnect Solana",
+        icon: "https://cdn.sanity.io/images/uvy10p5b/production/01495a4964c8df30a7e8859c4f469e67dc9545a2-1024x1024.png",
       },
-      // Ensure required walletBook property is present.
-      walletBook: props.walletBook ?? { groups: [], wallets: [] },
     });
-
-    this.solanaNetworks = [];
-    if (props.solNetworks) {
-      // Filter the provided networks to only include those supported by this connector.
-      for (const network of props.solNetworks) {
-        const net = network as any;
-        if (net.id === 'solanaDevnet' || net.id === 'solanaMainnet') {
-          this.solanaNetworks.push(network);
-        }
-      }
-    }
   }
 
   /**
-   * Indicates that network switching is not supported.
+   * Initializes the Safe provider and emits the providerReady event
+   * @override Required override from the base connector class
+   */
+  override async init(): Promise<void> {
+    // This method can be called multiple times, but we should only
+    // initialize the provider and emit the providerReady event once
+    if (ReownSolanaSdkClient.isInitialized) {
+      return;
+    }
+
+    if (
+      WalletConnectSolanaConnector.projectId == null ||
+      WalletConnectSolanaConnector.projectId === ""
+    ) {
+      throw new Error("WalletConnect projectId not found");
+    }
+
+    await ReownSolanaSdkClient.init(WalletConnectSolanaConnector.projectId);
+
+    this.walletConnectorEventsEmitter.emit("providerReady", {
+      connector: this,
+    });
+  }
+
+  /**
+   * Returns false because network switching doesn't work inside the safe app
    */
   override supportsNetworkSwitching(): boolean {
     return false;
   }
 
-  /**
-   * Indicates that the wallet is assumed to be installed in the browser.
-   */
-  override isInstalledOnBrowser(): boolean {
-    return false;
+  override findProvider(): ISolana | undefined {
+    // This class isn't being `init`'d by the frammework, not sure how else to do this
+    this.init();
+
+    return ReownSolanaSdkClient.getProvider();
   }
 
   /**
-   * Initializes the connector.
-   * Ensures initialization is run only once and emits the providerReady event.
+   * Returns the address of the connected safe wallet
    */
-  override async init(): Promise<void> {
-    if (ReownSdkClient.isInitialized && ReownSdkClient.walletConnectSdk) {
-      this.onProviderReady();
-      return;
-    }
-    if (this.solanaNetworks.length === 0) {
-      return;
-    }
-    try {
-      await ReownSdkClient.init();
-      this.onProviderReady();
-      WalletConnectSolanaConnector.initHasRun = true;
-    } catch (error) {
-      console.error("Failed to initialize WalletConnectSolanaConnector:", error);
-      throw error;
-    }
+  override async getAddress(): Promise<string | undefined> {
+    await this.init();
+    return ReownSolanaSdkClient.getAddress();
   }
 
-  private onProviderReady = (): void => {
-    logger.debug('[WalletConnectSolanaConnector] onProviderReady');
-
-    // Emits the providerReady Event
-    this.walletConnectorEventsEmitter.emit('providerReady', {
-      connector: this,
-    })
-
-    this.findProvider();
-    // Tries to auto connect to the walletConnect
-    this.tryAutoConnect();
-  }
-
-  private async tryAutoConnect(): Promise<void> {
-    const walletConnectAddress = await this.getAddress;
-
-    logger.debug(
-      '[WalletConnectSolanaConnect] tryAutoConnect - address:',
-      walletConnectAddress,
-    );
-
-    if (!walletConnectAddress) {
-      logger.debug(
-        '[WalletConnectSolanaConnect] tryAutoConnect - no address to connect',
-        walletConnectAddress,
-      );
-    }
-
-    // If there's an address, emit the autoConnect event
-    this.walletConnectorEventsEmitter.emit('autoConnect', {
-      connector: this,
-    });
-  }
-
-
-  /**
-   * Finds and returns the injected Solana wallet provider.
-   * Assumes the provider is available on window.solana.
-   */
-   override findProvider(): ISolana | undefined {
-    return ReownSdkClient.getProvider();
+  getSupportedNetworks(): string[] {
+    return ["mainnet", "devnet"];
   }
 
   /**
-   * Connects to the wallet.
-   * Uses the injected provider's connect method and stores the connected address.
+   * @dev Nothing needs to be done here
+   * @see Dynamic Contributing Guide
    */
-  override async connect(): Promise<void> {
-    await ReownSdkClient.connect();
+  override async getConnectedAccounts(): Promise<string[]> {
+    return await super.getConnectedAccounts();
   }
 
-  /**
-   * Returns the signer.
-   * Often the injected provider itself is used for signing.
-   */
-  override async getSigner(): Promise<any> {
-    const provider = this.findProvider();
-    if (!provider) {
-      throw new DynamicError('Wallet provider not found');
-    }
-    return provider;
-  }
-
-  /**
-   * Retrieves the connected wallet address.
-   */
-  
-override async getAddress(): Promise<string | undefined> {
-  const publicKey = ReownSdkClient.getAddress();
-  return publicKey?.toString();
-}
-
-  /**
-   * Signs a message.
-   * Encodes the message as a Uint8Array and returns the signature as a hex string.
-   */
-  override async signMessage(message: string): Promise<string> {   
-    const msg = new  TextEncoder().encode(message);
-    const signature = ReownSdkClient.signMessage(msg);
+  override async signMessage(messageToSign: string): Promise<string | undefined> {
+    const message = new TextEncoder().encode(messageToSign);
+    const signatureObj = ReownSolanaSdkClient.provider.signMessage(message);
     
-    return (await signature).toString()
+    const encodedSignature = (await signatureObj).signature;
+    const decoder = new TextDecoder("utf-8");
+    const signature = decoder.decode(encodedSignature);
+    
+    return signature;
   }
+
   
+
+  override filter(): boolean {
+    return Boolean(this.findProvider());
+  }
 }
+

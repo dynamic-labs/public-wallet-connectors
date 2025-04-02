@@ -12,26 +12,26 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@dynamic-labs/solana": "^4.8.1",
-    "@dynamic-labs/solana-core": "^4.8.1",
-    "@dynamic-labs/utils": "^4.9.0",
-    "@dynamic-labs/wallet-connector-core": "^4.9.0",
-    "@solana/wallet-adapter-base": "^0.9.23",
-    "@solana/web3.js": "^1.92.1",
+    "@dynamic-labs/sdk-react-core": "*",
+    "@dynamic-labs/solana": "*",
+    "@dynamic-labs/solana-core": "^4.10.1",
+    "@dynamic-labs/wallet-connector-core": "^4.10.1",
+    "@reown/appkit": "^1.7.1",
+    "@reown/appkit-adapter-solana": "^1.7.1",
+    "@solana/wallet-adapter-base": "^0.9.24",
+    "@solana/web3.js": "^1.98.0",
     "@walletconnect/solana-adapter": "^0.0.6",
-    "eventemitter3": "^5.0.1"
+    "@walletconnect/universal-provider": "^2.19.2",
+    "crypto-browserify": "^3.12.0",
+    "eventemitter3": "^5.0.1",
+    "next": "15.2.4",
+    "node-fetch": "^3.3.2",
+    "process": "^0.11.10",
+    "react": "^18",
+    "react-dom": "^18",
+    "stream-browserify": "^3.0.0"
   },
   "devDependencies": {
     "@swc/jest": "^0.2.37"
-  },
-  "peerDependencies": {
-    "@dynamic-labs/solana-core": "^4.8.1",
-    "@dynamic-labs/solana": "^4.8.1",
-    "@dynamic-labs/utils": "^4.9.0",
-    "@dynamic-labs/wallet-connector-core": "^4.9.0",
-    "@walletconnect/solana-adapter": "^0.0.6",
-    "@solana/web3.js": "^1.92.1",
-    "@solana/wallet-adapter-base": "^0.9.23",
-    "eventemitter3": "^5.0.1"
   }
 }
