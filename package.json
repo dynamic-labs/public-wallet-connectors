@@ -17,6 +17,7 @@
     "@commitlint/config-conventional": "^19.6.0",
     "@commitlint/config-nx-scopes": "^19.5.0",
     "@eslint/js": "^9.15.0",
+    "@nrwl/workspace": "^19.8.4",
     "@nx/eslint": "20.1.0",
     "@nx/eslint-plugin": "20.1.0",
     "@nx/jest": "20.1.0",
@@ -48,7 +49,13 @@
   },
   "pnpm": {
     "overrides": {
-      "cross-spawn": "^7.0.5"
+      "cross-spawn": "^7.0.5",
+      "@dynamic-labs-connectors/abstract-global-wallet-evm": "link:dist/packages/@dynamic-labs-connectors/abstract-global-wallet-evm",
+      "@dynamic-labs-connectors/walletconnect-solana": "link:dist/packages/@dynamic-labs-connectors/walletconnect-solana"
     }
+  },
+  "dependencies": {
+    "@dynamic-labs-connectors/abstract-global-wallet-evm": "link:dist/packages/@dynamic-labs-connectors/abstract-global-wallet-evm",
+    "@dynamic-labs-connectors/walletconnect-solana": "link:dist/packages/@dynamic-labs-connectors/walletconnect-solana"
   }
 }

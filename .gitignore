@@ -16,5 +16,6 @@ tmp
 .env.local
 .bashrc
 .nx
+.env
 
 *.node
