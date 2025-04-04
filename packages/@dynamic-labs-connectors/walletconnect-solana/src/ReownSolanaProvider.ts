@@ -83,10 +83,12 @@ import {
   
     async signMessage(
       message: Uint8Array,
+      _encoding: string,
     ): Promise<SignedMessage> {
       if (this.sdk == null) {
         throw new Error("WalletConnect Sdk is not initialized");
       }
+  
       return { signature: await this.sdk.signMessage(message) };
     }
   

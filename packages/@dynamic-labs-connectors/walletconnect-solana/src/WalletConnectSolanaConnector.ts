@@ -14,12 +14,10 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
    */
 
   override name = "WalletConnect Solana";
-
   override isWalletConnect = true;
-
   static projectId: string;
-
   override supportedChains: Chain[] = ["SOL"];
+  private textEncoder = new TextEncoder();
 
   /**
    * The constructor for the connector, with the relevant metadata
@@ -96,17 +94,10 @@ export class WalletConnectSolanaConnector extends SolanaInjectedConnector {
   }
 
   override async signMessage(messageToSign: string): Promise<string | undefined> {
-    const message = new TextEncoder().encode(messageToSign);
-    const signatureObj = ReownSolanaSdkClient.provider.signMessage(message);
-    
-    const encodedSignature = (await signatureObj).signature;
-    const decoder = new TextDecoder("utf-8");
-    const signature = decoder.decode(encodedSignature);
-    
-    return signature;
+    const signatureObj = ReownSolanaSdkClient.provider.signMessage(this.textEncoder.encode(messageToSign), messageToSign);
+    const { signature: encodedSignature } = await signatureObj;
+    return new TextDecoder("utf-8").decode(encodedSignature);
   }
-
-  
 
   override filter(): boolean {
     return Boolean(this.findProvider());
