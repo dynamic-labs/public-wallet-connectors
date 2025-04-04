@@ -87,8 +87,6 @@ import {
       if (this.sdk == null) {
         throw new Error("WalletConnect Sdk is not initialized");
       }
-      console.log("msg to sign encoder from provider: ", message);
-      console.log("pub key:", this.publicKey);
       return { signature: await this.sdk.signMessage(message) };
     }
   
@@ -101,9 +99,7 @@ import {
       }
   
       const signedTX = await this.sdk.signTransaction(transaction);
-  
-      console.log(`this.sdk: `, this.sdk);
-  
+    
       await this.sdk.sendTransaction(
         signedTX,
         new Connection(this.sdk.url),
