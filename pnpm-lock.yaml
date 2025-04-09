@@ -247,6 +247,15 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
+  packages/@dynamic-labs-connectors/tap-bitcoin:
+    dependencies:
+      '@dynamic-labs/bitcoin':
+        specifier: ^4.9.3
+        version: 4.10.4(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.5.4)
+      '@dynamic-labs/wallet-connector-core':
+        specifier: ^4.0.0-alpha.35
+        version: 4.9.0(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+
 packages:
 
   '@abstract-foundation/agw-client@1.5.0':
@@ -1009,6 +1018,9 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
+  '@btckit/types@0.0.19':
+    resolution: {integrity: sha512-APoOfYSg9SRR4CMXL606IDtpgh+ZD3kS/+iY0BkUALD6HvXo2pVw20L5YYIc+HrgMcF6WN0TH7TXdVs+Vu+kww==}
+
   '@coinbase/wallet-sdk@4.3.0':
     resolution: {integrity: sha512-T3+SNmiCw4HzDm4we9wCHCxlP0pqCiwKe4sOwPH3YAK2KSKjxPRydKu6UQJrdONFVLG7ujXvbd/6ZqmvJb8rkw==}
 
@@ -1094,8 +1106,14 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
+  '@dynamic-labs/assert-package-version@4.10.4':
+    resolution: {integrity: sha512-rBx3TA/dRB0u0IvvQDcasbQMmdGS+GbwnUOY6QAwDKkcGls7OrJ3FSAdcGPM4ZLPmprKVgcdCcEOdk22QHUoLA==}
+
   '@dynamic-labs/assert-package-version@4.9.0':
     resolution: {integrity: sha512-lkMRPr9Ss5tJ+vaTscXWv2WaFarJDCJr8SC9MygZyYchg1Fp5b9/GgIn9EyVcmMPUuvy5hleGtkOxe1pkXNmRQ==}
+
+  '@dynamic-labs/bitcoin@4.10.4':
+    resolution: {integrity: sha512-L6xQKwowAih6z3VNJ1Rk0WEZhM3ntRTqbJ5dkz+8E65eRqGXJqY7uKr+gp+Vpr0+UbqaFoyJoOwGeBLV/rps9A==}
 
   '@dynamic-labs/embedded-wallet-evm@4.9.0':
     resolution: {integrity: sha512-CwUo46M5COiczsswooXYtTNTY9MPGcwL+nfUmghRQr0UweSYNLlnjLv7gNvmQyRqMN8ry3xxolb062ARUVnHcA==}
@@ -1115,14 +1133,26 @@ packages:
     peerDependencies:
       viem: ^2.21.55
 
+  '@dynamic-labs/iconic@4.10.4':
+    resolution: {integrity: sha512-i5Iny9PPjEVQbDF4r4PF8W7EKNwGJF5tUkJXwM0L1zc5pv1uuqOwIKWrlbjh6rAzL/ifyr9l0TjS/QbzlxFLRg==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+
   '@dynamic-labs/iconic@4.9.0':
     resolution: {integrity: sha512-bgD93G5pVA1yul9/Um3OeCy8BSjG2/y1El9fyVLkZv9p9UsYUqBmG5tcIKAk8d7IeIMyVQKPWpRVCnFB0joWyA==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
 
+  '@dynamic-labs/logger@4.10.4':
+    resolution: {integrity: sha512-qTObcPMvr68RKKS+3LjzhHKqUhL1SjqNC9iqQw8JkYndEvs9fZPVga5m+1+fxVSycz6RoA4Rrfn0cmoM/E2J9g==}
+
   '@dynamic-labs/logger@4.9.0':
     resolution: {integrity: sha512-ki2EzeEyl+mSjihpXXlt1QVHa0ex7mzBelfeeXN9gO5RAbQbxAtWtMSLRQiprsrrDEq6Yse6SCY4aqwTQt8cQA==}
+
+  '@dynamic-labs/rpc-providers@4.10.4':
+    resolution: {integrity: sha512-l7zd/ZilBEXV/5jLM/U9hDAZuhPYW+Ai1oBTJBWdcoG12O7cu6a833yuZp3JmYWPYzJzlK8LHgeSf+k/6gO7Bg==}
 
   '@dynamic-labs/rpc-providers@4.9.0':
     resolution: {integrity: sha512-lc4R1qF6Eh9U6gfjS2tZdMekH2Ht5/glyGuLIEDdFdB36H2EFXbiEOj9jm8UegiE6vXPzhwBUvC9dkDcFZ1tQw==}
@@ -1130,17 +1160,35 @@ packages:
   '@dynamic-labs/sdk-api-core@0.0.638':
     resolution: {integrity: sha512-mSvOZCxqr//3GHK0Ycw2XCNGthIyFDqGnOWltkkKhKQ0LWOdZLfMisAuyfTQwEnOBAwTCjYpAQsH4isDTmZXzA==}
 
+  '@dynamic-labs/sdk-api-core@0.0.650':
+    resolution: {integrity: sha512-/dAOxwnh0OaFV2KUbnj4zRSzEDFZptsmoJm58dP6ACfQClx5aPI49WGHM8NKjBd5xbaB7oxzhuQWizOnT/6j9g==}
+
+  '@dynamic-labs/types@4.10.4':
+    resolution: {integrity: sha512-aMeIBE03g/BUGRaPBzNM9ed3M1wPpLa+txGOF04GxOKOb5sbU9fZOCQnnDEBNtXXW1c/Wmjd3vmdM+j1cr9VHg==}
+
   '@dynamic-labs/types@4.9.0':
     resolution: {integrity: sha512-g9E7C319FbUcGNsgu3+IdxzMPcUKr/pOKU77uW3TWuRdgo5Fjk+JNxlYtXp0A5fXyVH44Sf6+aV3nLwdDeyupA==}
 
+  '@dynamic-labs/utils@4.10.4':
+    resolution: {integrity: sha512-pyaSB/NOYLALTYS+syogWZQWTa7GFSCClAsQ3Lg/i/1EIPB4gTQMY7cvGgVn/bparZSCKI+g2M8xU4CQs6+Ufw==}
+
   '@dynamic-labs/utils@4.9.0':
     resolution: {integrity: sha512-XJoLYlnmodl+oFci7cVhMwNaaGclBmrFEvK7f1PouAkRJC/LqHKMqRiG7y5ajZKArGBfxz2fp4sWLAKcr+CU3w==}
+
+  '@dynamic-labs/wallet-book@4.10.4':
+    resolution: {integrity: sha512-Rd2eU9zh4bLkrBt1Es0+kH2qfUNCFS9KWZP7y1S06dkjF/UzcC28p0EUIGOVzdO77l/JBeHZxVoF16eoySSPXQ==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
 
   '@dynamic-labs/wallet-book@4.9.0':
     resolution: {integrity: sha512-387huphj5wyC5ro6X2kfdNoVptDBHPeSL3Da/kZaHMmhosFl7u92DfpOwGVOjmvqmd0IRM7DeEyTGaSYPTi2AA==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
+
+  '@dynamic-labs/wallet-connector-core@4.10.4':
+    resolution: {integrity: sha512-c2iDQzQ5CWYZ6pxjfGT1PnU84h/ZdgLAtx1OPLlVtGzQKyG+k/RE/urDtrXe/op/iCcoK48Mtz0PYbKwvAPAPQ==}
 
   '@dynamic-labs/wallet-connector-core@4.9.0':
     resolution: {integrity: sha512-JWa2pTXihkh9ryvvGQ3a+Ls0pSqBM80kHjFdW9af8+4F0P/+5D2kjXlcpW0m3Qa4XRzVC2WaYUvzRNS6paEi1Q==}
@@ -1891,6 +1939,9 @@ packages:
     resolution: {integrity: sha512-B8XBPsn4vT/KJAGqDzbwztd+6Yte3P4V7iafm24bxgDe/mlRuK6xmWPuCNrKt2vDafZ8MfJLlchDG/vYafQEjQ==}
     engines: {node: ^14.21.3 || >=16}
 
+  '@noble/secp256k1@1.7.1':
+    resolution: {integrity: sha512-hOUk6AyBFmqVrv7k5WAw/LpszxVbj9gGN4JRkIX52fdFAj1UA61KXmZDvqVEm+pOyec3+fIeZB02LYa/pWOArw==}
+
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -2246,6 +2297,21 @@ packages:
   '@safe-global/safe-gateway-typescript-sdk@3.22.9':
     resolution: {integrity: sha512-7ojVK/crhOaGowEO8uYWaopZzcr5rR76emgllGIfjCLR70aY4PbASpi9Pbs+7jIRzPDBBkM0RBo+zYx5UduX8Q==}
     engines: {node: '>=16'}
+
+  '@sats-connect/core@0.4.1':
+    resolution: {integrity: sha512-//0ge/FbKQZdhfFBR7LKdJxpzVB+bGfqHwkjHl0EX3QwvAu8n0dSoUZlym43+KB7gy0rgv1+ECFrOCeYGpGFgA==}
+
+  '@sats-connect/make-default-provider-config@0.0.10':
+    resolution: {integrity: sha512-BBot3Ofa2J7OwXprgYPD4C8dppX4nnPxj4FXWq1H7fDsvwJmW4sAnfmnAIzwmyWZJOR2uZqtTkXAA08sVkoN5g==}
+    peerDependencies:
+      '@sats-connect/core': '*'
+      typescript: ^5.0.0
+
+  '@sats-connect/ui@0.0.6':
+    resolution: {integrity: sha512-H3bFFhr9CcY1oNosNi/QJszmMHSht4U19bUWfM3vzayAKgV4ebY6iUnRK5g3p2rVLLWVzlpaw1J9m+7JWwyBfA==}
+
+  '@sats-connect/ui@0.0.7':
+    resolution: {integrity: sha512-dq02JxvTSAkfgFzEz4iWDSamm6Dte1omzxK0F1yytRZbIrbjjz1KmlMHM+uuxnFN9+EzHIHNsA4aS2dEDwh0xw==}
 
   '@scure/base@1.1.9':
     resolution: {integrity: sha512-8YKhl8GHiNI/pU2VMaofa2Tor7PJRAjwQLBBuilkJ9L5+13yVbC7JO/wS7piioAvPSwR3JKM1IJ/u4xQzbcXKg==}
@@ -2608,6 +2674,14 @@ packages:
     resolution: {integrity: sha512-2z8JQJWAzPdDd51dRQ/oqIJxe99/hoLIqmf8RMCAJQtYDc535W/Jt2+RTP4bP0aKeBG1F65yjIZuczOXCmbWwg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@wallet-standard/app@1.0.1':
+    resolution: {integrity: sha512-LnLYq2Vy2guTZ8GQKKSXQK3+FRGPil75XEdkZqE6fiLixJhZJoJa5hT7lXxwe0ykVTt9LEThdTbOpT7KadS26Q==}
+    engines: {node: '>=16'}
+
+  '@wallet-standard/base@1.0.1':
+    resolution: {integrity: sha512-1To3ekMfzhYxe0Yhkpri+Fedq0SYcfrOfJi3vbLjMwF2qiKPjTGLwZkf2C9ftdQmxES+hmxhBzTwF4KgcOwf8w==}
+    engines: {node: '>=16'}
+
   '@walletconnect/core@2.18.0':
     resolution: {integrity: sha512-i/olu/IwYtBiWYqyfNUMxq4b6QS5dv+ZVVGmLT2buRwdH6MGETN0Bx3/z6rXJzd1sNd+QL07fxhSFxCekL57tA==}
     engines: {node: '>=18'}
@@ -2874,6 +2948,9 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
+  axios@1.7.7:
+    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
+
   axios@1.8.2:
     resolution: {integrity: sha512-ls4GYBm5aig9vWx8AWDSGLpnpDQRtWAfrjU+EuytuODrFBkqesN2RkOQCBzrA1RQNHw1SmRMSDDDSwzNAYQ6Rg==}
 
@@ -2953,8 +3030,15 @@ packages:
   base-x@4.0.1:
     resolution: {integrity: sha512-uAZ8x6r6S3aUM9rbHGVOIsR15U/ZSc82b3ymnCPsT45Gk1DDvhDPdIgB5MrhirZWt+5K0EEPQH985kNqZgNPFw==}
 
+  base58-js@1.0.5:
+    resolution: {integrity: sha512-LkkAPP8Zu+c0SVNRTRVDyMfKVORThX+rCViget00xdgLRrKkClCTz1T7cIrpr69ShwV5XJuuoZvMvJ43yURwkA==}
+    engines: {node: '>= 8'}
+
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
+
+  bech32@2.0.0:
+    resolution: {integrity: sha512-LcknSilhIGatDAsY1ak2I8VtGaHNhgMSYVxFrGLXv+xLHytaKZKcaUJJUE7qmBr7h33o5YQwP55pMI0xmkpJwg==}
 
   before-after-hook@2.2.3:
     resolution: {integrity: sha512-NzUnlZexiaH/46WDhANlyR2bXRopNg4F/zuSA3OpZnllCUgRaOF2znDioDWrmbNVsuZk6l9pMquQB38cfBZwkQ==}
@@ -2970,6 +3054,17 @@ packages:
   bin-version@6.0.0:
     resolution: {integrity: sha512-nk5wEsP4RiKjG+vF+uG8lFsEn4d7Y6FVDamzzftSunXOoOcOOkzcWdKVlGgFFwlUQCj63SgnUkLLGF8v7lufhw==}
     engines: {node: '>=12'}
+
+  bip174@2.1.1:
+    resolution: {integrity: sha512-mdFV5+/v0XyNYXjBS6CQPLo9ekCx4gtKZFnJm5PMto7Fs9hTTDpkkzOB7/FtluRI6JbUUAu+snTYfJRgHLZbZQ==}
+    engines: {node: '>=8.0.0'}
+
+  bitcoin-address-validation@2.2.3:
+    resolution: {integrity: sha512-1uGCGl26Ye8JG5qcExtFLQfuib6qEZWNDo1ZlLlwp/z7ygUFby3IxolgEfgMGaC+LG9csbVASLcH8fRLv7DIOg==}
+
+  bitcoinjs-lib@6.1.5:
+    resolution: {integrity: sha512-yuf6xs9QX/E8LWE2aMJPNd0IxGofwfuVOiYdNUESkc+2bHHVKjhJd8qewqapeoolh9fihzHGoDCB5Vkr57RZCQ==}
+    engines: {node: '>=8.0.0'}
 
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
@@ -4686,6 +4781,9 @@ packages:
     resolution: {integrity: sha512-POQXvpdL69+CluYsillJ7SUhKvytYjW9vG/GKpnf+xP8UWgYEM/RaMzHHofbALDiKbbP1W8UEYmgGl39WkPZsg==}
     engines: {'0': node >= 0.2.0}
 
+  jsontokens@4.0.1:
+    resolution: {integrity: sha512-+MO415LEN6M+3FGsRz4wU20g7N2JA+2j9d9+pGaNJHviG4L8N0qzavGyENw6fJqsq9CcrHOIL6iWX5yeTZ86+Q==}
+
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
@@ -5710,6 +5808,9 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
+  sats-connect@3.0.1:
+    resolution: {integrity: sha512-R+QHUJ00/2Irp5wapZcJPZUChsh2K5PcWRA9YqdetS94Ibn0k5gU23MP7cpX8pUE+Aeu7PFfWeEEdZRDEhNN7Q==}
+
   saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
@@ -6182,6 +6283,9 @@ packages:
     resolution: {integrity: sha512-3KS2b+kL7fsuk/eJZ7EQdnEmQoaho/r6KUef7hxvltNA5DR8NAUM+8wJMbJyZ4G9/7i3v5zPBIMN5aybAh2/Jg==}
     engines: {node: '>= 0.4'}
 
+  typeforce@1.18.0:
+    resolution: {integrity: sha512-7uc1O8h1M1g0rArakJdf0uLRSSgFcYexrVoKo+bzJd32gd4gDy2L/Z+8/FjPnU9ydY3pEnVPtr9FyscYY60K1g==}
+
   typescript-eslint@8.26.0:
     resolution: {integrity: sha512-PtVz9nAnuNJuAVeUFvwztjuUgSnJInODAUx47VDwWPXzd5vismPOtPtt83tzNXyOjVQbPRp786D6WFW/M2koIA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -6361,6 +6465,14 @@ packages:
     resolution: {integrity: sha512-kiGUalWN+rgBJ/1OHZsBtU4rXZOfj/7rKQxULKlIzwzQSvMJUUNgPwJEEh7gU6xEVxC0ahoOBvN2YI8GH6FNgA==}
     engines: {node: '>=10.12.0'}
 
+  valibot@0.42.1:
+    resolution: {integrity: sha512-3keXV29Ar5b//Hqi4MbSdV7lfVp6zuYLZuA9V1PvQUsXqogr+u5lvLPLk3A4f74VUXDnf/JfWMN6sB+koJ/FFw==}
+    peerDependencies:
+      typescript: '>=5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   validate-npm-package-name@5.0.1:
     resolution: {integrity: sha512-OljLrQ9SQdOUqTaQxqL5dEfZWrXExyyWsozYlAWFawPVNuD83igl7uJD2RTkNMbniIYgt8l81eCJGIdQF7avLQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -6376,6 +6488,9 @@ packages:
         optional: true
       react:
         optional: true
+
+  varuint-bitcoin@1.1.2:
+    resolution: {integrity: sha512-4EVb+w4rx+YfVM32HQX42AbbT7/1f5zwAYhIujKXKk8NQK+JfRVl3pqT3hjNn/L+RstigmGGKVwHA/P0wgITZw==}
 
   vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
@@ -7540,6 +7655,8 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
+  '@btckit/types@0.0.19': {}
+
   '@coinbase/wallet-sdk@4.3.0':
     dependencies:
       '@noble/hashes': 1.7.1
@@ -7667,9 +7784,34 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
+  '@dynamic-labs/assert-package-version@4.10.4':
+    dependencies:
+      '@dynamic-labs/logger': 4.10.4
+
   '@dynamic-labs/assert-package-version@4.9.0':
     dependencies:
       '@dynamic-labs/logger': 4.9.0
+
+  '@dynamic-labs/bitcoin@4.10.4(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.5.4)':
+    dependencies:
+      '@btckit/types': 0.0.19
+      '@dynamic-labs/assert-package-version': 4.10.4
+      '@dynamic-labs/sdk-api-core': 0.0.650
+      '@dynamic-labs/types': 4.10.4
+      '@dynamic-labs/utils': 4.10.4
+      '@dynamic-labs/wallet-book': 4.10.4(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      '@dynamic-labs/wallet-connector-core': 4.10.4(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      '@wallet-standard/app': 1.0.1
+      '@wallet-standard/base': 1.0.1
+      bitcoinjs-lib: 6.1.5
+      eventemitter3: 5.0.1
+      jsontokens: 4.0.1
+      sats-connect: 3.0.1(typescript@5.5.4)
+    transitivePeerDependencies:
+      - debug
+      - react
+      - react-dom
+      - typescript
 
   '@dynamic-labs/embedded-wallet-evm@4.9.0(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(bufferutil@4.0.9)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(utf-8-validate@5.0.10)(viem@2.23.7(bufferutil@4.0.9)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
     dependencies:
@@ -7777,6 +7919,14 @@ snapshots:
       - uploadthing
       - utf-8-validate
 
+  '@dynamic-labs/iconic@4.10.4(react-dom@18.3.1(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.10.4
+      '@dynamic-labs/logger': 4.10.4
+      react: 18.2.0
+      react-dom: 18.3.1(react@18.2.0)
+      sharp: 0.33.5
+
   '@dynamic-labs/iconic@4.9.0(react-dom@18.3.1(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@dynamic-labs/assert-package-version': 4.9.0
@@ -7785,9 +7935,18 @@ snapshots:
       react-dom: 18.3.1(react@18.2.0)
       sharp: 0.33.5
 
+  '@dynamic-labs/logger@4.10.4':
+    dependencies:
+      eventemitter3: 5.0.1
+
   '@dynamic-labs/logger@4.9.0':
     dependencies:
       eventemitter3: 5.0.1
+
+  '@dynamic-labs/rpc-providers@4.10.4':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.10.4
+      '@dynamic-labs/types': 4.10.4
 
   '@dynamic-labs/rpc-providers@4.9.0':
     dependencies:
@@ -7796,10 +7955,27 @@ snapshots:
 
   '@dynamic-labs/sdk-api-core@0.0.638': {}
 
+  '@dynamic-labs/sdk-api-core@0.0.650': {}
+
+  '@dynamic-labs/types@4.10.4':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.10.4
+      '@dynamic-labs/sdk-api-core': 0.0.650
+
   '@dynamic-labs/types@4.9.0':
     dependencies:
       '@dynamic-labs/assert-package-version': 4.9.0
       '@dynamic-labs/sdk-api-core': 0.0.638
+
+  '@dynamic-labs/utils@4.10.4':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.10.4
+      '@dynamic-labs/logger': 4.10.4
+      '@dynamic-labs/sdk-api-core': 0.0.650
+      '@dynamic-labs/types': 4.10.4
+      buffer: 6.0.3
+      eventemitter3: 5.0.1
+      tldts: 6.0.16
 
   '@dynamic-labs/utils@4.9.0':
     dependencies:
@@ -7810,6 +7986,18 @@ snapshots:
       buffer: 6.0.3
       eventemitter3: 5.0.1
       tldts: 6.0.16
+
+  '@dynamic-labs/wallet-book@4.10.4(react-dom@18.3.1(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.10.4
+      '@dynamic-labs/iconic': 4.10.4(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      '@dynamic-labs/logger': 4.10.4
+      '@dynamic-labs/utils': 4.10.4
+      eventemitter3: 5.0.1
+      react: 18.2.0
+      react-dom: 18.3.1(react@18.2.0)
+      util: 0.12.5
+      zod: 3.22.4
 
   '@dynamic-labs/wallet-book@4.9.0(react-dom@18.3.1(react@18.2.0))(react@18.2.0)':
     dependencies:
@@ -7822,6 +8010,20 @@ snapshots:
       react-dom: 18.3.1(react@18.2.0)
       util: 0.12.5
       zod: 3.22.4
+
+  '@dynamic-labs/wallet-connector-core@4.10.4(react-dom@18.3.1(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.10.4
+      '@dynamic-labs/logger': 4.10.4
+      '@dynamic-labs/rpc-providers': 4.10.4
+      '@dynamic-labs/sdk-api-core': 0.0.650
+      '@dynamic-labs/types': 4.10.4
+      '@dynamic-labs/utils': 4.10.4
+      '@dynamic-labs/wallet-book': 4.10.4(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      eventemitter3: 5.0.1
+    transitivePeerDependencies:
+      - react
+      - react-dom
 
   '@dynamic-labs/wallet-connector-core@4.9.0(react-dom@18.3.1(react@18.2.0))(react@18.2.0)':
     dependencies:
@@ -8683,6 +8885,8 @@ snapshots:
 
   '@noble/hashes@1.7.1': {}
 
+  '@noble/secp256k1@1.7.1': {}
+
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -9342,6 +9546,28 @@ snapshots:
 
   '@safe-global/safe-gateway-typescript-sdk@3.22.9': {}
 
+  '@sats-connect/core@0.4.1(typescript@5.5.4)':
+    dependencies:
+      axios: 1.7.7
+      bitcoin-address-validation: 2.2.3
+      buffer: 6.0.3
+      jsontokens: 4.0.1
+      valibot: 0.42.1(typescript@5.5.4)
+    transitivePeerDependencies:
+      - debug
+      - typescript
+
+  '@sats-connect/make-default-provider-config@0.0.10(@sats-connect/core@0.4.1(typescript@5.5.4))(typescript@5.5.4)':
+    dependencies:
+      '@sats-connect/core': 0.4.1(typescript@5.5.4)
+      '@sats-connect/ui': 0.0.6
+      bowser: 2.11.0
+      typescript: 5.5.4
+
+  '@sats-connect/ui@0.0.6': {}
+
+  '@sats-connect/ui@0.0.7': {}
+
   '@scure/base@1.1.9': {}
 
   '@scure/base@1.2.4': {}
@@ -9795,6 +10021,12 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.26.0
       eslint-visitor-keys: 4.2.0
+
+  '@wallet-standard/app@1.0.1':
+    dependencies:
+      '@wallet-standard/base': 1.0.1
+
+  '@wallet-standard/base@1.0.1': {}
 
   '@walletconnect/core@2.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:
@@ -10336,6 +10568,14 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
+  axios@1.7.7:
+    dependencies:
+      follow-redirects: 1.15.9
+      form-data: 4.0.2
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   axios@1.8.2:
     dependencies:
       follow-redirects: 1.15.9
@@ -10467,7 +10707,11 @@ snapshots:
 
   base-x@4.0.1: {}
 
+  base58-js@1.0.5: {}
+
   base64-js@1.5.1: {}
+
+  bech32@2.0.0: {}
 
   before-after-hook@2.2.3: {}
 
@@ -10486,6 +10730,23 @@ snapshots:
     dependencies:
       execa: 5.1.1
       find-versions: 5.1.0
+
+  bip174@2.1.1: {}
+
+  bitcoin-address-validation@2.2.3:
+    dependencies:
+      base58-js: 1.0.5
+      bech32: 2.0.0
+      sha256-uint8array: 0.10.7
+
+  bitcoinjs-lib@6.1.5:
+    dependencies:
+      '@noble/hashes': 1.7.1
+      bech32: 2.0.0
+      bip174: 2.1.1
+      bs58check: 3.0.1
+      typeforce: 1.18.0
+      varuint-bitcoin: 1.1.2
 
   bl@4.1.0:
     dependencies:
@@ -12550,6 +12811,12 @@ snapshots:
 
   jsonparse@1.3.1: {}
 
+  jsontokens@4.0.1:
+    dependencies:
+      '@noble/hashes': 1.7.1
+      '@noble/secp256k1': 1.7.1
+      base64-js: 1.5.1
+
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -13750,6 +14017,15 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
+  sats-connect@3.0.1(typescript@5.5.4):
+    dependencies:
+      '@sats-connect/core': 0.4.1(typescript@5.5.4)
+      '@sats-connect/make-default-provider-config': 0.0.10(@sats-connect/core@0.4.1(typescript@5.5.4))(typescript@5.5.4)
+      '@sats-connect/ui': 0.0.7
+    transitivePeerDependencies:
+      - debug
+      - typescript
+
   saxes@6.0.0:
     dependencies:
       xmlchars: 2.2.0
@@ -14299,6 +14575,8 @@ snapshots:
       possible-typed-array-names: 1.1.0
       reflect.getprototypeof: 1.0.10
 
+  typeforce@1.18.0: {}
+
   typescript-eslint@8.26.0(eslint@9.22.0(jiti@2.4.2))(typescript@5.5.4):
     dependencies:
       '@typescript-eslint/eslint-plugin': 8.26.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0(jiti@2.4.2))(typescript@5.5.4))(eslint@9.22.0(jiti@2.4.2))(typescript@5.5.4)
@@ -14415,6 +14693,10 @@ snapshots:
       '@types/istanbul-lib-coverage': 2.0.6
       convert-source-map: 2.0.0
 
+  valibot@0.42.1(typescript@5.5.4):
+    optionalDependencies:
+      typescript: 5.5.4
+
   validate-npm-package-name@5.0.1: {}
 
   valtio@1.11.2(react@18.2.0):
@@ -14423,6 +14705,10 @@ snapshots:
       use-sync-external-store: 1.2.0(react@18.2.0)
     optionalDependencies:
       react: 18.2.0
+
+  varuint-bitcoin@1.1.2:
+    dependencies:
+      safe-buffer: 5.2.1
 
   vary@1.1.2: {}
 
