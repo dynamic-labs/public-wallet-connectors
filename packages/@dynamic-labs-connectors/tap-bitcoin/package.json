@@ -18,9 +18,6 @@
   "dependencies": {
     "@dynamic-labs/bitcoin": "^4.9.3"
   },
-  "peerDependencies": {
-    "@dynamic-labs/wallet-connector-core": "^4.0.0-alpha.35"
-  },
   "devDependencies": {
   }
 }

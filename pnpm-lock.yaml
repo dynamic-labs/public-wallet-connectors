@@ -252,9 +252,6 @@ importers:
       '@dynamic-labs/bitcoin':
         specifier: ^4.9.3
         version: 4.10.4(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.5.4)
-      '@dynamic-labs/wallet-connector-core':
-        specifier: ^4.0.0-alpha.35
-        version: 4.9.0(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
 
 packages:
 
