@@ -23,10 +23,10 @@
     "@dynamic-labs/ethereum-core": "^4.11.1",
     "@dynamic-labs/ethereum": "^4.11.1",
     "@dynamic-labs/utils": "^4.11.1",
-    "@dynamic-labs/wallet-connector-core": "^4.11.1"
+    "@dynamic-labs/wallet-connector-core": "^4.11.1",
+    "viem": "^2.22.55"
   },
   "devDependencies": {
-    "@dynamic-labs/utils": "^4.11.1",
-    "viem": "^2.22.55"
+    "@dynamic-labs/utils": "^4.11.1"
   }
 }
