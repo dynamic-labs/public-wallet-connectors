@@ -50,10 +50,6 @@ export class GlyphEvmWalletConnector extends EthereumInjectedConnector {
     if (props.evmNetworks.find((c) => c.chainId === curtis.id)) {
       this.apeChainNetworks.push(curtis);
     }
-
-    if (this.apeChainNetworks.length === 0) {
-      throw new DynamicError('No apeChain or curtis networks configured');
-    }
   }
 
   // Returns false because we don't want to switch networks and only support apeChain and curtis
