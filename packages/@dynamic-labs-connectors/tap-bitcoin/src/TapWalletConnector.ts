@@ -3,6 +3,7 @@ import { UnisatConnector } from '@dynamic-labs/bitcoin';
 const TAP_WALLET_NAME = 'Tap Wallet';
 const TAP_WALLET_ID = 'tapwallet';
 const TAP_WALLET_ICON = 'https://tap.trac.network/tap-logo.png';
+const TAP_WALLET_DOWNLOAD_URL = 'https://chromewebstore.google.com/detail/tap-wallet/blcaacmeglnfblclocdgaomhopnfobof';
 
 export class TapWalletConnector extends UnisatConnector {
   override name = TAP_WALLET_NAME;
@@ -15,6 +16,7 @@ export class TapWalletConnector extends UnisatConnector {
         icon: TAP_WALLET_ICON,
         id: TAP_WALLET_ID,
         name: TAP_WALLET_NAME,
+        downloadUrl: TAP_WALLET_DOWNLOAD_URL,
       },
       overrideKey: props.overrideKey ?? TAP_WALLET_ID,
       walletData: {
