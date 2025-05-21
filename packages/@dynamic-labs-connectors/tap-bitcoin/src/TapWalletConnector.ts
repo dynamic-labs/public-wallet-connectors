@@ -1,9 +1,10 @@
 import { UnisatConnector } from '@dynamic-labs/bitcoin';
+import { isMobile } from '@dynamic-labs/utils';
+
 
 const TAP_WALLET_NAME = 'Tap Wallet';
 const TAP_WALLET_ID = 'tapwallet';
 const TAP_WALLET_ICON = 'https://tap.trac.network/tap-logo.png';
-const TAP_WALLET_DOWNLOAD_URL = 'https://chromewebstore.google.com/detail/tap-wallet/blcaacmeglnfblclocdgaomhopnfobof';
 
 export class TapWalletConnector extends UnisatConnector {
   override name = TAP_WALLET_NAME;
@@ -16,7 +17,9 @@ export class TapWalletConnector extends UnisatConnector {
         icon: TAP_WALLET_ICON,
         id: TAP_WALLET_ID,
         name: TAP_WALLET_NAME,
-        downloadUrl: TAP_WALLET_DOWNLOAD_URL,
+        downloadUrl: {
+          chromeId: 'blcaacmeglnfblclocdgaomhopnfobof',
+        },
       },
       overrideKey: props.overrideKey ?? TAP_WALLET_ID,
       walletData: {
@@ -49,6 +52,6 @@ export class TapWalletConnector extends UnisatConnector {
   }
   // Ensure only available wallets are listed
   override filter(): boolean {
-    return this.isTapWalletInstalled();
+    return !isMobile();
   }
 }
