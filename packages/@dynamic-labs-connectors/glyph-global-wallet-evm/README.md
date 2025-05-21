@@ -7,12 +7,12 @@ Make sure to install the connector with the correct version (@3 for sdk v3, @4 f
 
 
 ```
-npm install @dynamic-labs-connectors/glyph-global-wallet-evm@3
+npm install @dynamic-labs-connectors/glyph-global-wallet-evm@4
 ```
 
 ### Use the connector
 
-To integrate with the Dynamic SDK, you just need to pass `SafeEvmConnectors` to the `walletConnectors` prop of the `DynamicContextProvider` component.
+To integrate with the Dynamic SDK, you just need to pass `GlyphEvmWalletConnector` to the `walletConnectors` prop of the `DynamicContextProvider` component.
 
 ```tsx
 import { DynamicContextProvider } from '@dynamic-labs/sdk-react-score';
