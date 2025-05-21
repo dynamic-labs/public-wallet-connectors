@@ -17,7 +17,7 @@ export class TapWalletConnector extends UnisatConnector {
         icon: TAP_WALLET_ICON,
         id: TAP_WALLET_ID,
         name: TAP_WALLET_NAME,
-        downloadUrl: {
+        downloadLinks: {
           chromeId: 'blcaacmeglnfblclocdgaomhopnfobof',
         },
       },
