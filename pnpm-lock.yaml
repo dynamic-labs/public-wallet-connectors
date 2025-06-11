@@ -213,6 +213,21 @@ importers:
         specifier: ^29.5.14
         version: 29.5.14
 
+  packages/@dynamic-labs-connectors/ledger-evm:
+    dependencies:
+      '@dynamic-labs/ethereum':
+        specifier: ^4.11.1
+        version: 4.18.0(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(bufferutil@4.0.9)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.29.1(bufferutil@4.0.9)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)
+      '@dynamic-labs/ethereum-core':
+        specifier: ^4.11.1
+        version: 4.18.0(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(viem@2.29.1(bufferutil@4.0.9)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+      '@dynamic-labs/wallet-connector-core':
+        specifier: ^4.11.1
+        version: 4.18.0(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      viem:
+        specifier: ^2.21.55
+        version: 2.29.1(bufferutil@4.0.9)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)
+
   packages/@dynamic-labs-connectors/safe-evm:
     dependencies:
       '@dynamic-labs/ethereum':
