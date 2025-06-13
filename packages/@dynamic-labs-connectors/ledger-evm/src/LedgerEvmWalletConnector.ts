@@ -41,6 +41,10 @@ export class LedgerEvmWalletConnector extends EthereumInjectedConnector {
       return;
     }
 
+    if (!LedgerSdkClient.isLedgerLive()) {
+      return;
+    }
+
     await LedgerSdkClient.init();
     this.onProviderReady();
   }

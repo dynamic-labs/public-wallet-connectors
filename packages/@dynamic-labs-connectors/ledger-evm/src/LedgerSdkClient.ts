@@ -12,19 +12,6 @@ export class LedgerSdkClient {
   static init = async () => {
     if (LedgerSdkClient.isInitialized) return;
 
-    if (!window.ethereum) {
-      logger.debug('[LedgerSdkClient] Ethereum provider not found');
-      return;
-    }
-
-    // @ts-expect-error: isLedgerLive is a custom property not in IEthereum type
-    if (!window.ethereum?.isLedgerLive) {
-      logger.debug(
-        '[LedgerSdkClient] Window.ethereum is not a Ledger provider',
-      );
-      return;
-    }
-
     LedgerSdkClient.isInitialized = true;
     logger.debug('[LedgerSdkClient] Initializing Ledger provider');
 
@@ -49,5 +36,10 @@ export class LedgerSdkClient {
     // Casting to IEthereum because the Ledger provider implements the eip-1193 interface
     // And that the expected type for the parent class EthereumInjectedConnector
     return LedgerSdkClient.provider as unknown as IEthereum;
+  };
+
+  static isLedgerLive = () => {
+    // @ts-expect-error: isLedgerLive is a custom property not in IEthereum type
+    return !!window.ethereum?.isLedgerLive;
   };
 }
