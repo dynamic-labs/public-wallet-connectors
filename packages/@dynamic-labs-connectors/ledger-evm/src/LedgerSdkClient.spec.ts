@@ -24,23 +24,6 @@ describe('LedgerSdkClient', () => {
       expect(LedgerSdkClient.provider).toBeUndefined();
     });
 
-    it('should log a debug message if window.ethereum is not available', async () => {
-      await LedgerSdkClient.init();
-
-      expect(LedgerSdkClient.provider).toBeUndefined();
-      expect(
-        require('@dynamic-labs/wallet-connector-core').logger.debug,
-      ).toHaveBeenCalledWith('[LedgerSdkClient] Ethereum provider not found');
-    });
-
-    it('should not initialize the provider if window.ethereum is not a Ledger provider', async () => {
-      (global as any).window.ethereum = {};
-
-      await LedgerSdkClient.init();
-
-      expect(LedgerSdkClient.provider).toBeUndefined();
-    });
-
     it('should initialize the provider if window.ethereum is a Ledger provider', async () => {
       (global as any).window.ethereum = { isLedgerLive: true };
 

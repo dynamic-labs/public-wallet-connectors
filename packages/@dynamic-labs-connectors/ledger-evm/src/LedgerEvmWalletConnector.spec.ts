@@ -36,6 +36,7 @@ describe('LedgerEvmWalletConnector', () => {
 
   describe('init', () => {
     it('should initialize provider and emit events if Ledger is available', async () => {
+      (LedgerSdkClient.isLedgerLive as jest.Mock).mockReturnValue(true);
       await connector.init();
       await new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -44,6 +45,13 @@ describe('LedgerEvmWalletConnector', () => {
       expect(emitSpy).toHaveBeenCalledWith('autoConnect', { connector });
     });
 
+    it('should not initialize provider if Ledger is not available', async () => {
+      (LedgerSdkClient.isLedgerLive as jest.Mock).mockReturnValue(false);
+      await connector.init();
+
+      expect(LedgerSdkClient.init).not.toHaveBeenCalled();
+      expect(emitSpy).not.toHaveBeenCalled();
+    });
     it('should not initialize provider if already initialized', async () => {
       (LedgerSdkClient.isInitialized as any) = true;
       await connector.init();
