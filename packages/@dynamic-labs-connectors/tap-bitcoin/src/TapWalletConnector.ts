@@ -18,6 +18,7 @@ export class TapWalletConnector extends UnisatConnector {
         downloadLinks: {
           chromeId: 'blcaacmeglnfblclocdgaomhopnfobof',
         },
+        inAppBrowserUrl: 'https://magiceden.io',
       },
       overrideKey: props.overrideKey ?? TAP_WALLET_ID,
       walletData: {
