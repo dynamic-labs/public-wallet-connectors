@@ -54,11 +54,6 @@ describe('TapWalletConnector', () => {
   describe('filter', () => {
     it('should return true if provider is available', () => {
       (isMobile as jest.Mock).mockReturnValue(true);
-      expect(connector.filter()).toBe(false);
-    });
-
-    it('should return false if provider is not available', () => {
-      (isMobile as jest.Mock).mockReturnValue(false);
       expect(connector.filter()).toBe(true);
     });
   });

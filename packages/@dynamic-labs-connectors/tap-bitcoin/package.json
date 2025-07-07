@@ -16,8 +16,8 @@
     }
   },
   "dependencies": {
-    "@dynamic-labs/bitcoin": "^4.11.1",
-    "@dynamic-labs/utils": "^4.11.1",
-    "@dynamic-labs/wallet-connector-core": "^4.11.1"
+    "@dynamic-labs/bitcoin": "^4.20.1",
+    "@dynamic-labs/utils": "^4.20.1",
+    "@dynamic-labs/wallet-connector-core": "^4.20.1"
   }
 }

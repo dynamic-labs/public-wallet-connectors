@@ -1,6 +1,4 @@
 import { UnisatConnector } from '@dynamic-labs/bitcoin';
-import { isMobile } from '@dynamic-labs/utils';
-
 
 const TAP_WALLET_NAME = 'Tap Wallet';
 const TAP_WALLET_ID = 'tapwallet';
@@ -52,6 +50,10 @@ export class TapWalletConnector extends UnisatConnector {
   }
   // Ensure only available wallets are listed
   override filter(): boolean {
-    return !isMobile();
+    return true;
+  }
+
+  override isInstalledOnBrowser(): boolean {
+    return this.isTapWalletInstalled();
   }
 }
