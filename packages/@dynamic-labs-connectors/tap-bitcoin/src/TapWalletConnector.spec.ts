@@ -52,8 +52,14 @@ describe('TapWalletConnector', () => {
   });
 
   describe('filter', () => {
-    it('should return true if provider is available', () => {
+    it('should return false if provider is not available and platform is mobile', () => {
+      jest.spyOn(connector, 'isInstalledOnBrowser').mockReturnValue(false);
       (isMobile as jest.Mock).mockReturnValue(true);
+      expect(connector.filter()).toBe(false);
+    });
+
+    it('should return true if platform is not mobile', () => {
+      (isMobile as jest.Mock).mockReturnValue(false);
       expect(connector.filter()).toBe(true);
     });
   });
