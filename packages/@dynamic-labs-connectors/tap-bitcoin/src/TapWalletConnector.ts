@@ -1,4 +1,5 @@
 import { UnisatConnector } from '@dynamic-labs/bitcoin';
+import { isMobile } from '@dynamic-labs/utils';
 
 const TAP_WALLET_NAME = 'Tap Wallet';
 const TAP_WALLET_ID = 'tapwallet';
@@ -18,7 +19,6 @@ export class TapWalletConnector extends UnisatConnector {
         downloadLinks: {
           chromeId: 'blcaacmeglnfblclocdgaomhopnfobof',
         },
-        inAppBrowserUrl: 'https://magiceden.io',
       },
       overrideKey: props.overrideKey ?? TAP_WALLET_ID,
       walletData: {
@@ -49,12 +49,12 @@ export class TapWalletConnector extends UnisatConnector {
       connector: this,
     });
   }
-  // Ensure only available wallets are listed
-  override filter(): boolean {
-    return true;
-  }
 
   override isInstalledOnBrowser(): boolean {
     return this.isTapWalletInstalled();
+  }
+
+  override filter(): boolean {
+    return !isMobile() || this.isInstalledOnBrowser();
   }
 }
