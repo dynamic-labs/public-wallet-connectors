@@ -5,7 +5,7 @@
 ## Installation
 
 To install and integrate tap-bitcoin, make sure you are using:
-@dynamic-labs/sdk-react-core version 4.11.1 or higher
+@dynamic-labs/sdk-react-core version 4.20.1 or higher
 
 ```
 npm install @dynamic-labs-connectors/tap-bitcoin

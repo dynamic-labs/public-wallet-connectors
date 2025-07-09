@@ -92,6 +92,9 @@ importers:
       jest-environment-node:
         specifier: ^29.7.0
         version: 29.7.0
+      jsonc-eslint-parser:
+        specifier: ^2.4.0
+        version: 2.4.0
       lefthook:
         specifier: ^1.8.4
         version: 1.11.3
@@ -290,14 +293,14 @@ importers:
   packages/@dynamic-labs-connectors/tap-bitcoin:
     dependencies:
       '@dynamic-labs/bitcoin':
-        specifier: ^4.11.1
-        version: 4.11.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.5.4)
+        specifier: ^4.20.1
+        version: 4.21.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.5.4)
       '@dynamic-labs/utils':
-        specifier: ^4.11.1
-        version: 4.11.1
+        specifier: ^4.20.1
+        version: 4.21.1
       '@dynamic-labs/wallet-connector-core':
-        specifier: ^4.11.1
-        version: 4.11.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+        specifier: ^4.20.1
+        version: 4.21.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
 
 packages:
 
@@ -1155,8 +1158,11 @@ packages:
   '@dynamic-labs/assert-package-version@4.18.0':
     resolution: {integrity: sha512-3xNaQcW4pe5urs7jfVDWX1JYjPzQycYrfbUT9yWfbe/gtrRffQ0e3wz/Nc0SJQGkOj08ooPLXW4zzFS/iAD6rA==}
 
-  '@dynamic-labs/bitcoin@4.11.1':
-    resolution: {integrity: sha512-oH1l9yw27uVsZ03S9ZRQgVjc4ANItPXxaxnw9PH0vkM5w2lwBb6QOZ4ln75j2yjtMWfwvndTwBVz7uQtP9qvWA==}
+  '@dynamic-labs/assert-package-version@4.21.1':
+    resolution: {integrity: sha512-VTtAs0u2SNjDb0tS+xRgTIa2oK4ifbtI7a98+LNtDZwOX728gclS1UEcjDfszu6DbOTX1RzwTfU4O1Jaa8Jc9g==}
+
+  '@dynamic-labs/bitcoin@4.21.1':
+    resolution: {integrity: sha512-/Sn5gOTiZ2a5RnTGi3LRfAwA41AWyo/ZAf9vVLuYSB6oV6tLjB7eN1MqzTf0mhCWSLqNjxovhpekGNX316ibTg==}
 
   '@dynamic-labs/embedded-wallet-evm@4.11.1':
     resolution: {integrity: sha512-5TKKpSzUYpPStojCchMghECaAvy2G+ZGDfnW9UkmGSCusKurKTsxu0ok9JzOvOyuVEWGBXFFtI7erO7QDJgF0g==}
@@ -1206,11 +1212,20 @@ packages:
       react: '>=18.0.0 <20.0.0'
       react-dom: '>=18.0.0 <20.0.0'
 
+  '@dynamic-labs/iconic@4.21.1':
+    resolution: {integrity: sha512-iCfA3CaeNwXQ5Ru36v3d1ARdtlFAYnzpsI7RmYVjsShVGMrRTdpVLyy9fIqfnDcsA9/MHwqW1EeYopaLnPBDiw==}
+    peerDependencies:
+      react: '>=18.0.0 <20.0.0'
+      react-dom: '>=18.0.0 <20.0.0'
+
   '@dynamic-labs/logger@4.11.1':
     resolution: {integrity: sha512-gpOQ+kVSH63vc13A1q31FRcZDNVj/QgZMSlMRZjArxxL61wpRedTQ4zBBaGxJUOYsiPkNLw2ZpHkOh9gY6F/ww==}
 
   '@dynamic-labs/logger@4.18.0':
     resolution: {integrity: sha512-k4TeAWxpz3JwS4ZrrU0Fg8fnTxs+sQHl4GzWyxiLYCNLFMAGd+7bLsgBf4/1gLERYrnAEUcKS9tUZuGwpyN40A==}
+
+  '@dynamic-labs/logger@4.21.1':
+    resolution: {integrity: sha512-Zlv/kccBUr4xFEOBqeDanAyGyiIghRvgODyaoSuShG7UWD2oryyjgg7ZqWpF1oty+3kLq8WtCm37GhBAVdc9RQ==}
 
   '@dynamic-labs/rpc-providers@4.11.1':
     resolution: {integrity: sha512-i0V8rY9vgS6FdGMk042YXTeuj1t5YN3WZxrS2ncoxFJUGIt/WAwpdPbjB3ZOihudyarHpO4gFHtEGu8vp2Ai8A==}
@@ -1218,11 +1233,17 @@ packages:
   '@dynamic-labs/rpc-providers@4.18.0':
     resolution: {integrity: sha512-Q5uUxro6FcvLY/LaoWbUSsO6+NFGs3EZGAPfwBGVDZHRPmGyMJjXfBM5YFg+ClpkMY3aRd+/jKBFOP4mzjiElA==}
 
+  '@dynamic-labs/rpc-providers@4.21.1':
+    resolution: {integrity: sha512-53Wtuu4MTBiLIBAMLsq2pGfrhhI1E7hjQ/rjTCuiRzdeoE8xxHyLXusqOPkAnziWdPyySlXDwFqHhu471Maq7Q==}
+
   '@dynamic-labs/sdk-api-core@0.0.650':
     resolution: {integrity: sha512-/dAOxwnh0OaFV2KUbnj4zRSzEDFZptsmoJm58dP6ACfQClx5aPI49WGHM8NKjBd5xbaB7oxzhuQWizOnT/6j9g==}
 
   '@dynamic-labs/sdk-api-core@0.0.660':
     resolution: {integrity: sha512-I5u777PyYsRb8RMJgP+MqrjplytkYjuSOeKoq1NoxYX8s+Js3j5/9GvgfEcuF8S/U952KZNC1ptBjZMgzQiUoA==}
+
+  '@dynamic-labs/sdk-api-core@0.0.704':
+    resolution: {integrity: sha512-yku9meNdoyhTVCj/K3iWSf8/Ls8UlL6UDxi0kxpGWKMk27kcy6a/G+K9lsV1cYPl6hL3aX8DXTFvK4xY0ub3nw==}
 
   '@dynamic-labs/types@4.11.1':
     resolution: {integrity: sha512-W+h5P0EPQdmUx3ycM5THHMoyFwPjrUxV0DbMLHO7tpvzksyzonC1+qY9Bs6hYiej7kS0M+Gc+hnIzPBfLX6g3g==}
@@ -1230,11 +1251,17 @@ packages:
   '@dynamic-labs/types@4.18.0':
     resolution: {integrity: sha512-XH8Mx6tp3P2htKj2epmvGhl5Yvk1ezc/N98Dw92M4eLJOLYnnmWpXeFs8dEgFUZBzFKK+exCzXh2pchOpU27bw==}
 
+  '@dynamic-labs/types@4.21.1':
+    resolution: {integrity: sha512-WG2YIi2HxbPv27ZssUaKJloQXh9TOgKDiEq67UWJ/a/WTZcDY6ZA1U2D13QQULYSR9an4R9nqzll5KJ2GSl5Rw==}
+
   '@dynamic-labs/utils@4.11.1':
     resolution: {integrity: sha512-oiGbJmq9o6l0JRCI1irboDgenQzi31SpQvzFbJC35W8wY+UfQ7LnlevKw7rjEpSGwNTUyH5H18+ztTN2FP30gw==}
 
   '@dynamic-labs/utils@4.18.0':
     resolution: {integrity: sha512-jDSNHA4CxL1lj39jRniKKEfgJLfVDUPtp1MJiG6/9/OabvnYrvPf8oFQxV1lEsx2+9MStpA833fQC4MgbvPYrg==}
+
+  '@dynamic-labs/utils@4.21.1':
+    resolution: {integrity: sha512-tL3qCVVPBzUtZiUGOQbFj9kuiOGE6SRnvJBfzghKa3bGd1zShzy/fnmuE9ZAGTH+tjm+CjC622LgL1c4QSk9WQ==}
 
   '@dynamic-labs/wallet-book@4.11.1':
     resolution: {integrity: sha512-RwpGS+lVgXePVla1GR1kmPYpXiuplh8hRs3fFKUvFStyYjTtTlNyuji3Jkxh3yikSZe4y1ct5+SI97ya2moWEw==}
@@ -1248,11 +1275,20 @@ packages:
       react: '>=18.0.0 <20.0.0'
       react-dom: '>=18.0.0 <20.0.0'
 
+  '@dynamic-labs/wallet-book@4.21.1':
+    resolution: {integrity: sha512-1LLVI5P87249NAfYITq/otu+e3xq3AiGF0ua6TD3ZNVuys4jYLcYyHxl2qs3GzqTqSBUtiGdltDupYKlb4NxAg==}
+    peerDependencies:
+      react: '>=18.0.0 <20.0.0'
+      react-dom: '>=18.0.0 <20.0.0'
+
   '@dynamic-labs/wallet-connector-core@4.11.1':
     resolution: {integrity: sha512-26/wAY0kwrEHQdEhM1sabHRWSvZSacZYotRerNXWWQvZi9MW5JOMf0zd+VMlAAEINh0auXDcEGJ2cgJNvB8+rw==}
 
   '@dynamic-labs/wallet-connector-core@4.18.0':
     resolution: {integrity: sha512-W5KWQNWBq45iU55GNcamFC84k1OVlvT55GD/S4TW6+wI0WbkdGx5at+aJb+rTSLKprxTwfcocHTAZh1Te3wPRA==}
+
+  '@dynamic-labs/wallet-connector-core@4.21.1':
+    resolution: {integrity: sha512-6EE4gaIhli9eAIEyYAjdosNzXWj27Ou3vIXjFMRRCujdO9PctitKlY6MeICBajobUJEUaATBVniKmHwjxXWE2w==}
 
   '@dynamic-labs/webauthn@4.11.1':
     resolution: {integrity: sha512-DagN3VVUo9+DQlu/NfyzVfjjP9tvX0kCDZSkyhEUhB5lmbwiljH6cbpZmunqa2CpZ78P7/LnNioRfIRMDWDMHg==}
@@ -7867,15 +7903,19 @@ snapshots:
     dependencies:
       '@dynamic-labs/logger': 4.18.0
 
-  '@dynamic-labs/bitcoin@4.11.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.5.4)':
+  '@dynamic-labs/assert-package-version@4.21.1':
+    dependencies:
+      '@dynamic-labs/logger': 4.21.1
+
+  '@dynamic-labs/bitcoin@4.21.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.5.4)':
     dependencies:
       '@btckit/types': 0.0.19
-      '@dynamic-labs/assert-package-version': 4.11.1
-      '@dynamic-labs/sdk-api-core': 0.0.650
-      '@dynamic-labs/types': 4.11.1
-      '@dynamic-labs/utils': 4.11.1
-      '@dynamic-labs/wallet-book': 4.11.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
-      '@dynamic-labs/wallet-connector-core': 4.11.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      '@dynamic-labs/assert-package-version': 4.21.1
+      '@dynamic-labs/sdk-api-core': 0.0.704
+      '@dynamic-labs/types': 4.21.1
+      '@dynamic-labs/utils': 4.21.1
+      '@dynamic-labs/wallet-book': 4.21.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      '@dynamic-labs/wallet-connector-core': 4.21.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
       '@wallet-standard/app': 1.0.1
       '@wallet-standard/base': 1.0.1
       bitcoinjs-lib: 6.1.5
@@ -8120,11 +8160,23 @@ snapshots:
       react-dom: 18.3.1(react@18.2.0)
       sharp: 0.33.5
 
+  '@dynamic-labs/iconic@4.21.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.21.1
+      '@dynamic-labs/logger': 4.21.1
+      react: 18.2.0
+      react-dom: 18.3.1(react@18.2.0)
+      sharp: 0.33.5
+
   '@dynamic-labs/logger@4.11.1':
     dependencies:
       eventemitter3: 5.0.1
 
   '@dynamic-labs/logger@4.18.0':
+    dependencies:
+      eventemitter3: 5.0.1
+
+  '@dynamic-labs/logger@4.21.1':
     dependencies:
       eventemitter3: 5.0.1
 
@@ -8138,9 +8190,16 @@ snapshots:
       '@dynamic-labs/assert-package-version': 4.18.0
       '@dynamic-labs/types': 4.18.0
 
+  '@dynamic-labs/rpc-providers@4.21.1':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.21.1
+      '@dynamic-labs/types': 4.21.1
+
   '@dynamic-labs/sdk-api-core@0.0.650': {}
 
   '@dynamic-labs/sdk-api-core@0.0.660': {}
+
+  '@dynamic-labs/sdk-api-core@0.0.704': {}
 
   '@dynamic-labs/types@4.11.1':
     dependencies:
@@ -8151,6 +8210,11 @@ snapshots:
     dependencies:
       '@dynamic-labs/assert-package-version': 4.18.0
       '@dynamic-labs/sdk-api-core': 0.0.660
+
+  '@dynamic-labs/types@4.21.1':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.21.1
+      '@dynamic-labs/sdk-api-core': 0.0.704
 
   '@dynamic-labs/utils@4.11.1':
     dependencies:
@@ -8168,6 +8232,16 @@ snapshots:
       '@dynamic-labs/logger': 4.18.0
       '@dynamic-labs/sdk-api-core': 0.0.660
       '@dynamic-labs/types': 4.18.0
+      buffer: 6.0.3
+      eventemitter3: 5.0.1
+      tldts: 6.0.16
+
+  '@dynamic-labs/utils@4.21.1':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.21.1
+      '@dynamic-labs/logger': 4.21.1
+      '@dynamic-labs/sdk-api-core': 0.0.704
+      '@dynamic-labs/types': 4.21.1
       buffer: 6.0.3
       eventemitter3: 5.0.1
       tldts: 6.0.16
@@ -8190,6 +8264,18 @@ snapshots:
       '@dynamic-labs/iconic': 4.18.0(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
       '@dynamic-labs/logger': 4.18.0
       '@dynamic-labs/utils': 4.18.0
+      eventemitter3: 5.0.1
+      react: 18.2.0
+      react-dom: 18.3.1(react@18.2.0)
+      util: 0.12.5
+      zod: 3.22.4
+
+  '@dynamic-labs/wallet-book@4.21.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.21.1
+      '@dynamic-labs/iconic': 4.21.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      '@dynamic-labs/logger': 4.21.1
+      '@dynamic-labs/utils': 4.21.1
       eventemitter3: 5.0.1
       react: 18.2.0
       react-dom: 18.3.1(react@18.2.0)
@@ -8219,6 +8305,20 @@ snapshots:
       '@dynamic-labs/types': 4.18.0
       '@dynamic-labs/utils': 4.18.0
       '@dynamic-labs/wallet-book': 4.18.0(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      eventemitter3: 5.0.1
+    transitivePeerDependencies:
+      - react
+      - react-dom
+
+  '@dynamic-labs/wallet-connector-core@4.21.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.21.1
+      '@dynamic-labs/logger': 4.21.1
+      '@dynamic-labs/rpc-providers': 4.21.1
+      '@dynamic-labs/sdk-api-core': 0.0.704
+      '@dynamic-labs/types': 4.21.1
+      '@dynamic-labs/utils': 4.21.1
+      '@dynamic-labs/wallet-book': 4.21.1(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
       eventemitter3: 5.0.1
     transitivePeerDependencies:
       - react
@@ -10916,7 +11016,7 @@ snapshots:
 
   bitcoinjs-lib@6.1.5:
     dependencies:
-      '@noble/hashes': 1.7.1
+      '@noble/hashes': 1.7.2
       bech32: 2.0.0
       bip174: 2.1.1
       bs58check: 3.0.1
@@ -12995,7 +13095,7 @@ snapshots:
 
   jsontokens@4.0.1:
     dependencies:
-      '@noble/hashes': 1.7.1
+      '@noble/hashes': 1.7.2
       '@noble/secp256k1': 1.7.1
       base64-js: 1.5.1
 

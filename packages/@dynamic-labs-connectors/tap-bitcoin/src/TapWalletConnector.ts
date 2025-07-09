@@ -1,7 +1,6 @@
 import { UnisatConnector } from '@dynamic-labs/bitcoin';
 import { isMobile } from '@dynamic-labs/utils';
 
-
 const TAP_WALLET_NAME = 'Tap Wallet';
 const TAP_WALLET_ID = 'tapwallet';
 const TAP_WALLET_ICON = 'https://tap.trac.network/tap-logo.png';
@@ -50,8 +49,12 @@ export class TapWalletConnector extends UnisatConnector {
       connector: this,
     });
   }
-  // Ensure only available wallets are listed
+
+  override isInstalledOnBrowser(): boolean {
+    return this.isTapWalletInstalled();
+  }
+
   override filter(): boolean {
-    return !isMobile();
+    return !isMobile() || this.isInstalledOnBrowser();
   }
 }
