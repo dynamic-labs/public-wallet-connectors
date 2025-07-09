@@ -58,3 +58,4 @@ jobs:
           title: |
             chore(bump-version): bump package versions (${{ steps.bumpversion.outputs.version }})
           body: ''
+          sign-commits: true
