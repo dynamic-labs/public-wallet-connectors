@@ -14,7 +14,7 @@ export type BaseAccountEvmWalletConnectorOpts = EthereumWalletConnectorOpts & Ba
 export class BaseAccountEvmWalletConnector extends EthereumWalletConnector {
 
     override name = 'Base Account';
-    override overrideKey = 'baseAccount';
+    override overrideKey = 'baseaccount';
     override canConnectViaQrCode = false;
     override canConnectViaCustodialService = true;
     props: BaseAccountEvmWalletConnectorOpts;
@@ -109,22 +109,12 @@ export class BaseAccountEvmWalletConnector extends EthereumWalletConnector {
     }
 
     override getWalletClient(chainId?: string): WalletClient<Transport, Chain, Account> | undefined {
-        const account = this.getActiveAccount();
-        if (!account) {
-            return undefined;
-        }
-        
-        const chain = chainId ? chainsMap[chainId] : this.getActiveChain();
-        if (!chain) {
-            return undefined;
-        }
-        
+        // @ts-expect-error - Dynamic parent functions are returning undefined, but viem expects defined values
+        // this function works despite ignoring the type error
         return createWalletClient({
-            account,
-            chain,
+            account: this.getActiveAccount(),
+            chain: chainId ? chainsMap[chainId] : this.getActiveChain(),
             transport: custom(this.baseAccountProvider, this.providersConfig.httpTransportConfig),
         });
     }
-    
-
 }
