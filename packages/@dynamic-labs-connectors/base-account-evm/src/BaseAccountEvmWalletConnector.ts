@@ -11,7 +11,6 @@ export type BaseAccountEvmWalletConnectorOpts = EthereumWalletConnectorOpts & Ba
 export class BaseAccountEvmWalletConnector extends EthereumWalletConnector {
 
     override name = 'Base Account';
-    override overrideKey = 'baseaccount';
     override canConnectViaCustodialService = true;
     props: BaseAccountEvmWalletConnectorOpts;
 
