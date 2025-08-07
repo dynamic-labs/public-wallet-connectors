@@ -30,7 +30,10 @@ export const getBaseAccountProvider = (opts: BaseAccountEvmWalletConnectorOpts) 
   }
 
   if (!baseAccountProvider) {
-    const baseAccountSdk = createBaseAccountSDK(opts);
+    const baseAccountSdk = createBaseAccountSDK({
+      ...opts,
+      appChainIds,
+    });
 
     baseAccountProvider = baseAccountSdk.getProvider();
   }

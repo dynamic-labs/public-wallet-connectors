@@ -15,7 +15,6 @@ export class BaseAccountEvmWalletConnector extends EthereumWalletConnector {
 
     override name = 'Base Account';
     override overrideKey = 'baseaccount';
-    override canConnectViaQrCode = false;
     override canConnectViaCustodialService = true;
     props: BaseAccountEvmWalletConnectorOpts;
 
