@@ -1,7 +1,22 @@
-import { type WalletConnectorConstructor } from '@dynamic-labs/wallet-connector-core';
+import {
+    type WalletConnectorsMethod,
+  } from '@dynamic-labs/wallet-connector-core';
+  import { type EthereumWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
+import { BaseAccountSDKOpts } from './types.js';
 import { BaseAccountEvmWalletConnector } from './BaseAccountEvmWalletConnector.js';
 
-export const BaseAccountEvmWalletConnectors = (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-    _props: any
-): WalletConnectorConstructor[] => [BaseAccountEvmWalletConnector];
+export const createBaseAccountConnector = (
+    baseAccountOpts: BaseAccountSDKOpts = {}
+  ): WalletConnectorsMethod => {
+    return () => [
+      class extends BaseAccountEvmWalletConnector {
+        constructor(props: EthereumWalletConnectorOpts) {
+          super({
+            ...props,
+            ...baseAccountOpts,
+          });
+        }
+      },
+    ];
+  };
+  

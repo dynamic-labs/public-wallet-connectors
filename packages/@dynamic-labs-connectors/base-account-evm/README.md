@@ -10,18 +10,33 @@ npm install @dynamic-labs-connectors/base-account-evm
 
 ### Use the connector
 
-To integrate with the Dynamic SDK, you just need to pass `BaseAccountEvmWalletConnector` to the `walletConnectors` prop of the `DynamicContextProvider` component.
+Use the factory `createBaseAccountConnector` to pass Base Account SDK options into the connector. The factory returns a `walletConnectors` method compatible with `DynamicContextProvider`.
 
 ```tsx
 import { DynamicContextProvider } from '@dynamic-labs/sdk-react-score';
-import { BaseAccountEvmWalletConnector } from '@dynamic-labs-connectors/base-account-evm';
+import {
+  createBaseAccountConnector,
+  type BaseAccountSDKOpts,
+} from '@dynamic-labs-connectors/base-account-evm';
+
+// optional params from Base Account SDK
+// check out https://docs.base.org/base-account/reference/core/createBaseAccount for all params
+const baseAccountOpts: BaseAccountSDKOpts = {
+  preference: {
+    attribution: { auto: true },
+  },
+  paymasterUrls: {
+    8453: 'https://paymaster.base.org/api/v1/sponsor',
+    84532: 'https://paymaster.base-sepolia.org/api/v1/sponsor',
+  },
+};
 
 const App = () => {
   return (
     <DynamicContextProvider
       settings={{
         environmentId: 'REPLACE-WITH-YOUR-ENVIRONMENT-ID',
-        walletConnectors: [BaseAccountEvmWalletConnector],
+        walletConnectors: [createBaseAccountConnector(baseAccountOpts)],
       }}
     >
       <DynamicWidget />

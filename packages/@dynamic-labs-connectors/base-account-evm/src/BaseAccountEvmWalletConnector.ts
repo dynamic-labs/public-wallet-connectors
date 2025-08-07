@@ -4,10 +4,7 @@ import { createWalletClient, custom, type WalletClient, type Transport, type Cha
 import { eventListenerHandlers, logger } from '@dynamic-labs/wallet-connector-core';
 import { EthereumWalletConnector, chainsMap, type EthereumWalletConnectorOpts } from '@dynamic-labs/ethereum-core';
 import {  getBaseAccountProvider } from './helpers.js';
-import { createBaseAccountSDK } from '@base-org/account';
-
-// Inherit the type from Base Account SDK for maximum compatibility
-type BaseAccountSDKOpts = Omit<Parameters<typeof createBaseAccountSDK>[0], 'appChainIds'>;
+import { BaseAccountSDKOpts } from './types.js';
 
 export type BaseAccountEvmWalletConnectorOpts = EthereumWalletConnectorOpts & BaseAccountSDKOpts;
 
