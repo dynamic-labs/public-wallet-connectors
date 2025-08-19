@@ -1,5 +1,5 @@
 {
-  "name": "@dynamic-labs-connectors/ledger-evm",
+  "name": "@dynamic-labs-connectors/base-account-evm",
   "version": "4.4.0",
   "type": "module",
   "main": "./src/index.js",
@@ -15,13 +15,17 @@
       "types": "./src/index.d.ts"
     }
   },
-  "scripts": {
-    "lint": "eslint ."
+  "dependencies": {
+    "@base-org/account": "^1.1.1"
   },
   "peerDependencies": {
     "@dynamic-labs/ethereum-core": "^4.11.1",
-    "@dynamic-labs/ethereum": "^4.11.1",
     "@dynamic-labs/wallet-connector-core": "^4.11.1",
     "viem": "^2.21.55"
+  },
+  "devDependencies": {
+    "@dynamic-labs/ethereum-core": "^4.25.7",
+    "@dynamic-labs/wallet-connector-core": "^4.25.7",
+    "@dynamic-labs/utils": "^4.25.7"
   }
 }
