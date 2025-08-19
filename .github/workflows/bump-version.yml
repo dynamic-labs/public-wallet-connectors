@@ -52,10 +52,10 @@ jobs:
         with:
           base: ${{ github.event.inputs.branch }}
           commit-message: |
-            chore(bump-version): bumping version to ${{ steps.bumpversion.outputs.version }}
+            chore(bump-version): bump package versions (${{ steps.bumpversion.outputs.version }})
           branch: github-bot/bump-version-${{ steps.bumpversion.outputs.version }}
           delete-branch: true
           title: |
-            chore(bump-version): bumping version to ${{ steps.bumpversion.outputs.version }}
+            chore(bump-version): bump package versions (${{ steps.bumpversion.outputs.version }})
           body: ''
           sign-commits: true
