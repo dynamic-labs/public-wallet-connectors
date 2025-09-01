@@ -13,9 +13,11 @@ This repository contains official wallet connector implementations for the [Dyna
 - [@dynamic-labs-connectors/safe-evm](packages/@dynamic-labs-connectors/safe-evm/README.md) - Safe (formerly Gnosis Safe) wallet connector for EVM chains
 - [@dynamic-labs-connectors/abstract-global-wallet-evm](packages/@dynamic-labs-connectors/abstract-global-wallet-evm) - Abstract wallet connector for EVM chains
 - [@dynamic-labs-connectors/intersend-evm](packages/@dynamic-labs-connectors/intersend-evm) - Intersend EVM Wallet
-- [@dynamic-labs-connectors/sequence-cross-app-evm](packages/@dynamic-labs-connectors/sequence-cross-app-evm) -  Sequence EVM Wallet
+- [@dynamic-labs-connectors/sequence-cross-app-evm](packages/@dynamic-labs-connectors/sequence-cross-app-evm) - Sequence EVM Wallet
+- [@dynamic-labs-connectors/glyph-global-wallet-evm](packages/@dynamic-labs-connectors/glyph-global-wallet-evm) - Glyph wallet connector for EVM chains
 
 ## Development
+
 See [Contributing](CONTRIBUTING.md)
 
 ### Prerequisites
