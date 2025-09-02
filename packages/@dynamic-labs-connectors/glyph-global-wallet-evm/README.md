@@ -3,8 +3,8 @@
 ## Integrating with the Dynamic SDK
 
 ### Install the connector
-Make sure to install the connector with the correct version (@3 for sdk v3, @4 for sdk v4, etc...):
 
+Make sure to install the connector with the correct version (@3 for sdk v3, @4 for sdk v4, etc...):
 
 ```
 npm install @dynamic-labs-connectors/glyph-global-wallet-evm@4
@@ -32,6 +32,7 @@ const App = () => {
 };
 ```
 
+**Important:** The Glyph connector requires user approval and message signing in a popup window. Browser popup blockers may prevent this window from opening. Ensure your application handles blocked popups gracefully by prompting users to allow popups for your site.
 
 ## Building
 
@@ -40,5 +41,3 @@ Run `nx build @dynamic-labs-connectors/glyph-global-wallet-evm` to build the lib
 ## Running unit tests
 
 Run `nx test @dynamic-labs-connectors/glyph-global-wallet-evm` to execute the unit tests via [Jest](https://jestjs.io).
-
-
