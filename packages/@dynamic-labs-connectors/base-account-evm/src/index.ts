@@ -20,5 +20,5 @@ export const createBaseAccountConnector = (
     ];
 };
   
-export { BaseAccountSDKOpts } from './types.js';
+export type { BaseAccountSDKOpts } from './types.js';
   
