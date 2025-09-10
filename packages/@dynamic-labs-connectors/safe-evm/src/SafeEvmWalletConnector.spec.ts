@@ -34,13 +34,20 @@ describe('SafeEvmWalletConnector', () => {
   });
 
   describe('init', () => {
-    it('should initialize provider and emit events if in Safe app', async () => {
+    it('should initialize provider and emit providerReady event if in Safe app', async () => {
       await connector.init();
       await new Promise((resolve) => setTimeout(resolve, 0));
 
       expect(SafeSdkClient.init).toHaveBeenCalled();
-      expect(emitSpy).toHaveBeenCalledWith('providerReady', { connector });
-      expect(emitSpy).toHaveBeenCalledWith('autoConnect', { connector });
+      expect(emitSpy).toHaveBeenCalledWith('providerReady', { connector, shouldAutoConnect: true });
+    });
+
+    it('should not emit providerReady with shouldAutoConnect = true if no safe address', async () => {
+      (SafeSdkClient.getAddress as jest.Mock).mockResolvedValue(undefined);
+      await connector.init();
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      expect(emitSpy).toHaveBeenCalledWith('providerReady', { connector, shouldAutoConnect: false });
     });
 
     it('should not initialize provider if already initialized', async () => {
@@ -49,13 +56,6 @@ describe('SafeEvmWalletConnector', () => {
 
       expect(SafeSdkClient.init).not.toHaveBeenCalled();
       expect(emitSpy).not.toHaveBeenCalled();
-    });
-
-    it('should not emit autoConnect if no safe address', async () => {
-      (SafeSdkClient.getAddress as jest.Mock).mockResolvedValue(undefined);
-      await connector.init();
-
-      expect(emitSpy).not.toHaveBeenCalledWith('autoConnect', expect.any(Object));
     });
   });
 

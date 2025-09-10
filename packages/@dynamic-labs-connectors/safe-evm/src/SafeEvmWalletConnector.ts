@@ -42,38 +42,34 @@ export class SafeEvmWalletConnector extends EthereumInjectedConnector {
     this.onProviderReady();
   }
 
-  private onProviderReady = (): void => {
+  private onProviderReady = async (): Promise<void> => {
     logger.debug('[SafeEvmWalletConnector] onProviderReady');
 
     // Emits the providerReady event so the sdk knows it's available
+    // and tries to auto connect to the safe wallet
     this.walletConnectorEventsEmitter.emit('providerReady', {
       connector: this,
+      shouldAutoConnect: await this.shouldAutoConnect(),
     });
-
-    // Tries to auto connect to the safe wallet
-    this.tryAutoConnect();
   };
 
-  private async tryAutoConnect(): Promise<void> {
+  private async shouldAutoConnect(): Promise<boolean> {
     const safeAddress = await this.getAddress();
 
     logger.debug(
-      '[SafeEvmWalletConnector] tryAutoConnect - address:',
+      '[SafeEvmWalletConnector] shouldAutoConnect - address:',
       safeAddress,
     );
 
     if (!safeAddress) {
       logger.debug(
-        '[SafeEvmWalletConnector] tryAutoConnect - no address to connect',
+        '[SafeEvmWalletConnector] shouldAutoConnect - no address to connect',
         safeAddress,
       );
-      return;
+      return false;
     }
 
-    // If there's an address, emit the autoConnect event
-    this.walletConnectorEventsEmitter.emit('autoConnect', {
-      connector: this,
-    });
+    return true;
   }
 
   /**
@@ -112,7 +108,9 @@ export class SafeEvmWalletConnector extends EthereumInjectedConnector {
   /**
    * Signs a message
    */
-  override async signMessage(messageToSign: string): Promise<string | undefined> {
+  override async signMessage(
+    messageToSign: string,
+  ): Promise<string | undefined> {
     const client = this.getWalletClient();
 
     if (!client) {
