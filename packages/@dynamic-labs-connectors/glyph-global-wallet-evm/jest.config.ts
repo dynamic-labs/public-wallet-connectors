@@ -32,4 +32,8 @@ export default {
   testEnvironment: 'node',
   coverageDirectory:
     '../../../coverage/packages/@dynamic-labs-connectors/glyph-global-wallet',
+  // Add moduleNameMapper for ES modules
+  moduleNameMapper: {
+    '^@dynamic-labs-connectors/base-account-evm$': '<rootDir>/../../../jest-config/mocks/base-account-evm.js'
+  },
 };

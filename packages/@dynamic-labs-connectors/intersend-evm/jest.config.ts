@@ -29,4 +29,8 @@ export default {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   coverageDirectory:
     '../../../coverage/packages/@dynamic-labs-connectors/intersend-evm',
+  // Add moduleNameMapper for ES modules
+  moduleNameMapper: {
+    '^@dynamic-labs-connectors/base-account-evm$': '<rootDir>/../../../jest-config/mocks/base-account-evm.js'
+  },
 };
