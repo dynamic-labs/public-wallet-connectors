@@ -34,6 +34,9 @@
       ],
       "@dynamic-labs-connectors/safe-evm": [
         "packages/@dynamic-labs-connectors/safe-evm/src/index.ts"
+      ],
+      "@dynamic-labs-connectors/xverse-starknet": [
+        "packages/@dynamic-labs-connectors/xverse-starknet/src/index.ts"
       ]
     }
   },
