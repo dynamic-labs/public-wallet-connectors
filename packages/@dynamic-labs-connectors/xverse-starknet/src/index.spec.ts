@@ -6,10 +6,14 @@ jest.mock('@dynamic-labs/starknet', () => ({
   },
 }));
 
-import { XverseWalletConnectors } from './index.js';
+import { XverseStarknetWalletConnectors, XverseStarknetWalletConnector } from './index.js';
 
-describe('XverseWalletConnectors', () => {
+describe('XverseStarknetWalletConnectors', () => {
   it('should return an array', () => {
-    expect(XverseWalletConnectors({})).toBeInstanceOf(Array);
+    expect(XverseStarknetWalletConnectors({})).toBeInstanceOf(Array);
+  });
+
+  it('should return the XverseStarknetWalletConnector in the array', () => {
+    expect(XverseStarknetWalletConnectors({})).toEqual([XverseStarknetWalletConnector]);
   });
 });

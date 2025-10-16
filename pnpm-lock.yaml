@@ -326,10 +326,10 @@ importers:
     dependencies:
       '@dynamic-labs/wallet-connector-core':
         specifier: ^4.20.1
-        version: 4.31.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 4.37.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       starknetkit:
         specifier: ^2.3.1
-        version: 2.12.2(fjttvptihh3uhorhym66zfuqpq)
+        version: 2.12.2(t2cfhzq4bwgbthgminrmnx7364)
     devDependencies:
       '@dynamic-labs/starknet':
         specifier: ^4.20.1
@@ -8171,7 +8171,7 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@argent/x-ui@1.109.1(lng6ipkuv7vdz7auessw5ci3ty)':
+  '@argent/x-ui@1.109.1(7ltodovfgissbc2ylaplfqm4zi)':
     dependencies:
       '@chakra-ui/react': 2.10.9(@emotion/react@11.14.0(@types/react@19.2.2)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.2)(react@18.3.1))(@types/react@19.2.2)(react@18.3.1))(@types/react@19.2.2)(framer-motion@11.18.2(@emotion/is-prop-valid@1.4.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react': 11.14.0(@types/react@19.2.2)(react@18.3.1)
@@ -8183,7 +8183,7 @@ snapshots:
       '@zxcvbn-ts/language-common': 3.0.4
       '@zxcvbn-ts/language-en': 3.0.2
       class-variance-authority: 0.7.1
-      clsx: 1.2.1
+      clsx: 2.1.1
       colord: 2.9.3
       embla-carousel: 8.6.0
       embla-carousel-react: 8.6.0(react@18.3.1)
@@ -9038,7 +9038,7 @@ snapshots:
 
   '@cartridge/account-wasm@0.7.13': {}
 
-  '@cartridge/controller@0.7.13(@metamask/sdk@0.33.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.1(bufferutil@4.0.9)(typescript@5.5.4)(utf-8-validate@5.0.10))(@types/react@19.2.2)(bufferutil@4.0.9)(open@8.4.2)(react-dom@18.3.1(react@18.3.1))(react-native@0.82.0(@babel/core@7.28.4)(@types/react@19.2.2)(bufferutil@4.0.9)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1)(starknet@6.23.1)(starknetkit@2.12.2(fjttvptihh3uhorhym66zfuqpq))(typescript@5.5.4)(utf-8-validate@5.0.10)':
+  '@cartridge/controller@0.7.13(@metamask/sdk@0.33.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.1(bufferutil@4.0.9)(typescript@5.5.4)(utf-8-validate@5.0.10))(@types/react@19.2.2)(bufferutil@4.0.9)(open@8.4.2)(react-dom@18.3.1(react@18.3.1))(react-native@0.82.0(@babel/core@7.28.4)(@types/react@19.2.2)(bufferutil@4.0.9)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1)(starknet@6.23.1)(starknetkit@2.12.2(t2cfhzq4bwgbthgminrmnx7364))(typescript@5.5.4)(utf-8-validate@5.0.10)':
     dependencies:
       '@cartridge/account-wasm': 0.7.13
       '@cartridge/penpal': 6.2.4
@@ -9054,7 +9054,7 @@ snapshots:
       mipd: 0.0.7(typescript@5.5.4)
       open: 8.4.2
       starknet: 6.23.1
-      starknetkit: 2.12.2(fjttvptihh3uhorhym66zfuqpq)
+      starknetkit: 2.12.2(t2cfhzq4bwgbthgminrmnx7364)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -9335,7 +9335,7 @@ snapshots:
   '@dynamic-labs-wallet/browser-wallet-client@0.0.144':
     dependencies:
       '@dynamic-labs-wallet/core': 0.0.144
-      '@dynamic-labs/logger': 4.31.2
+      '@dynamic-labs/logger': 4.37.0
       '@dynamic-labs/message-transport': 4.31.2
       uuid: 11.1.0
     transitivePeerDependencies:
@@ -9505,14 +9505,6 @@ snapshots:
       - use-sync-external-store
       - utf-8-validate
       - zod
-
-  '@dynamic-labs/iconic@4.31.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@dynamic-labs/assert-package-version': 4.31.2
-      '@dynamic-labs/logger': 4.31.2
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      sharp: 0.33.5
 
   '@dynamic-labs/iconic@4.31.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
@@ -9734,18 +9726,6 @@ snapshots:
       - utf-8-validate
       - viem
 
-  '@dynamic-labs/wallet-book@4.31.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@dynamic-labs/assert-package-version': 4.31.2
-      '@dynamic-labs/iconic': 4.31.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@dynamic-labs/logger': 4.31.2
-      '@dynamic-labs/utils': 4.31.2
-      eventemitter3: 5.0.1
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      util: 0.12.5
-      zod: 4.0.5
-
   '@dynamic-labs/wallet-book@4.31.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
       '@dynamic-labs/assert-package-version': 4.31.2
@@ -9769,20 +9749,6 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       util: 0.12.5
       zod: 4.0.5
-
-  '@dynamic-labs/wallet-connector-core@4.31.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@dynamic-labs/assert-package-version': 4.31.2
-      '@dynamic-labs/logger': 4.31.2
-      '@dynamic-labs/rpc-providers': 4.31.2
-      '@dynamic-labs/sdk-api-core': 0.0.762
-      '@dynamic-labs/types': 4.31.2
-      '@dynamic-labs/utils': 4.31.2
-      '@dynamic-labs/wallet-book': 4.31.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      eventemitter3: 5.0.1
-    transitivePeerDependencies:
-      - react
-      - react-dom
 
   '@dynamic-labs/wallet-connector-core@4.31.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
@@ -18157,10 +18123,10 @@ snapshots:
       - utf-8-validate
       - zod
 
-  starknetkit@2.12.2(fjttvptihh3uhorhym66zfuqpq):
+  starknetkit@2.12.2(t2cfhzq4bwgbthgminrmnx7364):
     dependencies:
-      '@argent/x-ui': 1.109.1(lng6ipkuv7vdz7auessw5ci3ty)
-      '@cartridge/controller': 0.7.13(@metamask/sdk@0.33.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.1(bufferutil@4.0.9)(typescript@5.5.4)(utf-8-validate@5.0.10))(@types/react@19.2.2)(bufferutil@4.0.9)(open@8.4.2)(react-dom@18.3.1(react@18.3.1))(react-native@0.82.0(@babel/core@7.28.4)(@types/react@19.2.2)(bufferutil@4.0.9)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1)(starknet@6.23.1)(starknetkit@2.12.2(fjttvptihh3uhorhym66zfuqpq))(typescript@5.5.4)(utf-8-validate@5.0.10)
+      '@argent/x-ui': 1.109.1(7ltodovfgissbc2ylaplfqm4zi)
+      '@cartridge/controller': 0.7.13(@metamask/sdk@0.33.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.1(bufferutil@4.0.9)(typescript@5.5.4)(utf-8-validate@5.0.10))(@types/react@19.2.2)(bufferutil@4.0.9)(open@8.4.2)(react-dom@18.3.1(react@18.3.1))(react-native@0.82.0(@babel/core@7.28.4)(@types/react@19.2.2)(bufferutil@4.0.9)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1)(starknet@6.23.1)(starknetkit@2.12.2(t2cfhzq4bwgbthgminrmnx7364))(typescript@5.5.4)(utf-8-validate@5.0.10)
       '@starknet-io/get-starknet': 4.0.8
       '@starknet-io/get-starknet-core': 4.0.8
       '@starknet-io/types-js': 0.7.10

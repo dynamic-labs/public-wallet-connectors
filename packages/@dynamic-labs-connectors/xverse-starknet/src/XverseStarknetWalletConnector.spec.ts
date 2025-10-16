@@ -32,14 +32,14 @@ jest.mock('starknetkit/injected', () => ({
   InjectedConnector: jest.fn(),
 }));
 
-import { Xverse } from './Xverse.js';
+import { XverseStarknetWalletConnector } from './XverseStarknetWalletConnector.js';
 
-describe('Xverse', () => {
-  let connector: Xverse;
+describe('XverseStarknetWalletConnector', () => {
+  let connector: XverseStarknetWalletConnector;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    connector = new Xverse({});
+    connector = new XverseStarknetWalletConnector({});
   });
 
   it('should be defined', () => {
