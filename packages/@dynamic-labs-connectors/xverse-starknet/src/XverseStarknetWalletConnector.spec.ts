@@ -47,10 +47,10 @@ describe('XverseStarknetWalletConnector', () => {
   });
 
   it('should have correct name', () => {
-    expect(connector.name).toBe('Xverse Wallet');
+    expect(connector.name).toBe('Xverse');
   });
 
   it('should have correct overrideKey', () => {
-    expect(connector.overrideKey).toBe('xverse');
+    expect(connector.overrideKey).toBe('xversestarknet');
   });
 });
