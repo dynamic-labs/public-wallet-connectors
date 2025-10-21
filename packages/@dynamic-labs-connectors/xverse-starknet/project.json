@@ -1,0 +1,19 @@
+{
+  "name": "@dynamic-labs-connectors/xverse-starknet",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/@dynamic-labs-connectors/xverse-starknet/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/@dynamic-labs-connectors/xverse-starknet",
+        "main": "packages/@dynamic-labs-connectors/xverse-starknet/src/index.ts",
+        "tsConfig": "packages/@dynamic-labs-connectors/xverse-starknet/tsconfig.lib.json",
+        "generateExportsField": true
+      }
+    }
+  }
+}
