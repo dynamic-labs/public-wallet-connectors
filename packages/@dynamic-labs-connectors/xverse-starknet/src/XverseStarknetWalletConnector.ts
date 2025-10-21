@@ -15,11 +15,11 @@ type PromptResult = {
 };
 
 export class XverseStarknetWalletConnector extends StarknetWalletConnector {
-  override overrideKey = 'xverse';
+  override overrideKey = 'xversestarknet';
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(opts: any) {
-    super('Xverse Wallet', 'xverse', 'xverse', opts);
+    super('Xverse', 'xverse', 'xversestarknet', opts);
   }
 
   override async prompt(options: PromptOptions): Promise<PromptResult> {
